@@ -1,0 +1,69 @@
+﻿#include <iostream>
+#include <ctime>
+#define NUM_ROWS 3
+#define NUM_COLUMNS 3
+#define MIN_ROCKS 1
+#define MAX_ROCKS ((20/100) * NUM_ROWS * NUM_COLUMNS)
+#define NUM_ROCKS rand() % (MAX_ROCKS - MIN_ROCKS + 1) + MIN_ROCKS
+#define MIN_COINS 1
+#define MAX_COINS ((30/100) * NUM_ROWS * NUM_COLUMNS)
+#define NUM_COINS rand() % (MAX_COINS - MIN_COINS + 1) + MIN_COINS
+
+enum Movement { UP, DOWN, LEFT, RIGHT };
+
+struct Squares {
+    char draw;
+    bool rocks, coins, player;
+};
+
+struct Player {
+    int row, column, score;
+    Squares position[NUM_ROWS][NUM_COLUMNS];
+};
+
+void initializeBoard(Squares board[NUM_ROWS][NUM_COLUMNS], Player& player) {
+    int row, column;
+    for (int coins = 0; coins < NUM_COINS;) {
+        row = rand() % (NUM_ROWS);
+        column = rand() % (NUM_COLUMNS);
+        if (!board[row][column].coins) {                                    //Place coins in a random square of the board that has no coins
+            board[row][column].coins = true;
+            coins++;
+        }
+    }
+    for (int rocks = 0; rocks < NUM_ROCKS; ) {
+        row = rand() % (NUM_ROWS);
+        column = rand() % (NUM_COLUMNS);
+        if (!board[row][column].rocks && !board[row][column].coins){        //Place rocks in a random square of the board that has no rocks or coins
+            board[row][column].rocks = true;
+            ++rocks;
+        }
+    }
+    for (bool placePlayer = true; placePlayer;) {
+        row = rand() % (NUM_ROWS);
+        column = rand() % (NUM_COLUMNS);
+        if (!board[row][column].rocks && !board[row][column].coins) {       //Place player in a random square of the board that has no rocks or coins
+            player.row = row;
+            player.column = column;
+            placePlayer = false;
+        }
+    }
+}
+
+bool CheckMovement(Player player, Movement movement){
+    if ((movement == UP && player.row == 0) || (movement == DOWN && player.row == NUM_ROWS)
+        || (movement == LEFT && player.column == 0) || (movement == RIGHT && player.column == NUM_COLUMNS)) return false;
+    if ((movement == UP && player.position[player.row--][player.column].rocks) || (movement == DOWN && player.position[player.row++][player.column].rocks)
+        || (movement == LEFT && player.position[player.row][player.column--].rocks) || (movement == RIGHT && player.position[player.row][player.column++].rocks)) return false;
+    return true;
+}
+
+int AddScore(){
+    return 1;
+}
+
+void main(){
+    srand(time(NULL));
+    Squares board[NUM_ROWS][NUM_COLUMNS];
+    Player player;
+}

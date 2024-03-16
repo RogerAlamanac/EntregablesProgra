@@ -18,7 +18,7 @@ std::string getEnemyTypeString(EnemyType enemytype){
 	}
 }
 
-bool equalEnemies(Enemy& enemy, Enemy& enemy2){
+bool equalEnemies(Enemy enemy, Enemy enemy2){
 	if (enemy.type == enemy2.type && enemy.name == enemy2.name) {
 		return true;
 	}
@@ -36,7 +36,7 @@ Enemy createRandomEnemy(){
 	return randomEnemy;
 }
 
-int main()
+void main()
 {
 	srand(time(NULL));
 	Enemy enemies[MAX_ENEMIES];
