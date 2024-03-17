@@ -4,15 +4,21 @@
 
 void main() {
     srand(time(NULL));
-    Squares board[NUM_ROWS][NUM_COLUMNS];
     Player player;
     char movement;
-    initializeBoard(board, player);
-    while (!gameOver(board)) {
+    initializeBoard(player);
+    while (!gameOver()) {
         system("cls");
-        printBoard(board);
-        if (checkMovement) {
+        printBoard();
+        std::cin >> movement;
+        if (charToEnum(movement, player)) {
+            if (checkMovement(player)) {
 
+            }
         }
+        else {
+            std::cout << "Not valid comand" << std::endl;
+        }
+        system("pause");
     }
 }

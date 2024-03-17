@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Board.h"
 
-void initializeBoard(Squares board[NUM_ROWS][NUM_COLUMNS], Player& player) {
+void initializeBoard(Player& player) {
     int row, column;
     for (int coins = 0; coins < NUM_COINS;) {
         row = rand() % (NUM_ROWS);
@@ -31,7 +31,7 @@ void initializeBoard(Squares board[NUM_ROWS][NUM_COLUMNS], Player& player) {
     }
 }
 
-bool checkMovement(Player player, Squares board[NUM_ROWS][NUM_COLUMNS]) {
+bool checkMovement(Player player) {
     if ((player.move == Movement::UP && player.row == 0) || (player.move == Movement::DOWN && player.row == NUM_ROWS - 1)
         || (player.move == Movement::LEFT && player.column == 0) || (player.move == Movement::RIGHT && player.column == NUM_COLUMNS - 1)) return false;
     else if ((player.move == Movement::UP && board[player.row--][player.column].rock) || (player.move == Movement::DOWN && board[player.row++][player.column].rock)
@@ -39,13 +39,13 @@ bool checkMovement(Player player, Squares board[NUM_ROWS][NUM_COLUMNS]) {
     return true;
 }
 
-bool existsCoins(Player player, Squares board[NUM_ROWS][NUM_COLUMNS]) {
+bool existsCoins(Player player) {
     if ((player.move == Movement::UP && board[player.row--][player.column].coin) || (player.move == Movement::DOWN && board[player.row++][player.column].coin)
         || (player.move == Movement::LEFT && board[player.row][player.column--].coin) || (player.move == Movement::RIGHT && board[player.row][player.column++].coin)) return true;
     return false;
 }
 
-void printBoard(Squares board[NUM_ROWS][NUM_COLUMNS]) {
+void printBoard() {
     for (int row = 0; row < NUM_ROWS; row++) {
         for (int column = 0; column < NUM_COLUMNS; column++) {
             if (board[row][column].coin) board[row][column].draw = 184;
@@ -62,7 +62,7 @@ void setPos(Player& player) {
     else if(player.move == Movement::RIGHT) player.column++;
 }
 
-void movePlayer(Player& player, Squares board[NUM_ROWS][NUM_COLUMNS]) {
+void movePlayer(Player& player) {
     if (player.move == Movement::UP) {
         board[player.row][player.column].player = false;
         board[player.row--][player.column].player = true;
@@ -85,12 +85,34 @@ void movePlayer(Player& player, Squares board[NUM_ROWS][NUM_COLUMNS]) {
     }
 }
 
-bool gameOver(Squares board[NUM_ROWS][NUM_COLUMNS]) {
+bool gameOver() {
     int coins;
     for (int i = 0; i < NUM_ROWS; i++) {
         for (int j = 0; j < NUM_COLUMNS; j++) {
             if (board[i][j].coin) return true;
         }
+    }
+    return false;
+}
+
+bool charToEnum(char& move, Player player) {
+    switch (move) {
+    case 'w':
+        player.move = Movement::UP;
+        return true
+        break;
+    case 's':
+        player.move = Movement::DOWN;
+        return true
+        break;
+    case 'a':
+        player.move = Movement::LEFT;
+        return true
+        break;
+    case 'd':
+        player.move = Movement::RIGHT;
+        return true
+        break;
     }
     return false;
 }
