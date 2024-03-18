@@ -1,5 +1,9 @@
 #include <iostream>
+#include <windows.h>
+#include <WinUser.h>
 #include "Board.h"
+Squares board[NUM_ROWS][NUM_COLUMNS];
+Player player;
 
 void initializeBoard(Player& player) {
     int row, column;
@@ -32,27 +36,30 @@ void initializeBoard(Player& player) {
 }
 
 bool checkMovement(Player player) {
-    if ((player.move == Movement::UP && player.row == 0) || (player.move == Movement::DOWN && player.row == NUM_ROWS - 1)
-        || (player.move == Movement::LEFT && player.column == 0) || (player.move == Movement::RIGHT && player.column == NUM_COLUMNS - 1)) return false;
-    else if ((player.move == Movement::UP && board[player.row--][player.column].rock) || (player.move == Movement::DOWN && board[player.row++][player.column].rock)
-        || (player.move == Movement::LEFT && board[player.row][player.column--].rock) || (player.move == Movement::RIGHT && board[player.row][player.column++].rock)) return false;
-    return true;
+    int newRow = player.row, newColumn = player.column;
+    if (player.move == Movement::UP) newRow--;
+    else if (player.move == Movement::DOWN) newRow++;
+    else if (player.move == Movement::LEFT) newColumn--;
+    else if (player.move == Movement::RIGHT) newColumn++;
+    if (newRow < 0 || newRow >= NUM_ROWS || newColumn < 0 || newColumn >=NUM_COLUMNS || board[newRow][newColumn].rock) return false;
+    return true; 
 }
 
 bool existsCoins(Player player) {
-    if ((player.move == Movement::UP && board[player.row--][player.column].coin) || (player.move == Movement::DOWN && board[player.row++][player.column].coin)
-        || (player.move == Movement::LEFT && board[player.row][player.column--].coin) || (player.move == Movement::RIGHT && board[player.row][player.column++].coin)) return true;
+    if (board[player.row][player.column].coin) return true;
     return false;
 }
 
 void printBoard() {
     for (int row = 0; row < NUM_ROWS; row++) {
         for (int column = 0; column < NUM_COLUMNS; column++) {
-            if (board[row][column].coin) board[row][column].draw = 184;
-            else if (board[row][column].rock) board[row][column].draw = 254;
-            else if (board[row][column].player) board[row][column].draw = 197;
+            if (board[row][column].coin) board[row][column].draw = (char)184;
+            else if (board[row][column].rock) board[row][column].draw = (char)254;
+            else if (board[row][column].player) board[row][column].draw = (char)197;
             else board[row][column].draw = ' ';
+            std::cout << '|' << board[row][column].draw << '|';
         }
+        std::cout << std::endl;
     }
 }
 
@@ -64,23 +71,11 @@ void setPos(Player& player) {
 }
 
 void movePlayer(Player& player) {
-    if (player.move == Movement::UP) {
-        board[player.row][player.column].player = false;
-        board[player.row--][player.column].player = true;
-    }
-    else if (player.move == Movement::DOWN) {
-        board[player.row][player.column].player = false;
-        board[player.row++][player.column].player = true;
-    }
-    else if (player.move == Movement::LEFT) {
-        board[player.row][player.column].player = false;
-        board[player.row][player.column--].player = true;
-    }
-    else if (player.move == Movement::RIGHT) {
-        board[player.row][player.column].player = false;
-        board[player.row][player.column++].player = true;
-    }
+    board[player.row][player.column].player = false;
     setPos(player);
+    if (existsCoins(player)) addScore(player);
+    board[player.row][player.column].coin = false;
+    board[player.row][player.column].player = true;
 }
 
 bool gameOver() {
@@ -94,25 +89,10 @@ bool gameOver() {
 }
 
 bool charToEnum(char move, Player& player) {
-    switch (move) {
-    case ('w' || GetAsyncKeyState(VK_UP)):
-        player.move = Movement::UP;
-        return true
-        break;
-    case ('s' || GetAsyncKeyState(VK_DOWN)):
-        player.move = Movement::DOWN;
-        return true
-        break;
-    case ('a' || GetAsyncKeyState(VK_LEFT)):
-        player.move = Movement::LEFT;
-        return true
-        break;
-    case ('d' || GetAsyncKeyState(VK_RIGHT)):
-        player.move = Movement::RIGHT;
-        return true
-        break;
-    case default:
-        return false;
-        break;
-    }
+    if (move == 'w' || move == UP_ARROW) player.move = Movement::UP;
+    else if(move == 's' || move == DOWN_ARROW)player.move = Movement::DOWN;
+    else if (move == 'd' || move == RIGHT_ARROW)player.move = Movement::RIGHT;
+    else if (move == 'a' || move == LEFT_ARROW)player.move = Movement::LEFT;
+    else return false;
+    return true;
 }

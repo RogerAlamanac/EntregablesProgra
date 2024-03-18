@@ -36,7 +36,7 @@ Enemy createRandomEnemy(){
 	return randomEnemy;
 }
 
-void main()
+/*void main()
 {
 	srand(time(NULL));
 	Enemy enemies[MAX_ENEMIES];
@@ -55,4 +55,4 @@ void main()
 		}
 		equalEnemy = 0;
 	}
-}
+}*/

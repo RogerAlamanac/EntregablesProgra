@@ -5,4 +5,4 @@ struct Player {
     Movement move;
 };
 
-int addScore(Player& player);
+void addScore(Player& player);
