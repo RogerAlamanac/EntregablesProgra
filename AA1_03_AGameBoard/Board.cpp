@@ -51,6 +51,7 @@ void printBoard() {
             if (board[row][column].coin) board[row][column].draw = 184;
             else if (board[row][column].rock) board[row][column].draw = 254;
             else if (board[row][column].player) board[row][column].draw = 197;
+            else board[row][column].draw = ' ';
         }
     }
 }
@@ -66,23 +67,20 @@ void movePlayer(Player& player) {
     if (player.move == Movement::UP) {
         board[player.row][player.column].player = false;
         board[player.row--][player.column].player = true;
-        setPos(player);
     }
     else if (player.move == Movement::DOWN) {
         board[player.row][player.column].player = false;
         board[player.row++][player.column].player = true;
-        setPos(player);
     }
     else if (player.move == Movement::LEFT) {
         board[player.row][player.column].player = false;
         board[player.row][player.column--].player = true;
-        setPos(player);
     }
     else if (player.move == Movement::RIGHT) {
         board[player.row][player.column].player = false;
         board[player.row][player.column++].player = true;
-        setPos(player);
     }
+    setPos(player);
 }
 
 bool gameOver() {
@@ -95,24 +93,26 @@ bool gameOver() {
     return false;
 }
 
-bool charToEnum(char& move, Player player) {
+bool charToEnum(char move, Player& player) {
     switch (move) {
-    case 'w':
+    case ('w' || GetAsyncKeyState(VK_UP)):
         player.move = Movement::UP;
         return true
         break;
-    case 's':
+    case ('s' || GetAsyncKeyState(VK_DOWN)):
         player.move = Movement::DOWN;
         return true
         break;
-    case 'a':
+    case ('a' || GetAsyncKeyState(VK_LEFT)):
         player.move = Movement::LEFT;
         return true
         break;
-    case 'd':
+    case ('d' || GetAsyncKeyState(VK_RIGHT)):
         player.move = Movement::RIGHT;
         return true
         break;
+    case default:
+        return false;
+        break;
     }
-    return false;
 }

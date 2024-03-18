@@ -1,9 +1,7 @@
 #include <iostream>
-#include <ctime>
 #include "Board.h"
 
 void main() {
-    srand(time(NULL));
     Player player;
     char movement;
     initializeBoard(player);
@@ -11,14 +9,11 @@ void main() {
         system("cls");
         printBoard();
         std::cin >> movement;
-        if (charToEnum(movement, player)) {
-            if (checkMovement(player)) {
-
-            }
-        }
-        else {
-            std::cout << "Not valid comand" << std::endl;
+        if (charToEnum(movement, player) && checkMovement(player)) {
+            if (existsCoins(player)) addScore(player);
+            movePlayer(player);
         }
         system("pause");
     }
+    std::cout << "GAME OVER" << std::endl;
 }
