@@ -42,29 +42,16 @@ bool checkMovement(Player player, Movement move) {
     return true;
 }
 
-bool existsCoins(Player player) {
-    if (board[player.row][player.column].coin) return true;
-    return false;
-}
-
-void printBoard() {
-    for (int row = 0; row < NUM_ROWS; row++) {
-        for (int column = 0; column < NUM_COLUMNS; column++) {
-            if (board[row][column].coin) board[row][column].draw = 36;
-            else if (board[row][column].rock) board[row][column].draw = 254;    //Numeros en la tabla ASCII
-            else if (board[row][column].player) board[row][column].draw = 197;
-            else board[row][column].draw = ' ';
-            std::cout << '|' << board[row][column].draw << '|';
-        }
-        std::cout << std::endl;
-    }
-}
-
 void setPos(Player& player, Movement& move) {
     if (move == Movement::UP) player.row--;
     else if (move == Movement::DOWN) player.row++;
     else if (move == Movement::LEFT) player.column--;
-    else if(move == Movement::RIGHT) player.column++;
+    else if (move == Movement::RIGHT) player.column++;
+}
+
+bool existsCoins(Player player) {
+    if (board[player.row][player.column].coin) return true;
+    return false;
 }
 
 void movePlayer(Player& player, Movement move) {
@@ -82,6 +69,19 @@ bool gameOver() {
         }
     }
     return false;
+}
+
+void printBoard() {
+    for (int row = 0; row < NUM_ROWS; row++) {
+        for (int column = 0; column < NUM_COLUMNS; column++) {
+            if (board[row][column].coin) board[row][column].draw = 184;          //Las monedas son ©
+            else if (board[row][column].rock) board[row][column].draw = 254;    //Las piedras son ?
+            else if (board[row][column].player) board[row][column].draw = 197;  //El jugador es ?
+            else board[row][column].draw = ' ';
+            std::cout << '|' << board[row][column].draw << '|';
+        }
+        std::cout << std::endl;
+    }
 }
 
 bool setMovement(char movement, Movement& move) {

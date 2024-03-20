@@ -10,7 +10,7 @@
 #define MAX_COINS (static_cast<int>((30.0 / 100) * NUM_ROWS * NUM_COLUMNS))  // Calculamos el número máximo de monedas como el 30% de las casillas
 #define NUM_COINS (rand() % (MAX_COINS - MIN_COINS + 1) + MIN_COINS)         // Generamos un número aleatorio entre el mínimo y máximo de monedas
 
-#define UP_ARROW 72
+#define UP_ARROW 72         //Los numeros son el valor de las flechas del teclado en la tabla ASCII
 #define DOWN_ARROW 80
 #define RIGHT_ARROW 77
 #define LEFT_ARROW 75

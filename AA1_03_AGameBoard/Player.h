@@ -1,5 +1,5 @@
 #pragma once
-enum class Movement { UP, DOWN, LEFT, RIGHT, INVALID };
+enum class Movement { UP, DOWN, LEFT, RIGHT, INVALID };     //El movimiento empieza con INVALID
 struct Player {
     int row, column, score = 0;
 };
