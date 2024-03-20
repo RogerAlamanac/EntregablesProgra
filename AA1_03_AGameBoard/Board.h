@@ -21,10 +21,10 @@ struct Squares {
 };
 
 void initializeBoard(Player& player);
-bool checkMovement(Player player);
+bool checkMovement(Player player, Movement movement);
 bool existsCoins(Player player);
-void movePlayer(Player& player);
+void movePlayer(Player& player, Movement move);
 bool gameOver();
 void printBoard();
-void setPos(Player& player);
-bool setMovement(char move, Player& player);
+void setPos(Player& player, Movement& move);
+bool setMovement(char movement, Movement& move);

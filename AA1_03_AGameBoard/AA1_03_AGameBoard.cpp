@@ -5,6 +5,7 @@
 int main() {
     srand(time(NULL));
     Player player;
+    Movement move = Movement::INVALID;
     char movement;
     initializeBoard(player);
     while (gameOver()) {
@@ -12,8 +13,8 @@ int main() {
         printBoard();
         std::cout << std::endl << "Score: " << player.score << std::endl;
         movement = _getch();
-        if (setMovement(movement, player) && checkMovement(player)) {
-            movePlayer(player);
+        if (setMovement(movement, move) && checkMovement(player, move)) {
+            movePlayer(player, move);
         }
     }
     system("cls");

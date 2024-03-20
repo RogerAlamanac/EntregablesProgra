@@ -1,9 +1,6 @@
 #include <iostream>
-#include <windows.h>
-#include <WinUser.h>
 #include "Board.h"
 Squares board[NUM_ROWS][NUM_COLUMNS];
-Player player;
 
 void initializeBoard(Player& player) {
     int row, column;
@@ -35,14 +32,14 @@ void initializeBoard(Player& player) {
     }
 }
 
-bool checkMovement(Player player) {
+bool checkMovement(Player player, Movement move) {
     int newRow = player.row, newColumn = player.column;
-    if (player.move == Movement::UP) newRow--;
-    else if (player.move == Movement::DOWN) newRow++;
-    else if (player.move == Movement::LEFT) newColumn--;
-    else if (player.move == Movement::RIGHT) newColumn++;
+    if (move == Movement::UP) newRow--;
+    else if (move == Movement::DOWN) newRow++;
+    else if (move == Movement::LEFT) newColumn--;
+    else if (move == Movement::RIGHT) newColumn++;
     if (newRow < 0 || newRow >= NUM_ROWS || newColumn < 0 || newColumn >=NUM_COLUMNS || board[newRow][newColumn].rock) return false;
-    return true; 
+    return true;
 }
 
 bool existsCoins(Player player) {
@@ -63,23 +60,22 @@ void printBoard() {
     }
 }
 
-void setPos(Player& player) {
-    if (player.move == Movement::UP) player.row--;
-    else if (player.move == Movement::DOWN) player.row++;
-    else if (player.move == Movement::LEFT) player.column--;
-    else if(player.move == Movement::RIGHT) player.column++;
+void setPos(Player& player, Movement& move) {
+    if (move == Movement::UP) player.row--;
+    else if (move == Movement::DOWN) player.row++;
+    else if (move == Movement::LEFT) player.column--;
+    else if(move == Movement::RIGHT) player.column++;
 }
 
-void movePlayer(Player& player) {
+void movePlayer(Player& player, Movement move) {
     board[player.row][player.column].player = false;
-    setPos(player);
+    setPos(player, move);
     if (existsCoins(player)) addScore(player);
     board[player.row][player.column].coin = false;
     board[player.row][player.column].player = true;
 }
 
 bool gameOver() {
-    int coins;
     for (int i = 0; i < NUM_ROWS; i++) {
         for (int j = 0; j < NUM_COLUMNS; j++) {
             if (board[i][j].coin) return true;
@@ -88,11 +84,11 @@ bool gameOver() {
     return false;
 }
 
-bool setMovement(char move, Player& player) {
-    if (move == 'w' || move == UP_ARROW) player.move = Movement::UP;
-    else if(move == 's' || move == DOWN_ARROW)player.move = Movement::DOWN;
-    else if (move == 'd' || move == RIGHT_ARROW)player.move = Movement::RIGHT;
-    else if (move == 'a' || move == LEFT_ARROW)player.move = Movement::LEFT;
+bool setMovement(char movement, Movement& move) {
+    if (movement == 'w' || movement == UP_ARROW) move = Movement::UP;
+    else if(movement == 's' || movement == DOWN_ARROW)move = Movement::DOWN;
+    else if (movement == 'd' || movement == RIGHT_ARROW) move = Movement::RIGHT;
+    else if (movement == 'a' || movement == LEFT_ARROW) move = Movement::LEFT;
     else return false;
     return true;
 }
