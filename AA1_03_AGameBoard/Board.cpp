@@ -53,9 +53,9 @@ bool existsCoins(Player player) {
 void printBoard() {
     for (int row = 0; row < NUM_ROWS; row++) {
         for (int column = 0; column < NUM_COLUMNS; column++) {
-            if (board[row][column].coin) board[row][column].draw = (char)184;
-            else if (board[row][column].rock) board[row][column].draw = (char)254;
-            else if (board[row][column].player) board[row][column].draw = (char)197;
+            if (board[row][column].coin) board[row][column].draw = 36;
+            else if (board[row][column].rock) board[row][column].draw = 254;    //Numeros en la tabla ASCII
+            else if (board[row][column].player) board[row][column].draw = 197;
             else board[row][column].draw = ' ';
             std::cout << '|' << board[row][column].draw << '|';
         }
