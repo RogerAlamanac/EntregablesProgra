@@ -27,4 +27,4 @@ void movePlayer(Player& player);
 bool gameOver();
 void printBoard();
 void setPos(Player& player);
-bool charToEnum(char move, Player& player);
+bool setMovement(char move, Player& player);

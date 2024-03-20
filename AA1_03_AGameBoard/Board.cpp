@@ -88,7 +88,7 @@ bool gameOver() {
     return false;
 }
 
-bool charToEnum(char move, Player& player) {
+bool setMovement(char move, Player& player) {
     if (move == 'w' || move == UP_ARROW) player.move = Movement::UP;
     else if(move == 's' || move == DOWN_ARROW)player.move = Movement::DOWN;
     else if (move == 'd' || move == RIGHT_ARROW)player.move = Movement::RIGHT;

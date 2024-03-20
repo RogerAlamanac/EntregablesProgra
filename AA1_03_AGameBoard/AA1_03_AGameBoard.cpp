@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Board.h"
-#include <conio.h>      //Para que el usuario no tenga que presionar el espacio constantemente como pasaria con el cin
+#include <conio.h>      //Para que el usuario no tenga que presionar el enter constantemente como pasaria con el cin. Para esto usaremos _getch()
 
 int main() {
     srand(time(NULL));
@@ -12,7 +12,7 @@ int main() {
         printBoard();
         std::cout << std::endl << "Score: " << player.score << std::endl;
         movement = _getch();
-        if (charToEnum(movement, player) && checkMovement(player)) {
+        if (setMovement(movement, player) && checkMovement(player)) {
             movePlayer(player);
         }
     }
