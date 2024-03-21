@@ -74,7 +74,7 @@ bool gameOver() {
 void printBoard() {
     for (int row = 0; row < NUM_ROWS; row++) {
         for (int column = 0; column < NUM_COLUMNS; column++) {
-            if (board[row][column].coin) board[row][column].draw = 184;          //Las monedas son ©
+            if (board[row][column].coin) board[row][column].draw = 36;          //Las monedas son $
             else if (board[row][column].rock) board[row][column].draw = 254;    //Las piedras son ?
             else if (board[row][column].player) board[row][column].draw = 197;  //El jugador es ?
             else board[row][column].draw = ' ';
