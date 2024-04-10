@@ -9,7 +9,7 @@ struct Player {
 	int numBalls;
 	bool pistolEmpty;
 	Ball bulletsPistol[AMOUNT_PISTOL_BALLS];
-	void init(std::string name, Position position2) {
+	void init(std::string name, int position2) {
 		std::cout << "ENTER YOUR NAME:  ";
 	    std::cin >> name;
 		position = position2;

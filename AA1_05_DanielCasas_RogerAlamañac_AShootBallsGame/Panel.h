@@ -7,15 +7,15 @@ struct Panel {
 		std::cout << "ENTER THE AMOUNT OF BALLS: ";
 		std::cin >> amountBalls;
 	}
-	void insert(Position position, Ball ball) {
+	void insert(int position, Ball ball) {
 		//Falta acabar
 	}
 
-	void verifier(Position position, Ball ball){
+	void verifier(int position, Ball ball){
 		
 	}
 
-	void deleteThree(Position position){
+	void deleteThree(int position){
 
 	}
 
