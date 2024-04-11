@@ -3,12 +3,14 @@
 #include "Ball.h"
 
 struct Player {
+	std::string name;
 	int position;
 	int points;
 	bool shoot;
-	int numBalls;
+	int numBalls = AMOUNT_PISTOL_BALLS;
 	bool pistolEmpty;
 	Ball bulletsPistol[AMOUNT_PISTOL_BALLS];
+
 	void init(std::string name, int position2) {
 		std::cout << "ENTER YOUR NAME:  ";
 	    std::cin >> name;
