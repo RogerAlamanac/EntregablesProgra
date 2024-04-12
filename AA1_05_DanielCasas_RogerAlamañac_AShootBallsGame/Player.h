@@ -1,12 +1,14 @@
 #pragma once
 #include <iostream>
+#include <conio.h>
 #include "Ball.h"
+const int AMOUNT_PISTOL_BALLS = 20;
 
 struct Player {
 	std::string name;
 	int position;
 	int points;
-	bool shoot;
+	bool hasShoot;
 	int numBalls = AMOUNT_PISTOL_BALLS;
 	bool pistolEmpty;
 	Ball bulletsPistol[AMOUNT_PISTOL_BALLS];
@@ -23,8 +25,9 @@ struct Player {
 	}
 
 	Ball shoot() {
+		int ballsBefore = numBalls;
 		bulletsPistol[AMOUNT_PISTOL_BALLS - numBalls].isDestroyed = true;
 		numBalls--;
-		return bulletsPistol[AMOUNT_PISTOL_BALLS - numBalls];
+		return bulletsPistol[AMOUNT_PISTOL_BALLS - ballsBefore];
 	}
 };

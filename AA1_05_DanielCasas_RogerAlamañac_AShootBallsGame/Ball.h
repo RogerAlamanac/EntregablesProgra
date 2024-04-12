@@ -1,8 +1,6 @@
 #pragma once
 #include <iostream>
 
-const int AMOUNT_PISTOL_BALLS = 20;
-
 struct Ball {
 	int position, color;
 	bool isDestroyed = false;
