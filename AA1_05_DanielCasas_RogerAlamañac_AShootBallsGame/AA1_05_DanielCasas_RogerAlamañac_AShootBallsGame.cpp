@@ -1,16 +1,27 @@
 #include <iostream>
 #include <windows.h>
 #include <ctime>
-#include "Player.h"
+#include "Panel.h"
 
-int main()
-{
+const int FPS = 60;
+
+int main(){
     srand(time(NULL));
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    const char ball = static_cast<char> (254);
-    SetConsoleTextAttribute(hConsole, 6);       //2 Verd, 3 Blau fluix, 4 Vermell, 5 Lila, 6 Taronja
-    std::cout << ball << " ";
-
-    SetConsoleTextAttribute(hConsole, 7);       //2 Verd, 3 Blau fluix, 4 Vermell, 5 Lila, 6 Taronja
-    std::cout << ball << "\n\n\n\n\n\n\n\n\n\n\n\n";
+    std::cout << "To move press 'a' or 'd'. To shoot press 'j'" << std::endl << std::endl;
+    system("pause");
+    std::string name;
+    std::cout << "ENTER YOUR NAME:  ";
+    std::cin >> name;
+    Player player;
+    Panel panel;
+    panel.init();
+    player.init(name, panel.size / 2);
+    while (!gameOver) {
+        system("cls");
+        panel.printPanel(player);
+        panel.printPlayer(player);
+        playerMovement(player, panel);
+        //FRAME CONTROL
+        Sleep(1000 / FPS);
+    }
 }
