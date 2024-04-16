@@ -20,6 +20,7 @@ struct Panel {
 		for (int i = 0; i < size; ++i) {
 			Ball randomBall;
 			panel[i] = randomBall;
+			panel[i].position = i;
 		}
 	}
 	void insert(int position, Ball& ball) {
@@ -29,6 +30,7 @@ struct Panel {
 		panel = auxBalls;
 		for (int i = size - 1; i > position; --i) {
 			panel[i] = panel[i - 1];
+			panel[i].position = i;
 		}
 		panel[position] = ball;
 		ball.position = position;
@@ -47,7 +49,7 @@ struct Panel {
 				sameColor++;
 			}
 		}
-		else if (panel[position].color == panel[position + 1].color && position < size - 2) {
+		else if (panel[position].color == panel[position + 1].color && position < size - 3) {
 			sameColor++;
 			if (panel[position + 1].color == panel[position + 2].color) {
 				position += 2;
@@ -67,6 +69,15 @@ struct Panel {
 			for (int i = position; i < position + maxConsecutiveBalls; i++) {
 				panel[i].isDestroyed = true;
 			}
+			size -= 3;
+			Ball* auxPanel = new Ball[size];
+			for (int i = 0; i < size; i++) {
+				if (!panel[i].isDestroyed) auxPanel[i] = panel[i];
+			}
+			panel = new Ball[size];
+			for (int i = 0; i < size; i++) {
+				panel[i] = auxPanel[i];
+			}
 		}
 	}
 
@@ -74,7 +85,7 @@ struct Panel {
 		const int ballsToInsert = 3;
 		size += ballsToInsert;
 		panel = new Ball[size];
-		for(int i = size - ballsToInsert; i <= size; i++){
+		for(int i = size - ballsToInsert - 1; i <= size; i++){
 			Ball ball;
 			panel[i] = ball;
 		}
@@ -119,9 +130,10 @@ void playerMovement(Player& player, Panel& panel) {
 	else if ((movement == 'a' || movement == 'A') && player.position > leftBorder) player.position--;
 	if (movement == 'j' || movement == 'J') {
 		Ball auxBall = player.shoot();
+		auxBall.position = player.position;
 		panel.insert(player.position, auxBall);
 		player.bulletsPistol[AMOUNT_PISTOL_BALLS - player.numBalls];
-		panel.deleteThree(panel.verifier(player.position, panel[player.position]));
-		if(panel.verifier(player.position, panel[player.position]) != -1) player.AddScore();
+		panel.deleteThree(panel.verifier(player.position, panel.panel[player.position]));
+		if(panel.verifier(player.position, panel.panel[player.position]) != -1) player.AddScore();
 	}
 }
