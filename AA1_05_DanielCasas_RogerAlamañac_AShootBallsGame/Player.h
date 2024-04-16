@@ -9,7 +9,7 @@ struct Player {
 	std::string name;
 	int position, points, numBalls = AMOUNT_PISTOL_BALLS;
 	bool hasShoot, pistolEmpty = false;
-	Ball* bulletsPistol = new Ball[AMOUNT_PISTOL_BALLS];
+	Ball bulletsPistol[AMOUNT_PISTOL_BALLS];
 
 	void init(std::string name2, int position2) {
 		name = name2;
@@ -32,5 +32,9 @@ struct Player {
 			gameOver = true;
 			return bulletsPistol[AMOUNT_PISTOL_BALLS - numBalls];
 		}
+	}
+
+	void AddScore(){
+		points++;
 	}
 };

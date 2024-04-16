@@ -24,8 +24,10 @@ struct Panel {
 	}
 	void insert(int position, Ball& ball) {
 		size += 1;
-		panel = new Ball[size];
-		for (int i = size; i > position; --i) {
+		Ball* auxBalls = new Ball[size];
+		auxBalls = panel;
+		panel = auxBalls;
+		for (int i = size - 1; i > position; --i) {
 			panel[i] = panel[i - 1];
 		}
 		panel[position] = ball;
@@ -61,8 +63,10 @@ struct Panel {
 	}
 
 	void deleteThree(int position){
-		for (int i = position; i < position + maxConsecutiveBalls; i++) {
-			panel[i].isDestroyed = true;
+		if (position != -1) {
+			for (int i = position; i < position + maxConsecutiveBalls; i++) {
+				panel[i].isDestroyed = true;
+			}
 		}
 	}
 
@@ -116,9 +120,8 @@ void playerMovement(Player& player, Panel& panel) {
 	if (movement == 'j' || movement == 'J') {
 		Ball auxBall = player.shoot();
 		panel.insert(player.position, auxBall);
-		Ball* newBalls = new Ball[AMOUNT_PISTOL_BALLS - player.numBalls];
-		delete[] player.bulletsPistol;
-		player.bulletsPistol = newBalls;
-		delete[] newBalls;
+		player.bulletsPistol[AMOUNT_PISTOL_BALLS - player.numBalls];
+		panel.deleteThree(panel.verifier(player.position, panel[player.position]));
+		if(panel.verifier(player.position, panel[player.position]) != -1) player.AddScore();
 	}
 }
