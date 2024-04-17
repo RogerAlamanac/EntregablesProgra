@@ -11,30 +11,9 @@ struct Player {
 	bool hasShoot, pistolEmpty = false;
 	Ball bulletsPistol[AMOUNT_PISTOL_BALLS];
 
-	void init(std::string name2, int position2) {
-		name = name2;
-		position = position2;
-		points = 0;
-		for (int i = 0; i < AMOUNT_PISTOL_BALLS; ++i) {
-			Ball auxiliarBall;
-			bulletsPistol[i] = auxiliarBall;
-		}
-	}
+	void init(std::string name2, int position2);
 
-	Ball shoot() {
-		if (numBalls > 0) {
-			int ballsBefore = numBalls;
-			bulletsPistol[AMOUNT_PISTOL_BALLS - numBalls].isDestroyed = true;
-			numBalls--;
-			return bulletsPistol[AMOUNT_PISTOL_BALLS - ballsBefore];
-		}
-		else {
-			gameOver = true;
-			return bulletsPistol[AMOUNT_PISTOL_BALLS - numBalls];
-		}
-	}
+	Ball shoot();
 
-	void AddScore(){
-		points++;
-	}
+	void AddScore();
 };
