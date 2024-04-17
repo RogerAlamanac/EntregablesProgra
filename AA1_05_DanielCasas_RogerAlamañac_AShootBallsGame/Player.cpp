@@ -20,7 +20,8 @@ Ball Player::shoot() {
 	}
 	else {
 		gameOver = true;
-		return bulletsPistol[AMOUNT_PISTOL_BALLS - numBalls];
+		Ball lastBall;// = bulletsPistol[AMOUNT_PISTOL_BALLS - numBalls];
+		return lastBall;
 	}
 }
 

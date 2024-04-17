@@ -3,10 +3,8 @@
 #include <windows.h>
 #include "Player.h"
 
-int amountBalls;
 const int maxConsecutiveBalls = 3;
 const char ball = static_cast<char> (254);
-HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // Para los colores de las pelotas
 
 struct Panel {
 	Ball* panel = nullptr;

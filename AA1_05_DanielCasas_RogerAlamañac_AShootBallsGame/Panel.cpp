@@ -1,4 +1,6 @@
 #include "Panel.h"
+HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // Para los colores de las pelotas
+int amountBalls;
 
 void Panel::init() {
 	std::cout << "ENTER THE AMOUNT OF BALLS: ";

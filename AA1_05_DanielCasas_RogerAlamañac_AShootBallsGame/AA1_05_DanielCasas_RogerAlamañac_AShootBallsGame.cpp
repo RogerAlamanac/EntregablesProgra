@@ -16,7 +16,7 @@ int main(){
     Panel panel;
     panel.init();
     player.init(name, panel.size / 2);
-    while (!gameOver) {
+    while (!player.gameOver) {
         system("cls");
         panel.printPanel(player);
         panel.printPlayer(player);
