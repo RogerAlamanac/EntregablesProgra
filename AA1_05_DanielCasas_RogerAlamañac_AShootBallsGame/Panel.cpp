@@ -11,13 +11,20 @@ void Panel::init() {
 		Ball randomBall;
 		panel[i] = randomBall;
 		panel[i].position = i;
+		if (i >= 2) { //Para que no se generen 3 bolas juntan
+			for (bool hasDifferentColor = false; !hasDifferentColor;) {
+				if (panel[i].color == panel[i - 1].color && panel[i].color == panel[i - 2].color) {
+					panel[i].color = rand() % (6 - 2 + 1) + 2;
+				}
+				else hasDifferentColor = true;
+			}
+		}
 	}
 }
 
 void Panel::insert(int position, Ball& ball) {
 	size += 1;
 	Ball* auxBalls = new Ball[size];
-	// Copiar uno a uno todos elementos de panel dentro de auxballs
 	for (int i = 0; i < size - 1; i++) {
 		auxBalls[i] = panel[i];
 	}
@@ -27,31 +34,29 @@ void Panel::insert(int position, Ball& ball) {
 	}
 	auxBalls[position] = ball;
 	ball.position = position;
-	delete panel;
+	delete[] panel;
 	panel = auxBalls;
 }
 
 int Panel::verifier(int position, Ball ball) {
 	int sameColor = 1;
-	if (panel[position].color == panel[position - 1].color && position > 1) {
+	if (panel[position].color == panel[position - 1].color && position >= 2) {
 		sameColor++;
 		if (panel[position - 2].color == panel[position - 1].color) {
 			position -= 2;
 			sameColor++;
 		}
 		else if (panel[position + 1].color == panel[position].color) {
-			position -= 1;
 			sameColor++;
 		}
 	}
-	else if (panel[position].color == panel[position + 1].color && position < size - 3) {
+	else if (panel[position].color == panel[position + 1].color && position <= size - 3) {
 		sameColor++;
 		if (panel[position + 1].color == panel[position + 2].color) {
 			position += 2;
 			sameColor++;
 		}
 		else if (panel[position - 1].color == panel[position].color) {
-			position += 1;
 			sameColor++;
 		}
 	}
@@ -61,11 +66,11 @@ int Panel::verifier(int position, Ball ball) {
 
 void Panel::deleteThree(int position) {
 	if (position != -1) {
+		size -= 3;
+		Ball* auxPanel = new Ball[size];
 		for (int i = position; i < position + maxConsecutiveBalls; i++) {
 			panel[i].isDestroyed = true;
 		}
-		size -= 3;
-		Ball* auxPanel = new Ball[size];
 		bool afterDestroyedPlayer = false;
 		for (int i = 0; i < size; i++) {
 			if (panel[i].isDestroyed) afterDestroyedPlayer = true;
@@ -74,18 +79,24 @@ void Panel::deleteThree(int position) {
 			}
 			else auxPanel[i] = panel[i];
 		}
+		delete[] panel;
 		panel = auxPanel;
 	}
 }
 
 void Panel::insertThree() {
-	const int ballsToInsert = 3;
-	size += ballsToInsert;
-	panel = new Ball[size];
-	for (int i = size - ballsToInsert - 1; i <= size; i++) {
-		Ball ball;
-		panel[i] = ball;
+	Ball* auxBalls = new Ball[size + 3];
+	for (int i = 0; i < size; i++) {
+		auxBalls[i] = panel[i];
 	}
+	int lastBallBefore = size - 1;
+	size += 3;
+	for (int i = size - 1; i > lastBallBefore; i--) {
+		Ball randomBall;
+		auxBalls[i] = randomBall;
+	}
+	delete[] panel;
+	panel = auxBalls;
 }
 
 void Panel::printPanel(Player player) {
@@ -121,7 +132,7 @@ void Panel::printPlayer(Player player) {
 
 Panel::~Panel() {
 	if (panel != nullptr) {
-		delete panel;
+		delete[] panel;
 		panel = nullptr;
 	}
 }
@@ -136,9 +147,10 @@ void playerMovement(Player& player, Panel& panel) {
 		auxBall.position = player.position;
 		panel.insert(player.position, auxBall);
 		player.bulletsPistol[AMOUNT_PISTOL_BALLS - player.numBalls];
-		if (panel.verifier(player.position, panel.panel[player.position]) != -1){
+		if (panel.verifier(player.position, panel.panel[player.position]) != -1) {
 			panel.deleteThree(panel.verifier(player.position, panel.panel[player.position]));
-			player.AddScore();
+			player.addScore();
+			panel.insertThree();
 		}
 	}
 }

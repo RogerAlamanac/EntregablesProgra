@@ -5,7 +5,7 @@
 
 const int FPS = 60;
 
-int main(){
+int main() {
     srand(time(NULL));
     std::cout << "To move press 'a' or 'd'. To shoot press 'j'" << std::endl << std::endl;
     system("pause");
@@ -25,4 +25,7 @@ int main(){
         //FRAME CONTROL
         Sleep(1000 / FPS);
     }
+    system("cls");
+    panel.~Panel();
+    std::cout << "THANKS FOR PLAYING!!";
 }
