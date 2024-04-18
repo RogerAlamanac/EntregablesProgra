@@ -5,8 +5,12 @@
 const int AMOUNT_PISTOL_BALLS = 20;
 struct Player {
 	std::string name;
-	int position, points, numBalls = AMOUNT_PISTOL_BALLS;
-	bool hasShoot, pistolEmpty = false, gameOver = false;
+	int position;
+	int points;
+	int numBalls = AMOUNT_PISTOL_BALLS;
+	bool hasShoot;
+	bool pistolEmpty = false;
+	bool gameOver = false;
 	Ball bulletsPistol[AMOUNT_PISTOL_BALLS];
 
 	void init(std::string name2, int position2);
