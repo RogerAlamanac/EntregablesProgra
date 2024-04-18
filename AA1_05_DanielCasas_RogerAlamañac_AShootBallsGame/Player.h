@@ -3,7 +3,6 @@
 #include <conio.h>
 #include "Ball.h"
 const int AMOUNT_PISTOL_BALLS = 20;
-
 struct Player {
 	std::string name;
 	int position, points, numBalls = AMOUNT_PISTOL_BALLS;

@@ -17,14 +17,18 @@ void Panel::init() {
 void Panel::insert(int position, Ball& ball) {
 	size += 1;
 	Ball* auxBalls = new Ball[size];
-	auxBalls = panel;
-	panel = auxBalls;
-	for (int i = size - 1; i > position; --i) {
-		panel[i] = panel[i - 1];
-		panel[i].position = i;
+	// Copiar uno a uno todos elementos de panel dentro de auxballs
+	for (int i = 0; i < size - 1; i++) {
+		auxBalls[i] = panel[i];
 	}
-	panel[position] = ball;
+	for (int i = size - 1; i > position; --i) {
+		auxBalls[i] = auxBalls[i - 1];
+		auxBalls[i].position = i;
+	}
+	auxBalls[position] = ball;
 	ball.position = position;
+	delete panel;
+	panel = auxBalls;
 }
 
 int Panel::verifier(int position, Ball ball) {
@@ -62,13 +66,15 @@ void Panel::deleteThree(int position) {
 		}
 		size -= 3;
 		Ball* auxPanel = new Ball[size];
+		bool afterDestroyedPlayer = false;
 		for (int i = 0; i < size; i++) {
-			if (!panel[i].isDestroyed) auxPanel[i] = panel[i];
+			if (panel[i].isDestroyed) afterDestroyedPlayer = true;
+			if (afterDestroyedPlayer) {
+				auxPanel[i] = panel[i + 3];
+			}
+			else auxPanel[i] = panel[i];
 		}
-		panel = new Ball[size];
-		for (int i = 0; i < size; i++) {
-			panel[i] = auxPanel[i];
-		}
+		panel = auxPanel;
 	}
 }
 
@@ -114,7 +120,10 @@ void Panel::printPlayer(Player player) {
 }
 
 Panel::~Panel() {
-	if (panel != nullptr) delete panel;
+	if (panel != nullptr) {
+		delete panel;
+		panel = nullptr;
+	}
 }
 
 void playerMovement(Player& player, Panel& panel) {
@@ -127,7 +136,9 @@ void playerMovement(Player& player, Panel& panel) {
 		auxBall.position = player.position;
 		panel.insert(player.position, auxBall);
 		player.bulletsPistol[AMOUNT_PISTOL_BALLS - player.numBalls];
-		panel.deleteThree(panel.verifier(player.position, panel.panel[player.position]));
-		if (panel.verifier(player.position, panel.panel[player.position]) != -1) player.AddScore();
+		if (panel.verifier(player.position, panel.panel[player.position]) != -1){
+			panel.deleteThree(panel.verifier(player.position, panel.panel[player.position]));
+			player.AddScore();
+		}
 	}
 }

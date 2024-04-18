@@ -18,6 +18,7 @@ int main(){
     player.init(name, panel.size / 2);
     while (!player.gameOver) {
         system("cls");
+
         panel.printPanel(player);
         panel.printPlayer(player);
         playerMovement(player, panel);
