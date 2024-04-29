@@ -1,13 +1,19 @@
 #pragma once
 #include "Position.h"
+#include "Map.h"
 enum class Movement {
 	UP,
 	DOWN,
 	RIGHT,
-	LEFT
+	LEFT,
+	INVALID
 };
 
 class Player{
-public:
+private:
 	Position position;
+public:
+	void PlayerMovement(Map map);
+	void UpdateScene(Map map);
+	Player();
 };
