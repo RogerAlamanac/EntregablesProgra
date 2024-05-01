@@ -1,6 +1,5 @@
 #pragma once
 #include "Position.h"
-#include "Map.h"
 enum class Movement {
 	UP,
 	DOWN,
@@ -9,11 +8,16 @@ enum class Movement {
 	INVALID
 };
 
-class Player{
-private:
+enum class PokeBallsType {
+	POKEBALL,
+	SUPERBALL,
+	ULTRABALL,
+	INVALID
+};
+
+struct Player{
 	Position position;
-public:
-	void PlayerMovement(Map map);
-	void UpdateScene(Map map);
+	Movement movement = Movement::INVALID;
+	PokeBallsType pokeBall = PokeBallsType::INVALID;
 	Player();
 };
