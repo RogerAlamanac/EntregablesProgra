@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Player.h"
+#include "Map.h"
 #include "Windows.h"
 #include <WinUser.h>
 #include <conio.h>
@@ -7,6 +7,7 @@
 #include <string>
 int main()
 {
+	//Map map;
 	int sum = 7 / 2;
 	std::cout << sum;
 	while (true) {

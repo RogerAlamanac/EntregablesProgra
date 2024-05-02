@@ -12,11 +12,11 @@ enum class Scene{
 struct Map{
 	Scene scene = Scene::INVALID;
 	Player player;
-	Wall walls;		//Array dinamic
-	int NUM_ROWS = 30;
-	int NUM_COLS = 30;
-	int enemiesPuebloPaleta;
-	int enemiesForest;
+	Wall* walls = nullptr;		//Array dinamic
+	int NUM_ROWS = 30; //Fichero
+	int NUM_COLS = 30; //Fichero
+	int enemiesPuebloPaleta = 0; //Fichero
+	int enemiesForest = 0;	//Fichero
 	Map();
 	void GetMapData();
 	void PrintMap();

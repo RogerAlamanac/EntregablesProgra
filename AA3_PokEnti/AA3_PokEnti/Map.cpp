@@ -7,7 +7,17 @@
 
 Map::Map() {
 	//GetMapData();
-
+	walls = new Wall[20];
+	int num_walls = 0;
+	for (int i = 0; i < NUM_ROWS; i++) {
+		for (int j = 0; j < NUM_COLS; j++) {
+			if (i == 0 || i == NUM_ROWS - 1 || j == 0 || j == NUM_COLS - 1 || i == NUM_ROWS / 2 || j == NUM_COLS / 2) {
+				walls[num_walls].position.x = j;
+				walls[num_walls].position.y = i;
+				num_walls++;
+			}
+		}
+	}
 }
 
 void Map::GetMapData(){
@@ -162,6 +172,7 @@ void Map::PrintMap() {
 			std::cout << std::endl;
 		}
 	}
+	std::cout << "Captured Pokemons: " << player.capturedPokemons;
 }
 
 void Map::PlayerMovement() {

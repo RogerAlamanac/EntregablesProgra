@@ -19,5 +19,6 @@ struct Player{
 	Position position;
 	Movement movement = Movement::INVALID;
 	PokeBallsType pokeBall = PokeBallsType::INVALID;
+	int capturedPokemons = 0;
 	Player();
 };

@@ -10,7 +10,7 @@ struct Pokemon {
     bool isTrapped;
     void CureHealth();
     void Attack();
-    void CapturePokemon();
+    void CapturePokemon(Player& player);
     void CheckCapture(Player player);
     Position position;
 };
