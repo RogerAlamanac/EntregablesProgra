@@ -5,6 +5,7 @@
 #include <conio.h>
 #include <fstream>
 #include <string>
+#include "Pokemon.h"
 int main()
 {
 	//Map map;
