@@ -1,5 +1,6 @@
 #pragma once
 #include "Position.h"
+#include "Pokemon.h"
 enum class Movement {
 	UP,
 	DOWN,
@@ -15,10 +16,20 @@ enum class PokeBallsType {
 	INVALID
 };
 
+enum class Scene {
+	PUEBLO_PALETA,
+	BOSQUE,
+	CUEVA_CELESTE,
+	LIGA_POKENTI,
+	INVALID
+};
+
 struct Player{
+	Scene scene = Scene::INVALID;
 	Position position;
 	Movement movement = Movement::INVALID;
 	PokeBallsType pokeBall = PokeBallsType::INVALID;
-	int capturedPokemons = 0;
+	Pokemon* capturedPokemons = nullptr;
+	int numCapturedPokemons = 0;
 	Player();
 };

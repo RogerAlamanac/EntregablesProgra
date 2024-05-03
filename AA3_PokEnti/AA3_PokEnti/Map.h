@@ -1,27 +1,28 @@
 #pragma once
+#include "File.h"
 #include "Player.h"
-#include "Walls.h"
-enum class Scene{
-	PUEBLO_PALETA, 
-	BOSQUE, 
-	CUEVA_CELESTE, 
-	LIGA_POKENTI, 
-	INVALID
-};
+#include "Pokemon.h"
+
+enum class Square {WALL, NOTHING, PLAYER, POKEMON};
 
 struct Map{
-	Scene scene = Scene::INVALID;
+	File file;
+	int NUM_ROWS;
+	int NUM_COLS;
+	const int pokemonsPuebloPaleta = file.pokemonsPuebloPaleta;
+	const int pokemonsForest = file.pokemonsForest;
+	const int pokemonsCave = file.pokemonsCave;
+	const int pokemonsToUnlockForest = file.pokemonsToUnlockForest;
+	const int pokemonsToUnlockCave = file.pokemonsToUnlockCave;
+	const int totalPokemons = pokemonsPuebloPaleta + pokemonsForest + pokemonsCave;
 	Player player;
-	Wall* walls = nullptr;		//Array dinamic
-	int NUM_ROWS = 30; //Fichero
-	int NUM_COLS = 30; //Fichero
-	int enemiesPuebloPaleta = 0; //Fichero
-	int enemiesForest = 0;	//Fichero
+	Pokemon* pokemons = nullptr;
+	Square** map = nullptr;
 	Map();
-	void GetMapData();
 	void PrintMap();
 	void PlayerMovement();
 	void UpdateScene();
+	void InitializePokemons();
 };
 
 //std::stoi

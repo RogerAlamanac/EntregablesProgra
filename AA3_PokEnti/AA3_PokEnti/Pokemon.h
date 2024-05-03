@@ -1,5 +1,5 @@
 #pragma once
-#include "Player.h";
+#include "Position.h"
 enum class PokemonType {
     WATER,
     FIRE,
@@ -9,14 +9,18 @@ enum class PokemonType {
     PSYQUIC,
     PLANT
 };
+const int minLifeToCure = 20;
+
+struct Player;
+
 struct Pokemon {
     int lifes;
     int movementType;
-    const int minLifeToCure;
-    int amountLifeCured;
     int strengthLevel;
-    int tryAgain;
-    bool isTrapped;
+    bool isTrapped = false;
+    PokemonType type;
+    Pokemon();
+    void RandomisePokeType();
     void CureHealth();
     void Attack();
     void PokemonCaptured(Player& player);
@@ -25,7 +29,3 @@ struct Pokemon {
     void CapturePokemon(Player& player);
     Position position;
 };
-
-void GeneratePokemon(Pokemon pokemon);
-
-void RandomisePokeType(Pokemon pokemon);

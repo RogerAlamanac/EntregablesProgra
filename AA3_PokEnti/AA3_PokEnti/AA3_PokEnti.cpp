@@ -5,27 +5,10 @@
 #include <conio.h>
 #include <fstream>
 #include <string>
-#include "Pokemon.h"
+
 int main()
 {
-	//Map map;
-	int sum = 7 / 2;
-	std::cout << sum;
-	while (true) {
-		// INPUT 
-		if (GetAsyncKeyState(VK_UP)) {
-			std::cout << "UP";
-		}
-		else if (GetAsyncKeyState(VK_DOWN)) {
-			std::cout << "DOWN";
-		}
-		else if (GetAsyncKeyState(VK_LEFT)) {
-			std::cout << "LEFT";
-		}
-		else if (GetAsyncKeyState(VK_RIGHT)) {
-			std::cout << "RIGHT";
-		}
-	}
+	Map map;
 }
 
 /*int main() {

@@ -1,68 +1,93 @@
 #include "Map.h"
 #include <iostream>
-#include <fstream>
-#include <string>
 #include "Windows.h"
 #include <conio.h>
 
 Map::Map() {
-	//GetMapData();
-	walls = new Wall[20];
-	int num_walls = 0;
+	NUM_ROWS = file.NUM_ROWS;
+	NUM_COLS = file.NUM_COLS;
+	pokemons = new Pokemon[totalPokemons];
+	InitializePokemons();
+	map = new Square *[NUM_ROWS];
+	for (int i = 0; i < NUM_ROWS; i++) {
+		map[i] = new Square[NUM_COLS];
+	}
 	for (int i = 0; i < NUM_ROWS; i++) {
 		for (int j = 0; j < NUM_COLS; j++) {
-			if (i == 0 || i == NUM_ROWS - 1 || j == 0 || j == NUM_COLS - 1 || i == NUM_ROWS / 2 || j == NUM_COLS / 2) {
-				walls[num_walls].position.x = j;
-				walls[num_walls].position.y = i;
-				num_walls++;
+			map[i][j] = Square::NOTHING;
+			if(i == player.position.y && j == player.position.x) map[i][j] = Square::PLAYER;
+			else if (i == NUM_ROWS / 2 || j == NUM_COLS / 2) map[i][j] = Square::WALL;
+			for (int z = 0; z < totalPokemons; z++) {
+				if (i == pokemons[z].position.y && j == pokemons[z].position.x) map[i][j] == Square::POKEMON;
 			}
 		}
 	}
 }
 
-void Map::GetMapData(){
-    std::string linea;
-    std::ifstream myFile("config.txt");
+const int NUM_LEVEL_1 = 6;
+const int NUM_LEVEL_2 = NUM_LEVEL_1 + 5;
+const int NUM_LEVEL_3 = NUM_LEVEL_2 + 4;
+const int NUM_LEVEL_4 = NUM_LEVEL_3 + 3;
+const int NUM_LEVEL_5 = NUM_LEVEL_4 + 2;
+const int NUM_LEVEL_6 = NUM_LEVEL_5 + 1;
 
-    if (myFile.is_open()) {
-        // Leer dimensiones del mapa
-        getline(myFile, linea);
-        std::string dimensiones;
-        getline(myFile, dimensiones, ';');
-        int ancho, alto;
-        myFile >> ancho;
-        myFile.ignore(); // Ignorar el ';' entre los valores
-        myFile >> alto;
-
-        std::cout << "Dimensiones del mapa: " << ancho << "x" << alto << std::endl;
-
-        // Leer información de Pueblo Paleta
-        getline(myFile, linea);
-        myFile >> enemiesPuebloPaleta >> NUM_ROWS >> NUM_COLS;
-
-        std::cout << "Pueblo Paleta: Enemigos - " << enemiesPuebloPaleta
-            << ", Filas - " << NUM_ROWS
-            << ", Columnas - " << NUM_COLS << std::endl;
-        myFile.close();
+void Map::InitializePokemons() {
+    for (int i = 0; i < NUM_LEVEL_1 ; i++) { //Vida Nivel 1 = 10->39
+        pokemons[i].lifes = rand() % (30 - 10 + 1) + 10;
+        pokemons[i].strengthLevel = 1;
+		pokemons[i].position.x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
+        pokemons[i].position.y = rand() % (file.NUM_COLS - 1 + 1) + 1;
     }
-    else {
-        std::cout << "No se pudede abrir el myFile .txt" << std::endl;
+
+    for (int i = NUM_LEVEL_1; i < NUM_LEVEL_2; i++) { //Vida Nivel 2 = 40->69
+        pokemons[i].lifes = rand() % (69 - 40 + 1) + 40;
+        pokemons[i].strengthLevel = 2;
+		pokemons[i].position.x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
+		pokemons[i].position.y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+    }
+
+    for (int i = NUM_LEVEL_2; i < NUM_LEVEL_3; i++) { //Vida Nivel 3 = 70->99
+        pokemons[i].lifes = rand() % (99 - 70 + 1) + 70;
+        pokemons[i].strengthLevel = 3;
+		pokemons[i].position.x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
+		pokemons[i].position.y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+    }
+
+    for (int i = NUM_LEVEL_3; i < NUM_LEVEL_4; i++) { //Vida Nivel 4 = 100->129
+        pokemons[i].lifes = rand() % (129 - 100 + 1) + 100;
+        pokemons[i].strengthLevel = 4;
+		pokemons[i].position.x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
+		pokemons[i].position.y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+    }
+
+    for (int i = NUM_LEVEL_4; i < NUM_LEVEL_5; i++) { //Vida Nivel 5 = 130->159
+        pokemons[i].lifes = rand() % (159 - 130 + 1) + 130;
+        pokemons[i].strengthLevel = 5;
+		pokemons[i].position.x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
+		pokemons[i].position.y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+    }
+
+    for (int i = NUM_LEVEL_5; i < NUM_LEVEL_6; i++) { //Vida Nivel 6 = 160->180
+        pokemons[i].lifes = rand() % (180 - 160 + 1) + 160;
+        pokemons[i].strengthLevel = 6;
+		pokemons[i].position.x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
+		pokemons[i].position.y = rand() % (file.NUM_COLS - 1 + 1) + 1;
     }
 }
-
 void Map::PrintMap() {
     const int VIEW = 7;
 	if (player.position.y <= VIEW / 2) {
 		if (player.position.x <= VIEW / 2) {
 			for (int rows = 0; rows < VIEW; rows++) {
 				for (int cols = 0; cols < VIEW; cols++) {
-					if (player.position.y == rows && player.position.x == cols) {
+					if (map[rows][cols] == Square::WALL) std::cout << 'X';
+					else if (map[rows][cols] == Square::POKEMON) std::cout << 'P';
+					else if (map[rows][cols] == Square::PLAYER) {
 						if (player.movement == Movement::UP) std::cout << '^';
 						else if (player.movement == Movement::DOWN) std::cout << 'v';
 						else if (player.movement == Movement::RIGHT) std::cout << '>';
 						else if (player.movement == Movement::LEFT) std::cout << '<';
 					}
-					//if(muro)
 					else {
 						std::cout << ' ';
 					}
@@ -70,16 +95,17 @@ void Map::PrintMap() {
 				std::cout << std::endl;
 			}
 		}
-		else if (player.position.x >= (NUM_ROWS - 1) - VIEW / 2) {
+		else if (player.position.x >= (file.NUM_ROWS - 1) - VIEW / 2) {
 			for (int rows = 0; rows < VIEW; rows++) {
-				for (int cols = (NUM_COLS - 1) - VIEW; cols < NUM_COLS; cols++) {
+				for (int cols = (file.NUM_COLS - 1) - VIEW; cols < file.NUM_COLS; cols++) {
+					if (rows = file.NUM_ROWS / 2) std::cout << 'X';
+					else if (cols = file.NUM_COLS / 2) std::cout << 'X';
 					if (player.position.y == rows && player.position.x == cols) {
 						if (player.movement == Movement::UP) std::cout << '^';
 						else if (player.movement == Movement::DOWN) std::cout << 'v';
 						else if (player.movement == Movement::RIGHT) std::cout << '>';
 						else if (player.movement == Movement::LEFT) std::cout << '<';
 					}
-					//if(muro)
 					else {
 						std::cout << ' ';
 					}
@@ -90,29 +116,34 @@ void Map::PrintMap() {
 		else {
 			for (int rows = 0; rows < VIEW; rows++) {
 				for (int cols = player.position.x - VIEW / 2; cols < player.position.x + VIEW / 2; cols++) {
-					if (player.position.y == rows && player.position.x == cols) {
+					if (rows = file.NUM_ROWS / 2) std::cout << 'X';
+					else if (cols = file.NUM_COLS / 2) std::cout << 'X';
+					else if (player.position.y == rows && player.position.x == cols) {
 						if (player.movement == Movement::UP) std::cout << '^';
 						else if (player.movement == Movement::DOWN) std::cout << 'v';
 						else if (player.movement == Movement::RIGHT) std::cout << '>';
 						else if (player.movement == Movement::LEFT) std::cout << '<';
 					}
-					//if(muro)
+					else {
+						std::cout << " ";
+					}
 				}
 				std::cout << std::endl;
 			}
 		}
 	}
-	else if (player.position.y >= (NUM_COLS - 1) - VIEW / 2) {
+	else if (player.position.y >= (file.NUM_COLS - 1) - VIEW / 2) {
 		if (player.position.x <= VIEW / 2) {
-			for (int rows = (NUM_COLS - 1) - VIEW; rows < NUM_COLS; rows++) {
+			for (int rows = (file.NUM_COLS - 1) - VIEW; rows < file.NUM_COLS; rows++) {
 				for (int cols = 0; cols < VIEW; cols++) {
+					if (rows = file.NUM_ROWS / 2) std::cout << 'X';
+					else if (cols = file.NUM_COLS / 2) std::cout << 'X';
 					if (player.position.y == rows && player.position.x == cols) {
 						if (player.movement == Movement::UP) std::cout << '^';
 						else if (player.movement == Movement::DOWN) std::cout << 'v';
 						else if (player.movement == Movement::RIGHT) std::cout << '>';
 						else if (player.movement == Movement::LEFT) std::cout << '<';
 					}
-					//if(muro)
 					else {
 						std::cout << ' ';
 					}
@@ -120,16 +151,17 @@ void Map::PrintMap() {
 				std::cout << std::endl;
 			}
 		}
-		else if (player.position.x >= (NUM_ROWS - 1) - VIEW / 2) {
-			for (int rows = (NUM_COLS - 1) - VIEW; rows < NUM_COLS; rows++) {
-				for (int cols = (NUM_COLS - 1) - VIEW; cols < NUM_COLS; cols++) {
+		else if (player.position.x >= (file.NUM_ROWS - 1) - VIEW / 2) {
+			for (int rows = (file.NUM_COLS - 1) - VIEW; rows < file.NUM_COLS; rows++) {
+				for (int cols = (file.NUM_COLS - 1) - VIEW; cols < file.NUM_COLS; cols++) {
+					if (rows = file.NUM_ROWS / 2) std::cout << 'X';
+					else if (cols = file.NUM_COLS / 2) std::cout << 'X';
 					if (player.position.y == rows && player.position.x == cols) {
 						if (player.movement == Movement::UP) std::cout << '^';
 						else if (player.movement == Movement::DOWN) std::cout << 'v';
 						else if (player.movement == Movement::RIGHT) std::cout << '>';
 						else if (player.movement == Movement::LEFT) std::cout << '<';
 					}
-					//if(muro)
 					else {
 						std::cout << ' ';
 					}
@@ -138,15 +170,16 @@ void Map::PrintMap() {
 			}
 		}
 		else {
-			for (int rows = (NUM_COLS - 1) - VIEW; rows < NUM_COLS; rows++) {
+			for (int rows = (file.NUM_COLS - 1) - VIEW; rows < file.NUM_COLS; rows++) {
 				for (int cols = player.position.x - VIEW / 2; cols < player.position.x + VIEW / 2; cols++) {
+					if (rows = file.NUM_ROWS / 2) std::cout << 'X';
+					else if (cols = file.NUM_COLS / 2) std::cout << 'X';
 					if (player.position.y == rows && player.position.x == cols) {
 						if (player.movement == Movement::UP) std::cout << '^';
 						else if (player.movement == Movement::DOWN) std::cout << 'v';
 						else if (player.movement == Movement::RIGHT) std::cout << '>';
 						else if (player.movement == Movement::LEFT) std::cout << '<';
 					}
-					//if(muro)
 					else {
 						std::cout << ' ';
 					}
@@ -158,13 +191,14 @@ void Map::PrintMap() {
 	else {
 		for (int rows = player.position.y - VIEW / 2; rows < player.position.y + VIEW / 2; rows++) {
 			for (int cols = player.position.x - VIEW / 2; cols < player.position.x + VIEW / 2; cols++) {
+				if (rows = file.NUM_ROWS / 2) std::cout << 'X';
+				else if (cols = file.NUM_COLS / 2) std::cout << 'X';
 				if (player.position.y == rows && player.position.x == cols) {
 					if (player.movement == Movement::UP) std::cout << '^';
 					else if (player.movement == Movement::DOWN) std::cout << 'v';
 					else if (player.movement == Movement::RIGHT) std::cout << '>';
 					else if (player.movement == Movement::LEFT) std::cout << '<';
 				}
-				//if(muro)
 				else {
 					std::cout << ' ';
 				}
@@ -186,49 +220,78 @@ void Map::PlayerMovement() {
 
 	switch (player.movement) {
 	case Movement::UP:
-		if (scene == Scene::PUEBLO_PALETA || scene == Scene::BOSQUE) {
-			if (player.position.x != 0) player.position.x--;
+		if (player.scene == Scene::PUEBLO_PALETA || player.scene == Scene::BOSQUE) {
+			if (player.position.x != 0) {
+				map[player.position.x][player.position.y] = Square::NOTHING;
+				player.position.x--;
+			}
 		}
-		else if (scene == Scene::CUEVA_CELESTE) player.position.x--;
-		else if (scene == Scene::LIGA_POKENTI) {
-			if (player.position.x > NUM_ROWS / 2) player.position.x--;
+		else if (player.scene == Scene::CUEVA_CELESTE) {
+			map[player.position.x][player.position.y] = Square::NOTHING;
+			player.position.x--;
+		}
+		else if (player.scene == Scene::LIGA_POKENTI) {
+			if (player.position.x > NUM_ROWS / 2) {
+				map[player.position.x][player.position.y] = Square::NOTHING;
+				player.position.x--;
+			}
 		}
 		break;
 
 	case Movement::DOWN:
-		if (scene == Scene::PUEBLO_PALETA) {
-			if (player.position.x != NUM_ROWS / 2) player.position.x++;
+		if (player.scene == Scene::PUEBLO_PALETA) {
+			if (player.position.x != NUM_ROWS / 2) {
+				map[player.position.x][player.position.y] = Square::NOTHING;
+				player.position.x++;
+			}
 		}
-		else if (scene == Scene::BOSQUE) player.position.x++;
-		else if (scene == Scene::CUEVA_CELESTE || scene == Scene::LIGA_POKENTI) {
-			if (player.position.x != NUM_ROWS - 1) player.position.x++;
+		else if (player.scene == Scene::BOSQUE) {
+			map[player.position.x][player.position.y] = Square::NOTHING;
+			player.position.x++;
+		}
+		else if (player.scene == Scene::CUEVA_CELESTE || player.scene == Scene::LIGA_POKENTI) {
+			if (player.position.x != NUM_ROWS - 1) {
+				map[player.position.x][player.position.y] = Square::NOTHING;
+				player.position.x++;
+			}
 		}
 		break;
 
 	case Movement::RIGHT:
-		if (scene == Scene::PUEBLO_PALETA || scene == Scene::LIGA_POKENTI) player.position.y++;
-
-		else if (scene == Scene::CUEVA_CELESTE || scene == Scene::BOSQUE) {
-			if (player.position.y != NUM_COLS) player.position.y++;
+		if (player.scene == Scene::PUEBLO_PALETA || player.scene == Scene::LIGA_POKENTI) {
+			map[player.position.x][player.position.y] = Square::NOTHING;
+			player.position.y++;
+		}
+		else if (player.scene == Scene::CUEVA_CELESTE || player.scene == Scene::BOSQUE) {
+			if (player.position.y != NUM_COLS) {
+				map[player.position.x][player.position.y] = Square::NOTHING;
+				player.position.y++;
+			}
 		}
 
 		break;
 
 	case Movement::LEFT:
-		if (scene == Scene::PUEBLO_PALETA || scene == Scene::LIGA_POKENTI) {
-			if (player.position.y != 0) player.position.y--;
+		if (player.scene == Scene::PUEBLO_PALETA || player.scene == Scene::LIGA_POKENTI) {
+			if (player.position.y != 0) {
+				map[player.position.x][player.position.y] = Square::NOTHING;
+				player.position.y--;
+			}
 		}
-		else if (scene == Scene::BOSQUE || scene == Scene::CUEVA_CELESTE) player.position.y--;
+		else if (player.scene == Scene::BOSQUE || player.scene == Scene::CUEVA_CELESTE) {
+			map[player.position.x][player.position.y] = Square::NOTHING;
+			player.position.y--;
+		}
 		break;
 	default:
 		break;
 	}
-
+	map[player.position.x][player.position.y] = Square::PLAYER;
 }
 
-void Map::UpdateScene() {
-	if (player.position.x < NUM_ROWS / 2 && player.position.y < NUM_COLS / 2) scene = Scene::PUEBLO_PALETA;
-	else if (player.position.x > NUM_ROWS / 2 && player.position.y < NUM_COLS / 2) scene = Scene::BOSQUE;
-	else if (player.position.x < NUM_ROWS / 2 && player.position.y > NUM_COLS / 2) scene = Scene::CUEVA_CELESTE;
-	else scene = Scene::LIGA_POKENTI;
+void Map::UpdateScene(){
+	if (player.position.x < NUM_ROWS / 2 && player.position.y < NUM_COLS / 2) player.scene = Scene::PUEBLO_PALETA;
+	else if (player.position.x > NUM_ROWS / 2 && player.position.y < NUM_COLS / 2) player.scene = Scene::BOSQUE;
+	else if (player.position.x < NUM_ROWS / 2 && player.position.y > NUM_COLS / 2) player.scene = Scene::CUEVA_CELESTE;
+	else player.scene = Scene::LIGA_POKENTI;
 }
