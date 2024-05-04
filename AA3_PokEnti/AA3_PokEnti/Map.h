@@ -7,8 +7,8 @@ enum class Square {WALL, NOTHING, PLAYER, POKEMON};
 
 struct Map{
 	File file;
-	int NUM_ROWS;
-	int NUM_COLS;
+	int NUM_ROWS = 50;
+	int NUM_COLS = 70;
 	const int pokemonsPuebloPaleta = file.pokemonsPuebloPaleta;
 	const int pokemonsForest = file.pokemonsForest;
 	const int pokemonsCave = file.pokemonsCave;

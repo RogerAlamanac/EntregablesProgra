@@ -56,36 +56,106 @@ void Map::InitializePokemons() {
     for (int i = NUM_LEVEL_1; i < NUM_LEVEL_2; i++) { //Vida Nivel 2 = 40->69
         pokemons[i].lifes = rand() % (69 - 40 + 1) + 40;
         pokemons[i].strengthLevel = 2;
-		pokemons[i].position.x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
-		pokemons[i].position.y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+		int x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
+		int y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+		for (int j = NUM_LEVEL_1; j < i;) {
+			if (pokemons[j].position.x != x && pokemons[j].position.y != y && x != NUM_COLS / 2 && y != NUM_ROWS / 2 && x != 0 && y != 0 && x != NUM_COLS && y != NUM_ROWS) {
+				if (j == i - 1) {
+					pokemons[i].position.x = x;
+					pokemons[i].position.y = y;
+				}
+				j++;
+			}
+			else {
+				x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
+				y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+				j = NUM_LEVEL_1;
+			}
+		}
     }
 
     for (int i = NUM_LEVEL_2; i < NUM_LEVEL_3; i++) { //Vida Nivel 3 = 70->99
         pokemons[i].lifes = rand() % (99 - 70 + 1) + 70;
         pokemons[i].strengthLevel = 3;
-		pokemons[i].position.x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
-		pokemons[i].position.y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+		int x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
+		int y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+		for (int j = NUM_LEVEL_2; j < i;) {
+			if (pokemons[j].position.x != x && pokemons[j].position.y != y && x != NUM_COLS / 2 && y != NUM_ROWS / 2 && x != 0 && y != 0 && x != NUM_COLS && y != NUM_ROWS) {
+				if (j == i - 1) {
+					pokemons[i].position.x = x;
+					pokemons[i].position.y = y;
+				}
+				j++;
+			}
+			else {
+				x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
+				y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+				j = NUM_LEVEL_2;
+			}
+		}
     }
 
     for (int i = NUM_LEVEL_3; i < NUM_LEVEL_4; i++) { //Vida Nivel 4 = 100->129
         pokemons[i].lifes = rand() % (129 - 100 + 1) + 100;
         pokemons[i].strengthLevel = 4;
-		pokemons[i].position.x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
-		pokemons[i].position.y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+		int x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
+		int y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+		for (int j = NUM_LEVEL_3; j < i;) {
+			if (pokemons[j].position.x != x && pokemons[j].position.y != y && x != NUM_COLS / 2 && y != NUM_ROWS / 2 && x != 0 && y != 0 && x != NUM_COLS && y != NUM_ROWS) {
+				if (j == i - 1) {
+					pokemons[i].position.x = x;
+					pokemons[i].position.y = y;
+				}
+				j++;
+			}
+			else {
+				x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
+				y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+				j = NUM_LEVEL_3;
+			}
+		}
     }
 
     for (int i = NUM_LEVEL_4; i < NUM_LEVEL_5; i++) { //Vida Nivel 5 = 130->159
         pokemons[i].lifes = rand() % (159 - 130 + 1) + 130;
         pokemons[i].strengthLevel = 5;
-		pokemons[i].position.x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
-		pokemons[i].position.y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+		int x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
+		int y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+		for (int j = NUM_LEVEL_4; j < i;) {
+			if (pokemons[j].position.x != x && pokemons[j].position.y != y && x != NUM_COLS / 2 && y != NUM_ROWS / 2 && x != 0 && y != 0 && x != NUM_COLS && y != NUM_ROWS) {
+				if (j == i - 1) {
+					pokemons[i].position.x = x;
+					pokemons[i].position.y = y;
+				}
+				j++;
+			}
+			else {
+				x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
+				y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+				j = NUM_LEVEL_4;
+			}
+		}
     }
 
     for (int i = NUM_LEVEL_5; i < NUM_LEVEL_6; i++) { //Vida Nivel 6 = 160->180
         pokemons[i].lifes = rand() % (180 - 160 + 1) + 160;
         pokemons[i].strengthLevel = 6;
-		pokemons[i].position.x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
-		pokemons[i].position.y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+		int x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
+		int y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+		for (int j = NUM_LEVEL_5; j < i;) {
+			if (pokemons[j].position.x != x && pokemons[j].position.y != y && x != NUM_COLS / 2 && y != NUM_ROWS / 2 && x != 0 && y != 0 && x != NUM_COLS && y != NUM_ROWS) {
+				if (j == i - 1) {
+					pokemons[i].position.x = x;
+					pokemons[i].position.y = y;
+				}
+				j++;
+			}
+			else {
+				x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
+				y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+				j = NUM_LEVEL_5;
+			}
+		}
     }
 }
 void Map::PrintMap() {
@@ -102,12 +172,12 @@ void Map::PrintMap() {
 						else if (player.movement == Movement::RIGHT) std::cout << '>';
 						else if (player.movement == Movement::LEFT) std::cout << '<';
 					}
-					else {
+					else {																																				
 						std::cout << ' ';
 					}
 				}
 				std::cout << std::endl;
-			}
+			}														
 		}
 		else if (player.position.x >= (file.NUM_ROWS - 1) - VIEW / 2) {
 			for (int rows = 0; rows < VIEW; rows++) {
@@ -220,7 +290,7 @@ void Map::PrintMap() {
 			std::cout << std::endl;
 		}
 	}
-	std::cout << "Captured Pokemons: " << player.capturedPokemons;
+	std::cout << "Captured Pokemons: " << player.capturedPokemons << std::endl;;
 }
 
 void Map::PlayerMovement() {
@@ -241,13 +311,24 @@ void Map::PlayerMovement() {
 			}
 		}
 		else if (player.scene == Scene::CUEVA_CELESTE) {
-			map[player.position.x][player.position.y] = Square::NOTHING;
-			player.position.x--;
+			if (player.position.x > NUM_ROWS / 2) {
+				map[player.position.x][player.position.y] = Square::NOTHING;
+				player.position.x--;
+			}
+			else {
+				map[player.position.x][player.position.y] = Square::NOTHING;
+				player.position.x--;
+				player.scene == Scene::BOSQUE;
+			}
+			
 		}
 		else if (player.scene == Scene::LIGA_POKENTI) {
 			if (player.position.x > NUM_ROWS / 2) {
 				map[player.position.x][player.position.y] = Square::NOTHING;
 				player.position.x--;
+			}
+			else {
+				std::cout << "THERE'S A WALL, I DON'T THINK YOU CAN PASS THROUGH IT!" << std::endl;
 			}
 		}
 		break;
@@ -257,6 +338,9 @@ void Map::PlayerMovement() {
 			if (player.position.x != NUM_ROWS / 2) {
 				map[player.position.x][player.position.y] = Square::NOTHING;
 				player.position.x++;
+			}
+			else {
+				std::cout << "THERE'S A WALL, I DON'T THINK YOU CAN PASS THROUGH IT!" << std::endl;
 			}
 		}
 		else if (player.scene == Scene::BOSQUE) {
@@ -290,6 +374,9 @@ void Map::PlayerMovement() {
 			if (player.position.y != 0) {
 				map[player.position.x][player.position.y] = Square::NOTHING;
 				player.position.y--;
+			}
+			else {
+				std::cout << "THERE'S A WALL, I DON'T THINK YOU CAN PASS THROUGH IT!" << std::endl;
 			}
 		}
 		else if (player.scene == Scene::BOSQUE || player.scene == Scene::CUEVA_CELESTE) {
