@@ -5,28 +5,32 @@
 
 File::File() {
     std::ifstream archivo("config.txt");
-    int pokemonsPuebloPaleta = 0; //Fichero
-    int pokemonsForest = 0;	//Fichero
-    int pokemonsCave = 10;
-    if (archivo.is_open()) {
-        // Leer la primera línea para obtener las dimensiones del mapa
-        archivo >> NUM_COLS;
-        archivo.ignore(); // Ignorar el separador ;
-        archivo >> NUM_ROWS;
-
-        // Leer la segunda línea para obtener los datos de la sala 1
-        archivo >> pokemonsPuebloPaleta;
-        archivo.ignore(); // Ignorar el separador ;
-        archivo >> pokemonsToUnlockForest;
-
-        // Leer la tercera línea para obtener los datos de la sala 2
-        archivo >> pokemonsForest;
-        archivo.ignore(); // Ignorar el separador ;
-        archivo >> pokemonsToUnlockCave;
-
-        archivo.close();
+    if (!archivo.is_open()) {
+        std::cerr << "Error al abrir el archivo." << std::endl;
     }
     else {
-        std::cerr << "Error al abrir el archivo de configuración." << std::endl;
+        int num1[3], num2[3];
+
+        for (int i = 0; i < 3; ++i) {
+            std::string linea;
+            // Leer la línea
+            if (std::getline(archivo, linea)) {
+                size_t pos1 = linea.find(';');
+                size_t pos2 = linea.find(';', pos1 + 1);
+                num1[i] = std::atoi(linea.substr(0, pos1).c_str());
+                num2[i] = std::atoi(linea.substr(pos1 + 1, pos2 - pos1 - 1).c_str());
+            }
+            else {
+                std::cerr << "Error al leer del archivo." << std::endl;
+            }
+        }
+        // Cierra el archivo
+        NUM_ROWS = num1[0];
+        NUM_COLS = num2[0];
+        pokemonsPuebloPaleta = num1[1];
+        pokemonsToUnlockForest = num2[1];
+        pokemonsForest = num1[2];
+        pokemonsToUnlockCave = num2[2];
+        archivo.close();
     }
 }

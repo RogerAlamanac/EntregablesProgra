@@ -16,7 +16,7 @@ Map::Map() {
 		for (int j = 0; j < NUM_COLS; j++) {
 			map[i][j] = Square::NOTHING;
 			if(i == player.position.y && j == player.position.x) map[i][j] = Square::PLAYER;
-			else if (i == NUM_ROWS / 2 || j == NUM_COLS / 2) map[i][j] = Square::WALL;
+			else if (i == NUM_ROWS / 2 || j == NUM_COLS / 2 || i == 0 || j == 0) map[i][j] = Square::WALL;
 			for (int z = 0; z < totalPokemons; z++) {
 				if (i == pokemons[z].position.y && j == pokemons[z].position.x) map[i][j] == Square::POKEMON;
 			}
@@ -35,8 +35,22 @@ void Map::InitializePokemons() {
     for (int i = 0; i < NUM_LEVEL_1 ; i++) { //Vida Nivel 1 = 10->39
         pokemons[i].lifes = rand() % (30 - 10 + 1) + 10;
         pokemons[i].strengthLevel = 1;
-		pokemons[i].position.x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
-        pokemons[i].position.y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+		int x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
+		int y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+		for (int j = 0; j < i;) {
+			if (pokemons[j].position.x != x && pokemons[j].position.y != y && x != NUM_COLS / 2 && y != NUM_ROWS / 2 && x != 0 && y != 0 && x != NUM_COLS && y != NUM_ROWS) {
+				if (j == i - 1) {
+					pokemons[i].position.x = x;
+					pokemons[i].position.y = y;
+				}
+				j++;
+			}
+			else {
+				x = rand() % (file.NUM_ROWS - 1 + 1) + 1;
+				y = rand() % (file.NUM_COLS - 1 + 1) + 1;
+				j = 0;
+			}
+		}
     }
 
     for (int i = NUM_LEVEL_1; i < NUM_LEVEL_2; i++) { //Vida Nivel 2 = 40->69
