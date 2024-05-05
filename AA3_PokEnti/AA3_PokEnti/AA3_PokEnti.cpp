@@ -9,14 +9,12 @@
 
 int main()
 {
-	File();
 	Map map;
-	Map();
 	//map.PrintMap();
 	while (true) {
 		// Simular algunos movimientos del jugador
-		map.PlayerMovement();  // Se mueve el jugador
 		map.PrintMap();        // Imprime el mapa
+		map.PlayerMovement();  // Se mueve el jugador
 	}
 }
 

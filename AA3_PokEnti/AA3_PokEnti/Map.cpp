@@ -4,8 +4,6 @@
 #include <conio.h>
 
 Map::Map() {
-	NUM_ROWS = file.NUM_ROWS;
-	NUM_COLS = file.NUM_COLS;
 	pokemons = new Pokemon[totalPokemons];
 	InitializePokemons();
 	map = new Square *[NUM_ROWS];
@@ -160,7 +158,7 @@ void Map::InitializePokemons() {
 }
 void Map::PrintMap() {
     const int VIEW = 7;
-	if (player.position.y <= VIEW / 2) {
+	/*if (player.position.y <= VIEW / 2) {
 		if (player.position.x <= VIEW / 2) {
 			for (int rows = 0; rows < VIEW; rows++) {
 				for (int cols = 0; cols < VIEW; cols++) {
@@ -289,13 +287,29 @@ void Map::PrintMap() {
 			}
 			std::cout << std::endl;
 		}
+	}*/
+for (int rows = 0; rows < NUM_COLS; rows++) {
+	for (int cols = 0; cols < NUM_ROWS; cols++) {
+		if (rows = file.NUM_ROWS / 2) std::cout << 'X';
+		else if (cols = file.NUM_COLS / 2) std::cout << 'X';
+		if (player.position.y == rows && player.position.x == cols) {
+			if (player.movement == Movement::UP) std::cout << '^';
+			else if (player.movement == Movement::DOWN) std::cout << 'v';
+			else if (player.movement == Movement::RIGHT) std::cout << '>';
+			else if (player.movement == Movement::LEFT) std::cout << '<';
+		}
+		else {
+			std::cout << ' ';
+		}
 	}
+	std::cout << std::endl;
+}
 	std::cout << "Captured Pokemons: " << player.capturedPokemons << std::endl;;
 }
 
 void Map::PlayerMovement() {
 	UpdateScene();
-	char Tecla = _getch();
+	system("pause");
 	if (GetAsyncKeyState(VK_UP)) player.movement = Movement::UP;
 	else if (GetAsyncKeyState(VK_DOWN)) player.movement = Movement::DOWN;
 	else if (GetAsyncKeyState(VK_LEFT))	player.movement = Movement::LEFT;
@@ -318,7 +332,6 @@ void Map::PlayerMovement() {
 			else {
 				map[player.position.x][player.position.y] = Square::NOTHING;
 				player.position.x--;
-				player.scene == Scene::BOSQUE;
 			}
 			
 		}
