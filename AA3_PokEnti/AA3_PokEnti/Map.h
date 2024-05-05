@@ -20,11 +20,8 @@ struct Map{
 	Square** map = nullptr;
 	Map();
 	void PrintMap();
+	bool CheckMovement();
 	void PlayerMovement();
 	void UpdateScene();
 	void InitializePokemons();
 };
-
-//std::stoi
-//std::getLine
-//std::

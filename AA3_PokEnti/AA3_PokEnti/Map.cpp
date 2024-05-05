@@ -12,11 +12,15 @@ Map::Map() {
 	}
 	for (int i = 0; i < NUM_ROWS; i++) {
 		for (int j = 0; j < NUM_COLS; j++) {
-			map[i][j] = Square::NOTHING;
-			if(i == player.position.y && j == player.position.x) map[i][j] = Square::PLAYER;
-			else if (i == NUM_ROWS / 2 || j == NUM_COLS / 2 || i == 0 || j == 0) map[i][j] = Square::WALL;
-			for (int z = 0; z < totalPokemons; z++) {
-				if (i == pokemons[z].position.y && j == pokemons[z].position.x) map[i][j] == Square::POKEMON;
+			if (i == player.position.y && j == player.position.x) map[i][j] = Square::PLAYER;
+			else if (i == NUM_ROWS / 2 || j == NUM_COLS / 2 || i == 0 || j == 0 || i == NUM_ROWS - 1 || j == NUM_COLS - 1) map[i][j] = Square::WALL;
+			else {
+				for (int z = 0; z < totalPokemons; z++) {
+					if (i == pokemons[z].position.y && j == pokemons[z].position.x) map[i][j] = Square::POKEMON;
+					else {
+						map[i][j] = Square::NOTHING;
+					}
+				}
 			}
 		}
 	}
@@ -288,23 +292,43 @@ void Map::PrintMap() {
 			std::cout << std::endl;
 		}
 	}*/
-for (int rows = 0; rows < NUM_COLS; rows++) {
-	for (int cols = 0; cols < NUM_ROWS; cols++) {
-		if (rows = file.NUM_ROWS / 2) std::cout << 'X';
-		else if (cols = file.NUM_COLS / 2) std::cout << 'X';
-		if (player.position.y == rows && player.position.x == cols) {
-			if (player.movement == Movement::UP) std::cout << '^';
-			else if (player.movement == Movement::DOWN) std::cout << 'v';
-			else if (player.movement == Movement::RIGHT) std::cout << '>';
-			else if (player.movement == Movement::LEFT) std::cout << '<';
+	for (int rows = 0; rows < NUM_COLS; rows++) {
+		for (int cols = 0; cols < NUM_ROWS; cols++) {
+			if (map[rows][cols] == Square::WALL) std::cout << 'X';
+			else if (map[rows][cols] == Square::PLAYER) {
+				if (player.movement == Movement::UP) std::cout << '^';
+				else if (player.movement == Movement::DOWN) std::cout << 'v';
+				else if (player.movement == Movement::RIGHT) std::cout << '>';
+				else if (player.movement == Movement::LEFT) std::cout << '<';
+			}
+			else if (map[rows][cols] == Square::POKEMON) std::cout << "P";
+			else std::cout << ' ';
 		}
-		else {
-			std::cout << ' ';
-		}
+		std::cout << std::endl;
 	}
-	std::cout << std::endl;
+	std::cout << "Captured Pokemons: " << player.capturedPokemons << std::endl;
 }
-	std::cout << "Captured Pokemons: " << player.capturedPokemons << std::endl;;
+
+bool Map::CheckMovement() {
+	switch (player.movement) {
+	case Movement::UP:
+		if (map[player.position.x][player.position.y--] == Square::WALL) return false;
+		else return true;
+
+	case Movement::DOWN:
+		if (map[player.position.x][player.position.y++] == Square::WALL) return false;
+		else return true;
+
+	case Movement::RIGHT:
+		if (map[player.position.x++][player.position.y] == Square::WALL) return false;
+		else return true;
+
+	case Movement::LEFT:
+		if (map[player.position.x--][player.position.y] == Square::WALL) return false;
+		else return true;
+	default:
+		return false;
+	}
 }
 
 void Map::PlayerMovement() {
@@ -321,24 +345,24 @@ void Map::PlayerMovement() {
 		if (player.scene == Scene::PUEBLO_PALETA || player.scene == Scene::BOSQUE) {
 			if (player.position.x != 0) {
 				map[player.position.x][player.position.y] = Square::NOTHING;
-				player.position.x--;
+				player.position.y--;
 			}
 		}
 		else if (player.scene == Scene::CUEVA_CELESTE) {
 			if (player.position.x > NUM_ROWS / 2) {
 				map[player.position.x][player.position.y] = Square::NOTHING;
-				player.position.x--;
+				player.position.y--;
 			}
 			else {
 				map[player.position.x][player.position.y] = Square::NOTHING;
-				player.position.x--;
+				player.position.y--;
 			}
-			
+
 		}
 		else if (player.scene == Scene::LIGA_POKENTI) {
 			if (player.position.x > NUM_ROWS / 2) {
 				map[player.position.x][player.position.y] = Square::NOTHING;
-				player.position.x--;
+				player.position.y--;
 			}
 			else {
 				std::cout << "THERE'S A WALL, I DON'T THINK YOU CAN PASS THROUGH IT!" << std::endl;
@@ -350,7 +374,7 @@ void Map::PlayerMovement() {
 		if (player.scene == Scene::PUEBLO_PALETA) {
 			if (player.position.x != NUM_ROWS / 2) {
 				map[player.position.x][player.position.y] = Square::NOTHING;
-				player.position.x++;
+				player.position.y++;
 			}
 			else {
 				std::cout << "THERE'S A WALL, I DON'T THINK YOU CAN PASS THROUGH IT!" << std::endl;
@@ -358,12 +382,12 @@ void Map::PlayerMovement() {
 		}
 		else if (player.scene == Scene::BOSQUE) {
 			map[player.position.x][player.position.y] = Square::NOTHING;
-			player.position.x++;
+			player.position.y++;
 		}
 		else if (player.scene == Scene::CUEVA_CELESTE || player.scene == Scene::LIGA_POKENTI) {
 			if (player.position.x != NUM_ROWS - 1) {
 				map[player.position.x][player.position.y] = Square::NOTHING;
-				player.position.x++;
+				player.position.y++;
 			}
 		}
 		break;
@@ -371,12 +395,12 @@ void Map::PlayerMovement() {
 	case Movement::RIGHT:
 		if (player.scene == Scene::PUEBLO_PALETA || player.scene == Scene::LIGA_POKENTI) {
 			map[player.position.x][player.position.y] = Square::NOTHING;
-			player.position.y++;
+			player.position.x++;
 		}
 		else if (player.scene == Scene::CUEVA_CELESTE || player.scene == Scene::BOSQUE) {
 			if (player.position.y != NUM_COLS) {
 				map[player.position.x][player.position.y] = Square::NOTHING;
-				player.position.y++;
+				player.position.x++;
 			}
 		}
 
@@ -386,7 +410,7 @@ void Map::PlayerMovement() {
 		if (player.scene == Scene::PUEBLO_PALETA || player.scene == Scene::LIGA_POKENTI) {
 			if (player.position.y != 0) {
 				map[player.position.x][player.position.y] = Square::NOTHING;
-				player.position.y--;
+				player.position.x--;
 			}
 			else {
 				std::cout << "THERE'S A WALL, I DON'T THINK YOU CAN PASS THROUGH IT!" << std::endl;
@@ -394,7 +418,7 @@ void Map::PlayerMovement() {
 		}
 		else if (player.scene == Scene::BOSQUE || player.scene == Scene::CUEVA_CELESTE) {
 			map[player.position.x][player.position.y] = Square::NOTHING;
-			player.position.y--;
+			player.position.x--;
 		}
 		break;
 	default:
