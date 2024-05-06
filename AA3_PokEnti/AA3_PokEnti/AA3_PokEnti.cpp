@@ -11,10 +11,16 @@ int main()
 {
 	Map map;
 	//map.PrintMap();
+	std::string scene;
 	while (true) {
 		// Simular algunos movimientos del jugador
 		map.PrintMap();        // Imprime el mapa
 		map.PlayerMovement();  // Se mueve el jugador
+		if (map.player.scene == Scene::PUEBLO_PALETA) scene = "PUEBLO_PALETA";
+		else if (map.player.scene == Scene::BOSQUE) scene = "BOSQUE";
+		else if (map.player.scene == Scene::CUEVA_CELESTE) scene = "CUEVA_CELESTE";
+		else scene = "LIGA_POKENTI";
+		std::cout << scene << std::endl;
 	}
 }
 

@@ -27,7 +27,8 @@ enum class Scene {
 struct Player{
 	Scene scene = Scene::INVALID;
 	Position position;
-	Movement movement = Movement::INVALID;
+	Movement movement = Movement::RIGHT;
+	Movement lastMovement = Movement::RIGHT;
 	PokeBallsType pokeBall = PokeBallsType::INVALID;
 	Pokemon* capturedPokemons = nullptr;
 	int numCapturedPokemons = 0;

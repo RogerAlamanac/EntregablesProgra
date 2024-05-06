@@ -9,7 +9,7 @@ void Pokemon::CureHealth(){
     }
 }
 
-void Pokemon::Attack(){
+void Pokemon::Attack(){ //Se implementará en la siguiente entrega
     
 }
 

@@ -14,14 +14,16 @@ struct Map{
 	const int pokemonsCave = file.pokemonsCave;
 	const int pokemonsToUnlockForest = file.pokemonsToUnlockForest;
 	const int pokemonsToUnlockCave = file.pokemonsToUnlockCave;
+	const int pokemonsToUnlockPokenti = file.pokemonsToUnlockForest + file.pokemonsToUnlockCave;
 	const int totalPokemons = pokemonsPuebloPaleta + pokemonsForest + pokemonsCave;
 	Player player;
 	Pokemon* pokemons = nullptr;
 	Square** map = nullptr;
 	Map();
 	void PrintMap();
-	bool CheckMovement();
 	void PlayerMovement();
 	void UpdateScene();
 	void InitializePokemons();
+	int FindPokemonPosition(int x, int y);
+	void FightPokemon(int x, int y);
 };
