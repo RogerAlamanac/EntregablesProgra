@@ -264,10 +264,22 @@ void Map::PlayerMovement() {
 	}
 	switch (player.action) {
 	case Action::CAPTURE:
-		if (player.lastMovement == Movement::UP && map[player.position.x - 1][player.position.y] == Square::POKEMON) FightPokemon(player.position.x - 1, player.position.y);
-		else if (player.lastMovement == Movement::DOWN && map[player.position.x + 1][player.position.y] == Square::POKEMON) FightPokemon(player.position.x + 1, player.position.y);
-		else if (player.lastMovement == Movement::RIGHT && map[player.position.x][player.position.y + 1] == Square::POKEMON) FightPokemon(player.position.x, player.position.y + 1);
-		else if (player.lastMovement == Movement::LEFT && map[player.position.x][player.position.y - 1] == Square::POKEMON) FightPokemon(player.position.x, player.position.y - 1);
+		if (player.lastMovement == Movement::UP && map[player.position.x - 1][player.position.y] == Square::POKEMON) {
+			FightPokemon(player.position.x - 1, player.position.y);
+			map[player.position.x - 1][player.position.y] = Square::NOTHING;
+		}
+		else if (player.lastMovement == Movement::DOWN && map[player.position.x + 1][player.position.y] == Square::POKEMON) {
+			FightPokemon(player.position.x + 1, player.position.y);
+			map[player.position.x + 1][player.position.y] = Square::NOTHING;
+		}
+		else if (player.lastMovement == Movement::RIGHT && map[player.position.x][player.position.y + 1] == Square::POKEMON) {
+			FightPokemon(player.position.x, player.position.y + 1);
+			map[player.position.x][player.position.y + 1] = Square::NOTHING;
+		}
+		else if (player.lastMovement == Movement::LEFT && map[player.position.x][player.position.y - 1] == Square::POKEMON) {
+			FightPokemon(player.position.x, player.position.y - 1);
+			map[player.position.x][player.position.y - 1] = Square::NOTHING;
+		}
 		break;
 	default:
 		break;
