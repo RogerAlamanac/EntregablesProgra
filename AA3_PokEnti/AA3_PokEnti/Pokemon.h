@@ -24,7 +24,7 @@ struct Pokemon {
     void CureHealth();
     void Attack();
     void PokemonCaptured(Player& player);
-    void CheckCapture(Player player);
+    void CheckCapture(Player& player);
     void PokemonEscaped(Player& player);
     void CapturePokemon(Player& player);
     Position position;

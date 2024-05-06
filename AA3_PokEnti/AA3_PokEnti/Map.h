@@ -16,6 +16,9 @@ struct Map{
 	const int pokemonsToUnlockCave = file.pokemonsToUnlockCave;
 	const int pokemonsToUnlockPokenti = file.pokemonsToUnlockForest + file.pokemonsToUnlockCave;
 	const int totalPokemons = pokemonsPuebloPaleta + pokemonsForest + pokemonsCave;
+	bool unlockedForest = false;
+	bool unlockedCave = false;
+	bool unlockedPokenti = false;
 	Player player;
 	Pokemon* pokemons = nullptr;
 	Square** map = nullptr;
@@ -23,7 +26,11 @@ struct Map{
 	void PrintMap();
 	void PlayerMovement();
 	void UpdateScene();
+	void UpdateMap();
 	void InitializePokemons();
 	int FindPokemonPosition(int x, int y);
 	void FightPokemon(int x, int y);
+	void NewPokemon();
+	~Map();
+
 };

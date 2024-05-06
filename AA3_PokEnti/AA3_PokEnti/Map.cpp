@@ -80,142 +80,43 @@ void Map::InitializePokemons() {
 }
 
 void Map::PrintMap() {
+	UpdateMap();
 	system("cls");
-    const int VIEW = 7;
-	/*if (player.position.y <= VIEW / 2) {
-		if (player.position.x <= VIEW / 2) {
-			for (int rows = 0; rows < VIEW; rows++) {
-				for (int cols = 0; cols < VIEW; cols++) {
-					if (map[rows][cols] == Square::WALL) std::cout << 'X';
-					else if (map[rows][cols] == Square::POKEMON) std::cout << 'P';
-					else if (map[rows][cols] == Square::PLAYER) {
-						if (player.movement == Movement::UP) std::cout << '^';
-						else if (player.movement == Movement::DOWN) std::cout << 'v';
-						else if (player.movement == Movement::RIGHT) std::cout << '>';
-						else if (player.movement == Movement::LEFT) std::cout << '<';
-					}
-					else {																																				
-						std::cout << ' ';
-					}
-				}
-				std::cout << std::endl;
-			}														
-		}
-		else if (player.position.x >= (file.NUM_ROWS - 1) - VIEW / 2) {
-			for (int rows = 0; rows < VIEW; rows++) {
-				for (int cols = (file.NUM_COLS - 1) - VIEW; cols < file.NUM_COLS; cols++) {
-					if (rows = file.NUM_ROWS / 2) std::cout << 'X';
-					else if (cols = file.NUM_COLS / 2) std::cout << 'X';
-					if (player.position.y == rows && player.position.x == cols) {
-						if (player.movement == Movement::UP) std::cout << '^';
-						else if (player.movement == Movement::DOWN) std::cout << 'v';
-						else if (player.movement == Movement::RIGHT) std::cout << '>';
-						else if (player.movement == Movement::LEFT) std::cout << '<';
-					}
-					else {
-						std::cout << ' ';
-					}
-				}
-				std::cout << std::endl;
-			}
-		}
-		else {
-			for (int rows = 0; rows < VIEW; rows++) {
-				for (int cols = player.position.x - VIEW / 2; cols < player.position.x + VIEW / 2; cols++) {
-					if (rows = file.NUM_ROWS / 2) std::cout << 'X';
-					else if (cols = file.NUM_COLS / 2) std::cout << 'X';
-					else if (player.position.y == rows && player.position.x == cols) {
-						if (player.movement == Movement::UP) std::cout << '^';
-						else if (player.movement == Movement::DOWN) std::cout << 'v';
-						else if (player.movement == Movement::RIGHT) std::cout << '>';
-						else if (player.movement == Movement::LEFT) std::cout << '<';
-					}
-					else {
-						std::cout << " ";
-					}
-				}
-				std::cout << std::endl;
-			}
-		}
+    const int VIEW = 14;
+	int firstRow;
+	int firstCol;
+	int lastRow;
+	int lastCol;
+	if (player.position.x < VIEW / 2) {
+		firstRow = 0;
+		lastRow = VIEW;
 	}
-	else if (player.position.y >= (file.NUM_COLS - 1) - VIEW / 2) {
-		if (player.position.x <= VIEW / 2) {
-			for (int rows = (file.NUM_COLS - 1) - VIEW; rows < file.NUM_COLS; rows++) {
-				for (int cols = 0; cols < VIEW; cols++) {
-					if (rows = file.NUM_ROWS / 2) std::cout << 'X';
-					else if (cols = file.NUM_COLS / 2) std::cout << 'X';
-					if (player.position.y == rows && player.position.x == cols) {
-						if (player.movement == Movement::UP) std::cout << '^';
-						else if (player.movement == Movement::DOWN) std::cout << 'v';
-						else if (player.movement == Movement::RIGHT) std::cout << '>';
-						else if (player.movement == Movement::LEFT) std::cout << '<';
-					}
-					else {
-						std::cout << ' ';
-					}
-				}
-				std::cout << std::endl;
-			}
-		}
-		else if (player.position.x >= (file.NUM_ROWS - 1) - VIEW / 2) {
-			for (int rows = (file.NUM_COLS - 1) - VIEW; rows < file.NUM_COLS; rows++) {
-				for (int cols = (file.NUM_COLS - 1) - VIEW; cols < file.NUM_COLS; cols++) {
-					if (rows = file.NUM_ROWS / 2) std::cout << 'X';
-					else if (cols = file.NUM_COLS / 2) std::cout << 'X';
-					if (player.position.y == rows && player.position.x == cols) {
-						if (player.movement == Movement::UP) std::cout << '^';
-						else if (player.movement == Movement::DOWN) std::cout << 'v';
-						else if (player.movement == Movement::RIGHT) std::cout << '>';
-						else if (player.movement == Movement::LEFT) std::cout << '<';
-					}
-					else {
-						std::cout << ' ';
-					}
-				}
-				std::cout << std::endl;
-			}
-		}
-		else {
-			for (int rows = (file.NUM_COLS - 1) - VIEW; rows < file.NUM_COLS; rows++) {
-				for (int cols = player.position.x - VIEW / 2; cols < player.position.x + VIEW / 2; cols++) {
-					if (rows = file.NUM_ROWS / 2) std::cout << 'X';
-					else if (cols = file.NUM_COLS / 2) std::cout << 'X';
-					if (player.position.y == rows && player.position.x == cols) {
-						if (player.movement == Movement::UP) std::cout << '^';
-						else if (player.movement == Movement::DOWN) std::cout << 'v';
-						else if (player.movement == Movement::RIGHT) std::cout << '>';
-						else if (player.movement == Movement::LEFT) std::cout << '<';
-					}
-					else {
-						std::cout << ' ';
-					}
-				}
-				std::cout << std::endl;
-			}
-		}
+	else if (player.position.x > ((NUM_ROWS - 1) - VIEW)) {
+		firstRow = NUM_ROWS - 1 - VIEW;
+		lastRow = NUM_ROWS - 1;
 	}
 	else {
-		for (int rows = player.position.y - VIEW / 2; rows < player.position.y + VIEW / 2; rows++) {
-			for (int cols = player.position.x - VIEW / 2; cols < player.position.x + VIEW / 2; cols++) {
-				if (rows = file.NUM_ROWS / 2) std::cout << 'X';
-				else if (cols = file.NUM_COLS / 2) std::cout << 'X';
-				if (player.position.y == rows && player.position.x == cols) {
-					if (player.movement == Movement::UP) std::cout << '^';
-					else if (player.movement == Movement::DOWN) std::cout << 'v';
-					else if (player.movement == Movement::RIGHT) std::cout << '>';
-					else if (player.movement == Movement::LEFT) std::cout << '<';
-				}
-				else {
-					std::cout << ' ';
-				}
-			}
-			std::cout << std::endl;
-		}
-	}*/
-	for (int rows = 0; rows < NUM_ROWS; rows++) {
-		for (int cols = 0; cols < NUM_COLS; cols++) {
-			if (map[rows][cols] == Square::WALL) std::cout << 'X';
-			else if (map[rows][cols] == Square::PLAYER) {
+		firstRow = player.position.x - VIEW / 2;
+		lastRow = player.position.x + VIEW / 2;
+	}
+
+	if (player.position.y < VIEW) {
+		firstCol = 0;
+		lastCol = VIEW * 2;
+	}
+	else if (player.position.y > ((NUM_COLS)-1 - VIEW)) {
+		firstCol = NUM_COLS - 1 - VIEW * 2;
+		lastCol = NUM_COLS - 1;
+	}
+	else {
+		firstCol = player.position.y - VIEW;
+		lastCol = player.position.y + VIEW;
+	}
+
+	for (int row = firstRow; row < lastRow; row++) {
+		for (int col = firstCol; col < lastCol; col++) {
+			if (map[row][col] == Square::WALL) std::cout << 'X';
+			else if (map[row][col] == Square::PLAYER) {
 				if (player.movement == Movement::UP) {
 					player.lastMovement = Movement::UP;
 					std::cout << '^';
@@ -239,7 +140,7 @@ void Map::PrintMap() {
 					else if (player.lastMovement == Movement::LEFT) std::cout << '<';
 				}
 			}
-			else if (map[rows][cols] == Square::POKEMON) std::cout << "P";
+			else if (map[row][col] == Square::POKEMON) std::cout << "P";
 			else std::cout << ' ';
 		}
 		std::cout << std::endl;
@@ -272,7 +173,52 @@ void Map::FightPokemon(int x, int y){
 			std::cout << "WRONG COMMAND!" << std::endl;
 		}
 	} while (!correctChoice);
+	NewPokemon();
+}
 
+void Map::NewPokemon() {
+	int position = 0;
+	if (player.lastMovement == Movement::UP) position = FindPokemonPosition(player.position.x - 1, player.position.y);
+	else if (player.lastMovement == Movement::DOWN) position = FindPokemonPosition(player.position.x + 1, player.position.y);
+	else if (player.lastMovement == Movement::RIGHT) position = FindPokemonPosition(player.position.x, player.position.y + 1);
+	else if (player.lastMovement == Movement::LEFT) position = FindPokemonPosition(player.position.x, player.position.y - 1);
+
+	do {
+		if (pokemons[position].position.x < NUM_COLS / 2 && pokemons[position].position.y < NUM_ROWS / 2) {
+			pokemons[position].position.x = rand() % (NUM_COLS / 2);
+			pokemons[position].position.y = rand() % (NUM_ROWS / 2);
+		}
+		else if (pokemons[position].position.x > NUM_COLS / 2 && pokemons[position].position.y < NUM_ROWS / 2) {
+			pokemons[position].position.x = rand() % (((NUM_COLS - 2) - (NUM_COLS / 2 + 1) + 1) + (NUM_COLS / 2 + 1));
+			pokemons[position].position.y = rand() % (((NUM_ROWS / 2 - 1) - 2 + 1) + 2);
+		}
+		else if (pokemons[position].position.x > NUM_COLS / 2 && pokemons[position].position.y > NUM_ROWS / 2) {
+			pokemons[position].position.x = rand() % (((NUM_COLS - 2) - (NUM_COLS / 2 + 1) + 1) + (NUM_COLS / 2 + 1));
+			pokemons[position].position.y = rand() % (((NUM_ROWS - 2) - (NUM_ROWS / 2 + 1) + 1) + (NUM_ROWS / 2 + 1));
+		}
+	} while (map[pokemons[position].position.x][pokemons[position].position.y] != Square::NOTHING);
+
+	switch (pokemons[position].strengthLevel) {
+	case 1:
+		pokemons[position].lifes = rand() % (39 - 10 + 1) + 10;
+		break;
+	case 2:
+		pokemons[position].lifes = rand() % (69 - 40 + 1) + 40;
+		break;
+	case 3:
+		pokemons[position].lifes = rand() % (99 - 70 + 1) + 70;
+		break;
+	case 4:
+		pokemons[position].lifes = rand() % (129 - 100 + 1) + 100;
+		break;
+	case 5:
+		pokemons[position].lifes = rand() % (159 - 130 + 1) + 130;
+		break;
+	case 6:
+		pokemons[position].lifes = rand() % (180 - 160 + 1) + 160;
+		break;
+	}
+	map[pokemons[position].position.x][pokemons[position].position.y] = Square::POKEMON;
 }
 
 void Map::PlayerMovement() {
@@ -283,105 +229,45 @@ void Map::PlayerMovement() {
 	else if (GetAsyncKeyState(VK_LEFT))	player.movement = Movement::LEFT;
 	else if (GetAsyncKeyState(VK_RIGHT)) player.movement = Movement::RIGHT;
 	else player.movement = Movement::INVALID;
+	if (GetAsyncKeyState(VK_SPACE)) player.action = Action::CAPTURE;
+	else player.action = Action::MOVE;
 	switch (player.movement) {
 	case Movement::UP:
-		if (player.scene == Scene::PUEBLO_PALETA || player.scene == Scene::BOSQUE) {
-			if (player.position.x > 1) {
-				map[player.position.x][player.position.y] = Square::NOTHING;
-				player.position.x--;
-			}
-		}
-		else if (player.scene == Scene::CUEVA_CELESTE) {
+		if (map[player.position.x - 1][player.position.y] == Square::NOTHING) {
 			map[player.position.x][player.position.y] = Square::NOTHING;
 			player.position.x--;
 		}
-		else if (player.scene == Scene::LIGA_POKENTI) {
-			if (player.position.x > NUM_ROWS / 2 + 1) {
-				map[player.position.x][player.position.y] = Square::NOTHING;
-				player.position.x--;
-			}
-		}
-		if (map[player.position.x][player.position.y] == Square::POKEMON) FightPokemon(player.position.x, player.position.y);
 		break;
 
 	case Movement::DOWN:
-		if (player.scene == Scene::PUEBLO_PALETA) {
-			if (player.position.x < NUM_ROWS / 2 - 1) {
-				map[player.position.x][player.position.y] = Square::NOTHING;
-				player.position.x++;
-			}
+		if (map[player.position.x + 1][player.position.y] == Square::NOTHING) {
+			map[player.position.x][player.position.y] = Square::NOTHING;
+			player.position.x++;
 		}
-		else if (player.scene == Scene::BOSQUE) {
-			if (player.numCapturedPokemons >= pokemonsToUnlockCave) {
-				map[player.position.x][player.position.y] = Square::NOTHING;
-				player.position.x++;
-			}
-			else {
-				if (player.position.x < NUM_ROWS / 2 - 1) {
-					map[player.position.x][player.position.y] = Square::NOTHING;
-					player.position.x++;
-				}
-			}
-		}
-		else if (player.scene == Scene::CUEVA_CELESTE || player.scene == Scene::LIGA_POKENTI) {
-			if (player.position.x < NUM_ROWS - 2) {
-				map[player.position.x][player.position.y] = Square::NOTHING;
-				player.position.x++;
-			}
-		}
-		if (map[player.position.x][player.position.y] == Square::POKEMON) FightPokemon(player.position.x, player.position.y);
 		break;
 
 	case Movement::RIGHT:
-		if (player.scene == Scene::PUEBLO_PALETA) {
-			if (player.numCapturedPokemons >= pokemonsToUnlockForest) {
-				map[player.position.x][player.position.y] = Square::NOTHING;
-				player.position.y++;
-			}
-			else {
-				if (player.position.y < NUM_COLS / 2 - 1) {
-					map[player.position.x][player.position.y] = Square::NOTHING;
-					player.position.y++;
-				}
-			}
-		}
-		else if (player.scene == Scene::CUEVA_CELESTE || player.scene == Scene::BOSQUE) {
-			if (player.position.y < NUM_COLS - 2) {
-				map[player.position.x][player.position.y] = Square::NOTHING;
-				player.position.y++;
-			}
-		}
-		else if (player.scene == Scene::LIGA_POKENTI) {
+		if (map[player.position.x][player.position.y + 1] == Square::NOTHING) {
 			map[player.position.x][player.position.y] = Square::NOTHING;
 			player.position.y++;
 		}
-		if (map[player.position.x][player.position.y] == Square::POKEMON) FightPokemon(player.position.x, player.position.y);
 		break;
 
 	case Movement::LEFT:
-		if (player.scene == Scene::PUEBLO_PALETA || player.scene == Scene::LIGA_POKENTI) {
-			if (player.position.y > 1) {
-				map[player.position.x][player.position.y] = Square::NOTHING;
-				player.position.y--;
-			}
-		}
-		else if (player.scene == Scene::BOSQUE) {
+		if (map[player.position.x][player.position.y - 1] == Square::NOTHING) {
 			map[player.position.x][player.position.y] = Square::NOTHING;
 			player.position.y--;
 		}
-		else if (player.scene == Scene::CUEVA_CELESTE) {
-			if (player.numCapturedPokemons >= pokemonsToUnlockPokenti) {
-				map[player.position.x][player.position.y] = Square::NOTHING;
-				player.position.y--;
-			}
-			else {
-				if (player.position.y > NUM_COLS / 2 + 1) {
-					map[player.position.x][player.position.y] = Square::NOTHING;
-					player.position.y--;
-				}
-			}
-		}
-		if (map[player.position.x][player.position.y] == Square::POKEMON) FightPokemon(player.position.x, player.position.y);
+		break;
+	default:
+		break;
+	}
+	switch (player.action) {
+	case Action::CAPTURE:
+		if (player.lastMovement == Movement::UP && map[player.position.x - 1][player.position.y] == Square::POKEMON) FightPokemon(player.position.x - 1, player.position.y);
+		else if (player.lastMovement == Movement::DOWN && map[player.position.x + 1][player.position.y] == Square::POKEMON) FightPokemon(player.position.x + 1, player.position.y);
+		else if (player.lastMovement == Movement::RIGHT && map[player.position.x][player.position.y + 1] == Square::POKEMON) FightPokemon(player.position.x, player.position.y + 1);
+		else if (player.lastMovement == Movement::LEFT && map[player.position.x][player.position.y - 1] == Square::POKEMON) FightPokemon(player.position.x, player.position.y - 1);
 		break;
 	default:
 		break;
@@ -389,9 +275,44 @@ void Map::PlayerMovement() {
 	map[player.position.x][player.position.y] = Square::PLAYER;
 }
 
+void Map::UpdateMap() {
+	if (player.numCapturedPokemons >= pokemonsToUnlockForest && !unlockedForest) {
+		int col = NUM_COLS / 2;
+		for (int row = 1; row < NUM_ROWS / 2; row++) {
+			map[row][col] = Square::NOTHING;
+		}
+		unlockedForest = true;
+	}
+	if (player.numCapturedPokemons >= pokemonsToUnlockCave && !unlockedCave) {
+		int row = NUM_ROWS / 2;
+		for (int col = NUM_COLS / 2 + 1; col < NUM_COLS - 1; col++) {
+			map[row][col] = Square::NOTHING;
+		}
+		unlockedCave = true;
+	}
+	if (player.numCapturedPokemons >= pokemonsToUnlockPokenti && !unlockedPokenti) {
+		int col = NUM_COLS / 2;
+		for (int row = NUM_ROWS / 2 + 1; row < NUM_ROWS - 1; row++) {
+			map[row][col] = Square::NOTHING;
+		}
+		unlockedPokenti = true;
+	}
+}
+
 void Map::UpdateScene(){
 	if (player.position.x < NUM_ROWS / 2 && player.position.y < NUM_COLS / 2) player.scene = Scene::PUEBLO_PALETA;
 	else if (player.position.x < NUM_ROWS / 2 && player.position.y > NUM_COLS / 2) player.scene = Scene::BOSQUE;
 	else if (player.position.x > NUM_ROWS / 2 && player.position.y > NUM_COLS / 2) player.scene = Scene::CUEVA_CELESTE;
 	else if (player.position.x < NUM_ROWS / 2 && player.position.y > NUM_COLS / 2) player.scene = Scene::LIGA_POKENTI;
+}
+
+Map::~Map() {
+	if (pokemons != nullptr) {
+		delete[] pokemons;
+		pokemons = nullptr;
+	}
+	if (map != nullptr) {
+		delete[] map;
+		map = nullptr;
+	}
 }

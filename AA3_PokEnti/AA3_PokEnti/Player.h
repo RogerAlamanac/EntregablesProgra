@@ -9,6 +9,12 @@ enum class Movement {
 	INVALID
 };
 
+enum class Action {
+	CAPTURE,
+	MOVE,
+	INVALID
+};
+
 enum class PokeBallsType {
 	POKEBALL,
 	SUPERBALL,
@@ -27,10 +33,12 @@ enum class Scene {
 struct Player{
 	Scene scene = Scene::INVALID;
 	Position position;
-	Movement movement = Movement::RIGHT;
-	Movement lastMovement = Movement::RIGHT;
+	Action action = Action::INVALID;
+	Movement movement = Movement::DOWN;
+	Movement lastMovement = Movement::DOWN;
 	PokeBallsType pokeBall = PokeBallsType::INVALID;
 	Pokemon* capturedPokemons = nullptr;
 	int numCapturedPokemons = 0;
 	Player();
+	~Player();
 };
