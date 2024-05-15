@@ -2,12 +2,14 @@
 #include <iostream>
 #include <list>
 #include "Card.h"
+#include <vector>
 class Player
 {
 private:
 	std::string id;
-	std::list<Card> hand;
+	std::vector<Card> hand;
 public:
+	void SetID(std::string newName);
 	void OrderCards();
 	void InsertCard(Card c);
 	Card GetCard();
