@@ -36,10 +36,6 @@ Card::Card(int value) {
     }
 }
 
-bool Card::IsCardRepeated(Card card1, Card card2) const {
-    return (card1.m_suit == card2.m_suit && card1.m_value == card2.m_value);
-}
-
 Suit Card::GetSuit() const {
     return m_suit;
 }
