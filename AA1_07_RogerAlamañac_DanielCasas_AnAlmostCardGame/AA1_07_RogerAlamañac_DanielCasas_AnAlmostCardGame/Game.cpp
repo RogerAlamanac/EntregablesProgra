@@ -62,7 +62,7 @@ Game::Game() {
 	}
 	for (int i = 0; i < MAX_CARDS; i++) {
 		Card card;
-		deck.insert(deck.end(), card);
+		deck.push_back(card);
 	}
 
 	for (int i = 0; i < INITIAL_HAND_CARDS; i++) {
