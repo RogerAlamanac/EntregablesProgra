@@ -22,7 +22,13 @@ void Player::OrderCards() {
 }
 
 void Player::InsertCard(Card c) {
-	
+    for (int i = 0; i < hand.size(); i++) {
+        if (hand[i].GetSuit() == c.GetSuit()) {
+            if (hand[i - 1].GetValue() < c.GetValue()) {
+                // hand.push_back(c);
+            }
+        }
+    }
 }
 
 Card Player::GetCard() {

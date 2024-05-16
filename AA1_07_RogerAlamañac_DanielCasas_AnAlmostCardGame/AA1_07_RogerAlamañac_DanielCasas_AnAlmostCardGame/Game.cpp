@@ -2,8 +2,10 @@
 
 
 Game::Game() {
-	players = new Player[NUM_PLAYERS];
-	for (int i = 0; i < NUM_PLAYERS; i++) {
+	std::cout << "How many players?" << std::endl;
+	std::cin >> num_players;
+	players = new Player[num_players];
+	for (int i = 0; i < num_players; i++) {
 		int randomName = rand() % (10);
 		std::string newName;
 		switch (randomName) {
@@ -55,8 +57,9 @@ Game::Game() {
 	}
 
 	for (int i = 0; i < INITIAL_HAND_CARDS; i++) {
-		for (int i = 0; i < NUM_PLAYERS; i++) {
-			//players[i].		//Metodo
+		for (int i = 0; i < num_players; i++) {
+			Card randCard;
+			players[i].InsertCard(randCard);
 		}
 	}
 }
