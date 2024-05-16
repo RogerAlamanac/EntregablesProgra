@@ -22,12 +22,14 @@ void Player::OrderCards() {
 }
 
 void Player::InsertCard(Card c) {
-    for (int i = 0; i < hand.size(); i++) {
-        if (hand[i].GetSuit() == c.GetSuit()) {
-            if (hand[i - 1].GetValue() < c.GetValue()) {
-                // hand.push_back(c);
-            }
+    hand.push_back(c);
+    for (int i = hand.size() - 1; i > 0; i--) {
+        if (hand[i].GetSuit() == c.GetSuit() && hand[i - 1].GetValue() < c.GetValue()) {
+            return;
         }
+        Card auxCard = hand[i - 1];
+        hand[i - 1] = hand[i];
+        hand[i] = auxCard;
     }
 }
 
@@ -51,5 +53,24 @@ Card Player::GetCard(Suit s) {
 }
 
 void Player::PrintHand() {
-
+    for (int i = 0; i < hand.size(); i++) {
+        std::cout << hand[i].GetValue();
+        switch (hand[i].GetSuit()) {
+        case Suit::SPADES:
+            std::cout << "SPD";
+            break;
+        case Suit::COINS:
+            std::cout << "COI";
+            break;
+        case Suit::CUPS:
+            std::cout << "CPS";
+            break;
+        case Suit::CLUBS:
+            std::cout << "CLB";
+            break;
+        default:
+            break;
+        }
+        std::cout << " - ";
+    }
 }
