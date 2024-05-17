@@ -23,14 +23,7 @@ void Player::OrderCards() {
 
 void Player::InsertCard(Card c) {
     hand.push_back(c);
-    for (int i = hand.size() - 1; i > 0; i--) {
-        if (hand[i].GetSuit() == c.GetSuit() && hand[i - 1].GetValue() < c.GetValue()) {
-            return;
-        }
-        Card auxCard = hand[i - 1];
-        hand[i - 1] = hand[i];
-        hand[i] = auxCard;
-    }
+    OrderCards();
 }
 
 Card Player::GetCard() {
@@ -52,7 +45,8 @@ Card Player::GetCard(Suit s) {
     return maxCard;
 }
 
-void Player::PrintHand() {
+void Player::PrintHand() const{
+    std::cout << id << ": ";
     for (int i = 0; i < hand.size(); i++) {
         std::cout << hand[i].GetValue();
         switch (hand[i].GetSuit()) {
@@ -73,4 +67,8 @@ void Player::PrintHand() {
         }
         std::cout << " - ";
     }
+}
+
+std::string Player::GetID() const{
+    return id;
 }

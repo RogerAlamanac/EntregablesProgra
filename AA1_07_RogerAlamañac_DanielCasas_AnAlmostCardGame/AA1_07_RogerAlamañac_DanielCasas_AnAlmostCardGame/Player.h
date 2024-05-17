@@ -13,5 +13,6 @@ public:
 	void InsertCard(Card c);
 	Card GetCard();
 	Card GetCard(Suit s);
-	void PrintHand();
+	void PrintHand() const;
+	std::string GetID() const;
 };

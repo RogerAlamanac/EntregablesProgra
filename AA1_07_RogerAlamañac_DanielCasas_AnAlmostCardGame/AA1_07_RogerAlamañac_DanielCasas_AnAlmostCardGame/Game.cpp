@@ -11,6 +11,7 @@ Game::Game() {
 		}
 		else {
 			system("cls");
+			correct = true;
 		}
 	}
 	players = new Player[num_players];
@@ -71,6 +72,10 @@ Game::Game() {
 			players[i].InsertCard(randCard);
 		}
 	}
+
+	for(int i = 0; i < num_players; i++){
+		players[i].OrderCards();
+	}
 }
 
 Card Game::GetNewCard(){
@@ -83,7 +88,8 @@ void Game::DiscardedCard(Card c) {
 	discarded.push_back(c);
 }
 
-void Game::PrintDiscarded() {
+void Game::PrintDiscarded() const {
+	std::cout << "Last Discarded: ";
 	if (discarded.size() != 0) {
 		std::cout << discarded.back().GetValue();
 		switch (discarded.back().GetSuit()) {
@@ -102,6 +108,17 @@ void Game::PrintDiscarded() {
 		default:
 			break;
 		}
-		std::cout << " - ";
+	}
+	std::cout << std::endl;
+}
+
+int Game::GetNumPlayers() const{
+	return num_players;
+}
+
+void Game::PrintHands(){
+	for(int i = 0; i < GetNumPlayers(); i++){
+		players[i].PrintHand();
+		std::cout << std::endl;
 	}
 }
