@@ -10,13 +10,11 @@ void Player::OrderCards() {
         Card auxCard = hand[i];
         int j = i - 1;
 
-        // Movemos los elementos mayores hacia adelante
         while (j >= 0 && (hand[j].GetSuit() > auxCard.GetSuit() || (hand[j].GetSuit() == auxCard.GetSuit() && hand[j].GetValue() > auxCard.GetValue()))) {
             hand[j + 1] = hand[j];
             --j;
         }
 
-        // Insertamos la carta en la posición correcta
         hand[j + 1] = auxCard;
     }
 }
