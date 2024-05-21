@@ -13,7 +13,7 @@ ForwardList::~ForwardList() {
 }
 // Inserts one element at the back of the list
 void ForwardList::PushBack(int value) {
-	Node* newNode;
+	Node* newNode = new Node;
 	newNode->m_value = value;
 	if (IsEmpty()) {
 		m_first = newNode;
@@ -30,6 +30,7 @@ void ForwardList::PopBack() {
 		return;
 	}
 	if (m_first == m_last) {
+		delete m_first;
 		m_last = nullptr;
 		m_first = nullptr;
 	}
@@ -42,17 +43,27 @@ void ForwardList::PopBack() {
 		m_last = auxNode;
 		m_last->m_next = nullptr;
 	}
+	m_size--;
 }
 // Inserts one element at the front of the list
 void ForwardList::PushFront(int value) {
+	Node* newNode = new Node;
+	newNode->m_value = value;
+	newNode->m_next = m_first;
+	if (IsEmpty()) {
+		m_last = newNode;
+	}
 
+
+	m_first = newNode;
+	m_size++;
 }
 // Removes first element at the front of the list
 void ForwardList::PopFront() {
 	Node* nodeToRemove = m_first;
-	int valueToRemove = nodeToRemove->m_value;
-
+	m_first = m_first->m_next;
 	delete nodeToRemove;
+	if (m_first == nullptr) m_last == nullptr;
 	--m_size;
 }
 // Checks if the list is empty or not
@@ -73,7 +84,26 @@ int ForwardList::Size() const {
 }
 // Removes all the elements from the list that are equal to value
 void ForwardList::Erase(int value) {
-	
+	if (IsEmpty()) {
+		return;
+	}
+
+	if (m_first != nullptr && m_first->m_value == value) {
+		PopFront(); 
+	}
+
+	Node* curNode = m_first;
+	while (curNode != nullptr && curNode->m_next != nullptr) {
+		if (curNode->m_next->m_value == value) {
+			Node* nodeToRemove = curNode->m_next;
+			curNode->m_next = nodeToRemove->m_next;
+			if (curNode->m_next == m_last) m_last = curNode;
+
+			delete nodeToRemove;
+			m_size--;
+		}
+		else curNode->m_next;
+	}
 }
 // Inserts the element with value at a specific position within the list
 void ForwardList::Insert(int value, int position) {
@@ -81,9 +111,9 @@ void ForwardList::Insert(int value, int position) {
 }
 // Compares de content of lists l1 and l2. Returns true if both are equal, false otherwise.
 bool operator==(const ForwardList& l1, const ForwardList& l2) {
-
+	return 5;
 }
 // Outputs the elements of the list into an output stream object
 std::ostream& operator<<(std::ostream& o, const ForwardList& l) {
-
+	return o;
 }
