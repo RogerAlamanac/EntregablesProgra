@@ -30,7 +30,6 @@ void ForwardList::PopBack() {
 		return;
 	}
 	if (m_first == m_last) {
-		delete m_first;
 		m_last = nullptr;
 		m_first = nullptr;
 	}
@@ -49,21 +48,24 @@ void ForwardList::PopBack() {
 void ForwardList::PushFront(int value) {
 	Node* newNode = new Node;
 	newNode->m_value = value;
-	newNode->m_next = m_first;
 	if (IsEmpty()) {
 		m_last = newNode;
+		newNode->m_next = nullptr;
 	}
-
-
+	else {
+		newNode->m_next = m_first;
+	}
 	m_first = newNode;
 	m_size++;
 }
 // Removes first element at the front of the list
 void ForwardList::PopFront() {
+	if (IsEmpty()) {
+		return;
+	}
 	Node* nodeToRemove = m_first;
 	m_first = m_first->m_next;
 	delete nodeToRemove;
-	if (m_first == nullptr) m_last == nullptr;
 	--m_size;
 }
 // Checks if the list is empty or not
@@ -111,7 +113,18 @@ void ForwardList::Insert(int value, int position) {
 }
 // Compares de content of lists l1 and l2. Returns true if both are equal, false otherwise.
 bool operator==(const ForwardList& l1, const ForwardList& l2) {
-	return 5;
+	if (l1.m_size == l2.m_size) {
+		ForwardList::Node* auxNode1 = l1.m_first;
+		ForwardList::Node* auxNode2 = l2.m_first;
+		while (auxNode1 != l1.m_last) {
+			if (auxNode1 != auxNode2) return false;
+			auxNode1 = auxNode1->m_next;
+			auxNode2 = auxNode2->m_next;
+		}
+		if (l1.m_last == l1.m_last) return true;
+		else return false;
+	}
+	return false;
 }
 // Outputs the elements of the list into an output stream object
 std::ostream& operator<<(std::ostream& o, const ForwardList& l) {
