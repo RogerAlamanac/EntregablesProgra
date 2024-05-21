@@ -14,4 +14,5 @@ int main()
 	std::cout << "PopFront: " << std::endl;
 	list.PopFront();
 	list.PopBack();
+
 }

@@ -90,26 +90,31 @@ void ForwardList::Erase(int value) {
 		return;
 	}
 
-	if (m_first != nullptr && m_first->m_value == value) {
-		PopFront(); 
-	}
-
-	Node* curNode = m_first;
-	while (curNode != nullptr && curNode->m_next != nullptr) {
-		if (curNode->m_next->m_value == value) {
-			Node* nodeToRemove = curNode->m_next;
-			curNode->m_next = nodeToRemove->m_next;
-			if (curNode->m_next == m_last) m_last = curNode;
-
+	Node* currentNode = m_first;
+	while (currentNode != nullptr) {
+		if (currentNode->m_value == value) {
+			Node* nodeToRemove = currentNode;
+			currentNode = currentNode->m_next;
 			delete nodeToRemove;
 			m_size--;
 		}
-		else curNode->m_next;
+		else currentNode = currentNode->m_next;
 	}
 }
 // Inserts the element with value at a specific position within the list
 void ForwardList::Insert(int value, int position) {
-
+	Node* nodeToInsert = new Node;
+	nodeToInsert->m_value = value;
+	Node* auxNode = m_first;
+	int counter = 0;
+	while (counter < position) {
+		auxNode = auxNode->m_next;
+		counter++;
+	}
+	Node* nextNode = auxNode->m_next;
+	auxNode->m_next = nodeToInsert;
+	nodeToInsert = nextNode;
+	m_size++;
 }
 // Compares de content of lists l1 and l2. Returns true if both are equal, false otherwise.
 bool operator==(const ForwardList& l1, const ForwardList& l2) {
