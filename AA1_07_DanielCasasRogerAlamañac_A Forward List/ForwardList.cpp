@@ -8,8 +8,13 @@ ForwardList::ForwardList() {
 }
 // Destructor
 ForwardList::~ForwardList() {
-	if (m_first != nullptr) delete m_first;
-	if (m_last != nullptr) delete m_last;
+	Node* nodeToRemove = m_first;
+	Node* nextNode;
+	while (nodeToRemove != nullptr) {
+		nextNode = nodeToRemove->m_next;
+		delete nodeToRemove;
+		nodeToRemove = nextNode;
+	}
 }
 // Inserts one element at the back of the list
 void ForwardList::PushBack(int value) {
@@ -30,6 +35,7 @@ void ForwardList::PopBack() {
 		return;
 	}
 	if (m_first == m_last) {
+		delete m_first;
 		m_last = nullptr;
 		m_first = nullptr;
 	}
@@ -66,7 +72,7 @@ void ForwardList::PopFront() {
 	Node* nodeToRemove = m_first;
 	m_first = m_first->m_next;
 	delete nodeToRemove;
-	--m_size;
+	m_size--;
 }
 // Checks if the list is empty or not
 bool ForwardList::IsEmpty() const {
@@ -89,31 +95,64 @@ void ForwardList::Erase(int value) {
 	if (IsEmpty()) {
 		return;
 	}
-
 	Node* currentNode = m_first;
+	Node* lastNode = nullptr;
 	while (currentNode != nullptr) {
 		if (currentNode->m_value == value) {
 			Node* nodeToRemove = currentNode;
-			currentNode = currentNode->m_next;
+			if (currentNode == m_first) {
+				m_first = m_first->m_next;
+				if (m_first = nullptr) m_last = nullptr;
+			}
+			else if (currentNode == m_last) {
+				m_last = lastNode;
+			}
+			else {
+				currentNode = currentNode->m_next;
+			}
 			delete nodeToRemove;
 			m_size--;
 		}
-		else currentNode = currentNode->m_next;
-	}
+		else {
+			lastNode = currentNode;
+			currentNode = currentNode->m_next;
+		}
+	}   
 }
 // Inserts the element with value at a specific position within the list
 void ForwardList::Insert(int value, int position) {
+	if (position < 0 || position > m_size) {
+		std::cout << "NOT VALID POSITION!";
+		return;
+	}
 	Node* nodeToInsert = new Node;
 	nodeToInsert->m_value = value;
-	Node* auxNode = m_first;
-	int counter = 0;
-	while (counter < position) {
-		auxNode = auxNode->m_next;
-		counter++;
+	nodeToInsert->m_next = nullptr;
+	if (position == 0) {
+		nodeToInsert->m_next = m_first;
+		m_first = nodeToInsert;
 	}
-	Node* nextNode = auxNode->m_next;
-	auxNode->m_next = nodeToInsert;
-	nodeToInsert = nextNode;
+	else if (position == m_size) {
+		Node* last = m_last;
+		Node* auxNode = m_first;
+		while (auxNode->m_next != m_last) {
+			auxNode = auxNode->m_next;
+		}
+		m_last = nodeToInsert;
+		auxNode->m_next = last;
+		last->m_next = nodeToInsert;
+	}
+	else {
+		Node* auxNode = m_first;
+		int counter = 1;
+		while (counter < position) {
+			auxNode = auxNode->m_next;
+			counter++;
+		}
+		Node* nextNode = auxNode->m_next;
+		auxNode->m_next = nodeToInsert;
+		nodeToInsert->m_next = nextNode;
+	}
 	m_size++;
 }
 // Compares de content of lists l1 and l2. Returns true if both are equal, false otherwise.
@@ -133,6 +172,11 @@ bool operator==(const ForwardList& l1, const ForwardList& l2) {
 }
 // Outputs the elements of the list into an output stream object
 std::ostream& operator<<(std::ostream& o, const ForwardList& l) {
+	ForwardList::Node* nodeToPrint = l.m_first;
+	while (nodeToPrint != nullptr) {
+		o << "|" << nodeToPrint->m_value << "|";
+		nodeToPrint = nodeToPrint->m_next;
+	}
+	std::cout << std::endl;
 	return o;
 }
-// Buscar lo que hace el ostram& o
