@@ -135,3 +135,4 @@ bool operator==(const ForwardList& l1, const ForwardList& l2) {
 std::ostream& operator<<(std::ostream& o, const ForwardList& l) {
 	return o;
 }
+// Buscar lo que hace el ostram& o
