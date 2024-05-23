@@ -15,13 +15,6 @@ enum class Action {
 	INVALID
 };
 
-enum class PokeBallsType {
-	POKEBALL,
-	SUPERBALL,
-	ULTRABALL,
-	INVALID
-};
-
 enum class Scene {
 	PUEBLO_PALETA,
 	BOSQUE,
@@ -36,7 +29,6 @@ struct Player{
 	Action action = Action::INVALID;
 	Movement movement = Movement::DOWN;
 	Movement lastMovement = Movement::DOWN;
-	PokeBallsType pokeBall = PokeBallsType::INVALID;
 	Pokemon* capturedPokemons = nullptr;
 	int numCapturedPokemons = 0;
 	Player();

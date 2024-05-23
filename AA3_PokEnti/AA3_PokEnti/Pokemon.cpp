@@ -40,78 +40,34 @@ Pokemon::Pokemon() {
 }
 
 void Pokemon::CapturePokemon(Player& player) {
-    char pokeBallType;
-    std::cout << "Choose your Pokeball: " << std::endl;
-    std::cout << "P: PokeBall; O:SuperBall; U:UltraBall"<<std::endl;
-    for (bool valid = false; !valid;) {
-        std::cin >> pokeBallType;
-        switch (pokeBallType) {
-        case 'p':
-        case 'P':
-            player.pokeBall = PokeBallsType::POKEBALL;
-            valid = true;
-            break;
-        case 'o':
-        case 'O':
-            player.pokeBall = PokeBallsType::SUPERBALL;
-            valid = true;
-            break;    
-        case 'u':
-        case 'U':
-            player.pokeBall = PokeBallsType::ULTRABALL;
-            valid = true;
-            break;
-        default:
+    char pokeBallThrow;
+    while (true) {
+        std::cout << "Press P to throw the PokeBall" << std::endl;
+        std::cin >> pokeBallThrow;
+        if (pokeBallThrow == 'p') {
+            CheckCapture(player);
             break;
         }
     }
-    CheckCapture(player);
+   
 }
 
 void Pokemon::CheckCapture(Player& player){
   int probabilityOfCapture = rand() % 100;
-  //Pokeball --> Level 1 = 70%, 2 = 50%, 3 = 38%, 4 = 27%, 5 = 15%, 6 = 5%
-  if (player.pokeBall == PokeBallsType::POKEBALL && strengthLevel == 1 && probabilityOfCapture < 70){
+  //Pokeball --> Level 1 = 90%, 2 = 80%, 3 = 65%, 4 = 55%, 5 = 45%, 6 = 25%
+  if (strengthLevel == 1 && probabilityOfCapture < probabilityLVL1){
     PokemonCaptured(player);
-  } else if(player.pokeBall == PokeBallsType::POKEBALL && strengthLevel == 2 && probabilityOfCapture < 50){
+  } else if(strengthLevel == 2 && probabilityOfCapture < probabilityLVL2){
     PokemonCaptured(player);
-  } else if(player.pokeBall == PokeBallsType::POKEBALL && strengthLevel == 3 && probabilityOfCapture < 38){
+  } else if(strengthLevel == 3 && probabilityOfCapture < probabilityLVL3){
     PokemonCaptured(player);
-  } else if(player.pokeBall == PokeBallsType::POKEBALL && strengthLevel == 4 && probabilityOfCapture < 27){
+  } else if(strengthLevel == 4 && probabilityOfCapture < probabilityLVL4){
     PokemonCaptured(player);
-  } else if(player.pokeBall == PokeBallsType::POKEBALL && strengthLevel == 5 && probabilityOfCapture < 15){
+  } else if(strengthLevel == 5 && probabilityOfCapture < probabilityLVL5){
     PokemonCaptured(player);
-  } else if(player.pokeBall == PokeBallsType::POKEBALL && strengthLevel == 6 && probabilityOfCapture < 5){
+  } else if(strengthLevel == 6 && probabilityOfCapture < probabilityLVL6){
     PokemonCaptured(player);
-  } 
-  //Superball --> Level 1 = 85%, 2 = 65%, 3 = 48%, 4 = 30%, 5 = 25%, 6 = 13%
-  else if (player.pokeBall == PokeBallsType::SUPERBALL && strengthLevel == 1 && probabilityOfCapture < 85){
-    PokemonCaptured(player);
-  } else if(player.pokeBall == PokeBallsType::SUPERBALL && strengthLevel == 2 && probabilityOfCapture < 65){
-    PokemonCaptured(player);
-  } else if(player.pokeBall == PokeBallsType::SUPERBALL && strengthLevel == 3 && probabilityOfCapture < 48){
-    PokemonCaptured(player);
-  } else if(player.pokeBall == PokeBallsType::SUPERBALL && strengthLevel == 4 && probabilityOfCapture < 30){
-    PokemonCaptured(player);
-  } else if(player.pokeBall == PokeBallsType::SUPERBALL && strengthLevel == 5 && probabilityOfCapture < 25){
-    PokemonCaptured(player);
-  } else if (player.pokeBall == PokeBallsType::SUPERBALL && strengthLevel == 6 && probabilityOfCapture < 13) {
-      PokemonCaptured(player);
-  }
-  //Ultraball --> Level 1 = 95%, 2 = 75%, 3 = 60%, 4 = 40%, 5 = 30%, 6 = 20%;
-  else if (player.pokeBall == PokeBallsType::ULTRABALL && strengthLevel == 1 && probabilityOfCapture < 95) {
-      PokemonCaptured(player);
-  } else if (player.pokeBall == PokeBallsType::ULTRABALL && strengthLevel == 2 && probabilityOfCapture < 75) {
-      PokemonCaptured(player);
-  } else if (player.pokeBall == PokeBallsType::ULTRABALL && strengthLevel == 3 && probabilityOfCapture < 60) {
-      PokemonCaptured(player);
-  } else if (player.pokeBall == PokeBallsType::ULTRABALL && strengthLevel == 4 && probabilityOfCapture < 40) {
-      PokemonCaptured(player);
-  } else if (player.pokeBall == PokeBallsType::ULTRABALL && strengthLevel == 5 && probabilityOfCapture < 30) {
-      PokemonCaptured(player);
-  } else if (player.pokeBall == PokeBallsType::ULTRABALL && strengthLevel == 6 && probabilityOfCapture < 20) {
-      PokemonCaptured(player);
-  } else {
+  } else{
       PokemonEscaped(player);
   }
 }

@@ -28,7 +28,7 @@ struct Map{
 	void UpdateScene();
 	void UpdateMap();
 	void InitializePokemons();
-	int FindPokemonPosition(int x, int y);
+	int FindPokemonPosition(int x, int y) const;
 	void FightPokemon(int x, int y);
 	void NewPokemon();
 	~Map();

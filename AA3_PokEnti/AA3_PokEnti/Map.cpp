@@ -149,7 +149,7 @@ void Map::PrintMap() {
 	}
 }
 
-int Map::FindPokemonPosition(int x, int y) {
+int Map::FindPokemonPosition(int x, int y) const {
 	for (int i = 0; i < totalPokemons; i++) {
 		if (pokemons[i].position.x == x && pokemons[i].position.y == y) return i;
 	}
