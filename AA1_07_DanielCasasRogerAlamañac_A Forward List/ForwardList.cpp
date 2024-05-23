@@ -96,25 +96,27 @@ void ForwardList::Erase(int value) {
 		return;
 	}
 	Node* currentNode = m_first;
-	Node* lastNode = nullptr;
+	Node* previousNode = nullptr;
 	while (currentNode != nullptr) {
 		if (currentNode->m_value == value) {
 			Node* nodeToRemove = currentNode;
 			if (currentNode == m_first) {
 				m_first = m_first->m_next;
-				if (m_first = nullptr) m_last = nullptr;
-			}
-			else if (currentNode == m_last) {
-				m_last = lastNode;
 			}
 			else {
-				currentNode = currentNode->m_next;
+				previousNode->m_next = currentNode->m_next;
 			}
+			
+			if (currentNode == m_last) {
+				m_last = previousNode;
+			}
+
+			currentNode = currentNode->m_next;
 			delete nodeToRemove;
 			m_size--;
 		}
 		else {
-			lastNode = currentNode;
+			previousNode = currentNode;
 			currentNode = currentNode->m_next;
 		}
 	}   
@@ -122,7 +124,7 @@ void ForwardList::Erase(int value) {
 // Inserts the element with value at a specific position within the list
 void ForwardList::Insert(int value, int position) {
 	if (position < 0 || position > m_size) {
-		std::cout << "NOT VALID POSITION!";
+		std::cout << "NOT VALID POSITION FOR " << value << "!" << std::endl;
 		return;
 	}
 	Node* nodeToInsert = new Node;
@@ -157,16 +159,15 @@ void ForwardList::Insert(int value, int position) {
 }
 // Compares de content of lists l1 and l2. Returns true if both are equal, false otherwise.
 bool operator==(const ForwardList& l1, const ForwardList& l2) {
-	if (l1.m_size == l2.m_size) {
+	if (l1.m_size == l2.m_size && l1.m_size != 0 && l2.m_size != 0) {
 		ForwardList::Node* auxNode1 = l1.m_first;
 		ForwardList::Node* auxNode2 = l2.m_first;
-		while (auxNode1 != l1.m_last) {
-			if (auxNode1 != auxNode2) return false;
+		while (auxNode1 != nullptr) {
+			if (auxNode1->m_value != auxNode2->m_value) return false;
 			auxNode1 = auxNode1->m_next;
 			auxNode2 = auxNode2->m_next;
 		}
-		if (l1.m_last == l1.m_last) return true;
-		else return false;
+		return true;
 	}
 	return false;
 }
