@@ -82,6 +82,8 @@ void Map::InitializePokemons() {
 void Map::PrintMap() {
 	UpdateMap();
 	system("cls");
+	std::cout << "Captured Pokemons: " << player.numCapturedPokemons << std::endl;
+	player.PrintScene();
     const int VIEW = 14;
 	int firstRow;
 	int firstCol;
@@ -145,7 +147,6 @@ void Map::PrintMap() {
 		}
 		std::cout << std::endl;
 	}
-	std::cout << "Captured Pokemons: " << player.numCapturedPokemons << std::endl;
 }
 
 int Map::FindPokemonPosition(int x, int y) {
@@ -184,15 +185,15 @@ void Map::NewPokemon() {
 	else if (player.lastMovement == Movement::LEFT) position = FindPokemonPosition(player.position.x, player.position.y - 1);
 
 	do {
-		if (pokemons[position].position.x < NUM_COLS / 2 && pokemons[position].position.y < NUM_ROWS / 2) {
+		if (player.scene == Scene::PUEBLO_PALETA) {
 			pokemons[position].position.x = rand() % (NUM_COLS / 2);
 			pokemons[position].position.y = rand() % (NUM_ROWS / 2);
 		}
-		else if (pokemons[position].position.x > NUM_COLS / 2 && pokemons[position].position.y < NUM_ROWS / 2) {
+		else if (player.scene == Scene::BOSQUE) {
 			pokemons[position].position.x = rand() % (((NUM_COLS - 2) - (NUM_COLS / 2 + 1) + 1) + (NUM_COLS / 2 + 1));
 			pokemons[position].position.y = rand() % (((NUM_ROWS / 2 - 1) - 2 + 1) + 2);
 		}
-		else if (pokemons[position].position.x > NUM_COLS / 2 && pokemons[position].position.y > NUM_ROWS / 2) {
+		else if (player.scene == Scene::CUEVA_CELESTE) {
 			pokemons[position].position.x = rand() % (((NUM_COLS - 2) - (NUM_COLS / 2 + 1) + 1) + (NUM_COLS / 2 + 1));
 			pokemons[position].position.y = rand() % (((NUM_ROWS - 2) - (NUM_ROWS / 2 + 1) + 1) + (NUM_ROWS / 2 + 1));
 		}

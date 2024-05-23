@@ -31,7 +31,7 @@ enum class Scene {
 };
 
 struct Player{
-	Scene scene = Scene::INVALID;
+	Scene scene = Scene::PUEBLO_PALETA;
 	Position position;
 	Action action = Action::INVALID;
 	Movement movement = Movement::DOWN;
@@ -41,4 +41,5 @@ struct Player{
 	int numCapturedPokemons = 0;
 	Player();
 	~Player();
+	void PrintScene();
 };
