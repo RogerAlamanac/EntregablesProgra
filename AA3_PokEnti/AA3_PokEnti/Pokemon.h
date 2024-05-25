@@ -46,5 +46,6 @@ struct Pokemon {
     void CheckCapture(Player& player);
     void PokemonEscaped(Player& player);
     void CapturePokemon(Player& player);
+    void PlayerEscaped();
     Position position;
 };

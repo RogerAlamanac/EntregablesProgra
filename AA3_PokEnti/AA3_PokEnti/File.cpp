@@ -6,14 +6,16 @@
 File::File() {
     std::ifstream archivo("config.txt");
     if (!archivo.is_open()) {
-        std::cerr << "Error al abrir el archivo." << std::endl;
+        while (true) {
+            std::cerr << "Error al abrir el archivo." << std::endl;
+            system("pause");
+        }
     }
     else {
-        int num1[3], num2[3];
+        int num1[6] = {0, 0, 0, 0, 0, 0}, num2[6] = {0, 0, 0, 0, 0, 0};
 
-        for (int i = 0; i < 3; ++i) {
+        for (int i = 0; i < 6; ++i) {
             std::string linea;
-            // Leer la línea
             if (std::getline(archivo, linea)) {
                 size_t pos1 = linea.find(';');
                 size_t pos2 = linea.find(';', pos1 + 1);
@@ -24,13 +26,18 @@ File::File() {
                 std::cerr << "Error al leer del archivo." << std::endl;
             }
         }
-        // Cierra el archivo
+
         NUM_ROWS = num1[0];
         NUM_COLS = num2[0];
         pokemonsPuebloPaleta = num1[1];
         pokemonsToUnlockForest = num2[1];
         pokemonsForest = num1[2];
         pokemonsToUnlockCave = num2[2];
+        pikachuPower = num1[3];
+        healthPokemons = num1[4];
+        healthMewtwo = num2[4];
+        minTimePokemons = num1[5];
+        maxTimePokemons = num2[5];
         archivo.close();
     }
 }

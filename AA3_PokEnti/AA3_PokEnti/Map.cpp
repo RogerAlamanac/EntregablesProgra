@@ -77,7 +77,7 @@ void Map::InitializePokemons() {
 void Map::PrintMap() {
 	UpdateMap();
 	system("cls");
-	std::cout << "Captured Pokemons: " << player.numCapturedPokemons << std::endl;
+	std::cout << "Captured Pokemons: " << player.numCapturedPokemons << "   Pokeballs: " << player.numPokeballs << std::endl;
 	player.PrintScene();
     const int VIEW = 14;
 	int firstRow;
@@ -151,24 +151,8 @@ int Map::FindPokemonPosition(int x, int y) const {
 }
 
 void Map::FightPokemon(int x, int y){
-	std::cout << std::endl << "You have a Pokemon nearby, do you want to capture it? Press 1 for YES press 0 for no" << std::endl;
-	int choice;
-	bool correctChoice = false;
-	do {
-		std::cin >> choice;
-		if (choice == 1) {
-			system("cls");
-			pokemons[FindPokemonPosition(x, y)].CapturePokemon(player);
-			correctChoice = true;
-		}
-		else if (choice == 0) {
-			std::cout << "Pokemon escaped" << std::endl;
-			correctChoice = true;
-		}
-		else {
-			std::cout << "WRONG COMMAND!" << std::endl;
-		}
-	} while (!correctChoice);
+	std::cout << std::endl << "You have a Pokemon nearby, do you want to capture it?" << std::endl;
+	pokemons[FindPokemonPosition(x, y)].CapturePokemon(player);
 	NewPokemon();
 }
 
@@ -182,7 +166,7 @@ void Map::NewPokemon() {
 	do {
 		if (player.scene == Scene::PUEBLO_PALETA) {
 			pokemons[position].position.x = rand() % (NUM_COLS / 2);
-			pokemons[position].position.y = rand() % (NUM_ROWS / 2);
+			pokemons[position].position.y = rand() % (NUM_ROWS / 2 - 1);
 		}
 		else if (player.scene == Scene::BOSQUE) {
 			pokemons[position].position.x = rand() % (((NUM_COLS - 2) - (NUM_COLS / 2 + 1) + 1) + (NUM_COLS / 2 + 1));
@@ -260,19 +244,35 @@ void Map::PlayerMovement() {
 	}
 	switch (player.action) {
 	case Action::CAPTURE:
-		if (player.lastMovement == Movement::UP && map[player.position.x - 1][player.position.y] == Square::POKEMON) {
+		if (map[player.position.x - 1][player.position.y] == Square::POKEMON) {
 			FightPokemon(player.position.x - 1, player.position.y);
 			map[player.position.x - 1][player.position.y] = Square::NOTHING;
 		}
-		else if (player.lastMovement == Movement::DOWN && map[player.position.x + 1][player.position.y] == Square::POKEMON) {
+		else if (map[player.position.x - 1][player.position.y - 1] == Square::POKEMON) {
+			FightPokemon(player.position.x - 1, player.position.y - 1);
+			map[player.position.x - 1][player.position.y - 1] = Square::NOTHING;
+		}
+		else if (map[player.position.x - 1][player.position.y + 1] == Square::POKEMON) {
+			FightPokemon(player.position.x - 1, player.position.y + 1);
+			map[player.position.x - 1][player.position.y + 1] = Square::NOTHING;
+		}
+		else if (map[player.position.x + 1][player.position.y] == Square::POKEMON) {
 			FightPokemon(player.position.x + 1, player.position.y);
 			map[player.position.x + 1][player.position.y] = Square::NOTHING;
 		}
-		else if (player.lastMovement == Movement::RIGHT && map[player.position.x][player.position.y + 1] == Square::POKEMON) {
+		else if (map[player.position.x + 1][player.position.y - 1] == Square::POKEMON) {
+			FightPokemon(player.position.x + 1, player.position.y - 1);
+			map[player.position.x + 1][player.position.y - 1] = Square::NOTHING;
+		}
+		else if (map[player.position.x + 1][player.position.y + 1] == Square::POKEMON) {
+			FightPokemon(player.position.x + 1, player.position.y + 1);
+			map[player.position.x + 1][player.position.y + 1] = Square::NOTHING;
+		}
+		else if (map[player.position.x][player.position.y + 1] == Square::POKEMON) {
 			FightPokemon(player.position.x, player.position.y + 1);
 			map[player.position.x][player.position.y + 1] = Square::NOTHING;
 		}
-		else if (player.lastMovement == Movement::LEFT && map[player.position.x][player.position.y - 1] == Square::POKEMON) {
+		else if (map[player.position.x][player.position.y - 1] == Square::POKEMON) {
 			FightPokemon(player.position.x, player.position.y - 1);
 			map[player.position.x][player.position.y - 1] = Square::NOTHING;
 		}

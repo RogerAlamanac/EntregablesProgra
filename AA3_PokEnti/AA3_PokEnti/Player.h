@@ -31,6 +31,7 @@ struct Player{
 	Movement lastMovement = Movement::DOWN;
 	Pokemon* capturedPokemons = nullptr;
 	int numCapturedPokemons = 0;
+	int numPokeballs = 10;
 	Player();
 	~Player();
 	void PrintScene();

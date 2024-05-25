@@ -43,9 +43,23 @@ void Pokemon::CapturePokemon(Player& player) {
     char pokeBallThrow;
     while (true) {
         std::cout << "Press P to throw the PokeBall" << std::endl;
+        std::cout << "Press A to attack the Pokemon" << std::endl;
+        std::cout << "Press H to escape" << std::endl;
         std::cin >> pokeBallThrow;
-        if (pokeBallThrow == 'p') {
+        if (pokeBallThrow == 'p' || pokeBallThrow == 'P' && player.numPokeballs > 0) {
             CheckCapture(player);
+            player.numPokeballs--;
+            break;
+        }
+        else if (pokeBallThrow == 'p' || pokeBallThrow == 'P' && player.numPokeballs <= 0) {
+            std::cout << "You have no Pokeballs left!" << std::endl;
+        }
+        else if (pokeBallThrow == 'a' || pokeBallThrow == 'A') {
+            Attack();
+            break;
+        }
+        else if (pokeBallThrow == 'h' || pokeBallThrow == 'H') {
+            PlayerEscaped();
             break;
         }
     }
@@ -54,21 +68,20 @@ void Pokemon::CapturePokemon(Player& player) {
 
 void Pokemon::CheckCapture(Player& player){
   int probabilityOfCapture = rand() % 100;
-  //Pokeball --> Level 1 = 90%, 2 = 80%, 3 = 65%, 4 = 55%, 5 = 45%, 6 = 25%
   if (strengthLevel == 1 && probabilityOfCapture < PROBABILITYLVL1){
-    PokemonCaptured(player);
+        PokemonCaptured(player);
   } else if(strengthLevel == 2 && probabilityOfCapture < PROBABILITYLVL2){
-    PokemonCaptured(player);
+        PokemonCaptured(player);
   } else if(strengthLevel == 3 && probabilityOfCapture < PROBABILITYLVL3){
-    PokemonCaptured(player);
+        PokemonCaptured(player);
   } else if(strengthLevel == 4 && probabilityOfCapture < PROBABILITYLVL4){
-    PokemonCaptured(player);
+        PokemonCaptured(player);
   } else if(strengthLevel == 5 && probabilityOfCapture < PROBABILITYLVL5){
-    PokemonCaptured(player);
+        PokemonCaptured(player);
   } else if(strengthLevel == 6 && probabilityOfCapture < PROBABILITYLVL6){
-    PokemonCaptured(player);
+        PokemonCaptured(player);
   } else{
-      PokemonEscaped(player);
+        PokemonEscaped(player);
   }
 }
 
@@ -79,15 +92,20 @@ void Pokemon::PokemonEscaped(Player& player) {
     std::cin >> tryAgain;
     if (tryAgain == 1) CheckCapture(player);
     else {
-       std::cout << "Pokemon has escaped!"<<std::endl;
-       system("pause");
+        std::cout << "Pokemon has escaped!" << std::endl;
+        system("pause");
     }
+}
+
+void Pokemon::PlayerEscaped() {
+    std::cout << "You escaped!" << std::endl;
+    system("pause");
 }
 
 void Pokemon::PokemonCaptured(Player& player){
    std::cout << "Pokemon captured" << std::endl;
    system("pause");
    isTrapped = true;
-   lifes = 10;//MAXLIFES
+   lifes = 10;
    player.numCapturedPokemons++;
 }

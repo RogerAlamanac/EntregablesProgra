@@ -8,5 +8,10 @@ struct File {
 	int pokemonsForest = 0;
 	int pokemonsToUnlockCave = 0;
 	int pokemonsCave = 10;
+	int pikachuPower = 0;
+	int healthPokemons = 0;
+	int healthMewtwo = 0;
+	int minTimePokemons = 0;
+	int maxTimePokemons = 0;
 	File();
 };
