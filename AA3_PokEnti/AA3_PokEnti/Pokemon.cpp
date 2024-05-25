@@ -55,17 +55,17 @@ void Pokemon::CapturePokemon(Player& player) {
 void Pokemon::CheckCapture(Player& player){
   int probabilityOfCapture = rand() % 100;
   //Pokeball --> Level 1 = 90%, 2 = 80%, 3 = 65%, 4 = 55%, 5 = 45%, 6 = 25%
-  if (strengthLevel == 1 && probabilityOfCapture < probabilityLVL1){
+  if (strengthLevel == 1 && probabilityOfCapture < PROBABILITYLVL1){
     PokemonCaptured(player);
-  } else if(strengthLevel == 2 && probabilityOfCapture < probabilityLVL2){
+  } else if(strengthLevel == 2 && probabilityOfCapture < PROBABILITYLVL2){
     PokemonCaptured(player);
-  } else if(strengthLevel == 3 && probabilityOfCapture < probabilityLVL3){
+  } else if(strengthLevel == 3 && probabilityOfCapture < PROBABILITYLVL3){
     PokemonCaptured(player);
-  } else if(strengthLevel == 4 && probabilityOfCapture < probabilityLVL4){
+  } else if(strengthLevel == 4 && probabilityOfCapture < PROBABILITYLVL4){
     PokemonCaptured(player);
-  } else if(strengthLevel == 5 && probabilityOfCapture < probabilityLVL5){
+  } else if(strengthLevel == 5 && probabilityOfCapture < PROBABILITYLVL5){
     PokemonCaptured(player);
-  } else if(strengthLevel == 6 && probabilityOfCapture < probabilityLVL6){
+  } else if(strengthLevel == 6 && probabilityOfCapture < PROBABILITYLVL6){
     PokemonCaptured(player);
   } else{
       PokemonEscaped(player);
