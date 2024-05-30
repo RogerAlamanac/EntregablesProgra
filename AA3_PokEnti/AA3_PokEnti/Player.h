@@ -32,6 +32,7 @@ struct Player{
 	Pokemon* capturedPokemons = nullptr;
 	int numCapturedPokemons = 0;
 	int numPokeballs = 10;
+	bool capturedMewtwo = false;
 	Player();
 	~Player();
 	void PrintScene();

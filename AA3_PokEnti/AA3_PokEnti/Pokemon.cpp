@@ -3,6 +3,12 @@
 #include <iostream>
 #include <ctime>
 
+Pokemon::Pokemon() {
+    position.x = 0;
+    position.y = 0;
+    RandomisePokeType();
+}
+
 void Pokemon::CureHealth(){
     if(lifes <= minLifeToCure){
         lifes += minLifeToCure;
@@ -31,12 +37,6 @@ void Pokemon::RandomisePokeType() {
     case 7: type = PokemonType::PLANT;
         break;
     }
-}
-
-Pokemon::Pokemon() {
-    position.x = 0;
-    position.y = 0;
-    RandomisePokeType();
 }
 
 void Pokemon::CapturePokemon(Player& player) {
@@ -90,7 +90,15 @@ void Pokemon::PokemonEscaped(Player& player) {
     std::cout << "Pokemon escaped!" << std::endl;
     std::cout << "Press 1 to try again or any other key to escape" << std::endl;
     std::cin >> tryAgain;
-    if (tryAgain == 1) CheckCapture(player);
+    if (tryAgain == 1) {
+        if (player.numPokeballs > 0) {
+            CheckCapture(player);
+            player.numPokeballs--;
+        }
+        else {
+            std::cout << "You have no Pokeballs left!" << std::endl;
+        }
+    }
     else {
         std::cout << "Pokemon has escaped!" << std::endl;
         system("pause");

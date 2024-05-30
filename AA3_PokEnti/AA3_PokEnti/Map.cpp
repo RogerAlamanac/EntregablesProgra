@@ -28,49 +28,62 @@ const int NUM_LEVEL_6 = 3;
 
 void Map::InitializePokemons() {
 	for (int i = 0; i < totalPokemons; i++) {
+		pokemons[i].pokemon = Pokemons::STANDARD;
 		if (i < NUM_LEVEL_1) {
 			pokemons[i].strengthLevel = 1;
-			pokemons[i].lifes = rand() % (MAX_LIFE_LVL1 - MIN_LIFE_LVL1 + 1) + MIN_LIFE_LVL1;
+			pokemons[i].lifes = healthPokemons;
 		}
 		else if (i < NUM_LEVEL_1 + NUM_LEVEL_2) {
 			pokemons[i].strengthLevel = 2;
-			pokemons[i].lifes = rand() % (MAX_LIFE_LVL2 - MIN_LIFE_LVL2 + 1) + MIN_LIFE_LVL2;
+			pokemons[i].lifes = healthPokemons;
 		}
 		else if (i < NUM_LEVEL_1 + NUM_LEVEL_2 + NUM_LEVEL_3) {
 			pokemons[i].strengthLevel = 3;
-			pokemons[i].lifes = rand() % (MAX_LIFE_LVL3 - MIN_LIFE_LVL3 + 1) + MIN_LIFE_LVL3;
+			pokemons[i].lifes = healthPokemons;
 		}
 		else if (i < NUM_LEVEL_1 + NUM_LEVEL_2 + NUM_LEVEL_3 + NUM_LEVEL_4) {
 			pokemons[i].strengthLevel = 4;
-			pokemons[i].lifes = rand() % (MAX_LIFE_LVL4 - MIN_LIFE_LVL4 + 1) + MIN_LIFE_LVL4;
+			pokemons[i].lifes = healthPokemons;
 		}
 		else if (i < NUM_LEVEL_1 + NUM_LEVEL_2 + NUM_LEVEL_3 + NUM_LEVEL_4 + NUM_LEVEL_5) {
 			pokemons[i].strengthLevel = 5;
-			pokemons[i].lifes = rand() % (MAX_LIFE_LVL5 - MIN_LIFE_LVL5 + 1) + MIN_LIFE_LVL5;
+			pokemons[i].lifes = healthPokemons;
+		}
+		else if (i == totalPokemons - 1) {
+			pokemons[i].pokemon = Pokemons::MEWTWO;
+			pokemons[i].lifes = healthMewtwo;
+			pokemons[i].strengthLevel = 6;
 		}
 		else {
 			pokemons[i].strengthLevel = 6;
-			pokemons[i].lifes = rand() % (MAX_LIFE_LVL6 - MIN_LIFE_LVL6 + 1) + MIN_LIFE_LVL6;
+			pokemons[i].lifes = healthPokemons;
 		}
 		int x;
 		int y;
-		do {
-			if (i < pokemonsPuebloPaleta) {
-				x = rand() % ((NUM_ROWS / 2 - 1) - 2 + 1) + 1;
-				y = rand() % ((NUM_COLS / 2 - 1) - 2 + 1) + 1;
-			}
-			else if(i < pokemonsForest) {
-				x = rand() % ((NUM_ROWS / 2 - 1) - 2 + 1) + 1;
-				y = rand() % ((NUM_COLS - 1) - (NUM_COLS / 2 + 1) + 1) + (NUM_COLS / 2 + 1);
-			}
-			else {
-				x = rand() % ((NUM_ROWS - 2) - (NUM_ROWS / 2 + 1) + 1) + (NUM_ROWS / 2 + 1);
-				y = rand() % ((NUM_COLS - 2) - (NUM_COLS / 2 + 1) + 1) + (NUM_COLS / 2 + 1);
-			}
-		} while (map[x][y] != Square::NOTHING);
+		if (pokemons[i].pokemon == Pokemons::MEWTWO) {
+			x = NUM_ROWS * 3 / 4;
+			y = NUM_COLS * 1 / 4;
+		}
+		else {
+			do {
+				if (i < pokemonsPuebloPaleta) {
+					x = rand() % ((NUM_ROWS / 2 - 1) - 2 + 1) + 1;
+					y = rand() % ((NUM_COLS / 2 - 1) - 2 + 1) + 1;
+				}
+				else if (i < pokemonsForest) {
+					x = rand() % ((NUM_ROWS / 2 - 1) - 2 + 1) + 1;
+					y = rand() % ((NUM_COLS - 1) - (NUM_COLS / 2 + 1) + 1) + (NUM_COLS / 2 + 1);
+				}
+				else {
+					x = rand() % ((NUM_ROWS - 2) - (NUM_ROWS / 2 + 1) + 1) + (NUM_ROWS / 2 + 1);
+					y = rand() % ((NUM_COLS - 2) - (NUM_COLS / 2 + 1) + 1) + (NUM_COLS / 2 + 1);
+				}
+			} while (map[x][y] != Square::NOTHING);
+		}
 		pokemons[i].position.x = x;
 		pokemons[i].position.y = y;
-		map[x][y] = Square::POKEMON;
+		if (pokemons[i].pokemon == Pokemons::MEWTWO) map[pokemons[i].position.x][pokemons[i].position.y] = Square::MEWTWO;
+		else map[pokemons[i].position.x][pokemons[i].position.y] = Square::POKEMON;
 	}
 }
 
@@ -138,6 +151,7 @@ void Map::PrintMap() {
 				}
 			}
 			else if (map[row][col] == Square::POKEMON) std::cout << "P";
+			else if (map[row][col] == Square::MEWTWO) std::cout << "M";
 			else std::cout << ' ';
 		}
 		std::cout << std::endl;
@@ -177,27 +191,7 @@ void Map::NewPokemon() {
 			pokemons[position].position.y = rand() % (((NUM_ROWS - 2) - (NUM_ROWS / 2 + 1) + 1) + (NUM_ROWS / 2 + 1));
 		}
 	} while (map[pokemons[position].position.x][pokemons[position].position.y] != Square::NOTHING);
-
-	switch (pokemons[position].strengthLevel) {
-	case 1:
-		pokemons[position].lifes = rand() % (MAX_LIFE_LVL1 - MIN_LIFE_LVL1 + 1) + MIN_LIFE_LVL1;
-		break;
-	case 2:
-		pokemons[position].lifes = rand() % (MAX_LIFE_LVL2 - MIN_LIFE_LVL2 + 1) + MIN_LIFE_LVL6;
-		break;
-	case 3:
-		pokemons[position].lifes = rand() % (MAX_LIFE_LVL3 - MIN_LIFE_LVL3 + 1) + MIN_LIFE_LVL3;
-		break;
-	case 4:
-		pokemons[position].lifes = rand() % (MAX_LIFE_LVL4 - MIN_LIFE_LVL4 + 1) + MIN_LIFE_LVL4;
-		break;
-	case 5:
-		pokemons[position].lifes = rand() % (MAX_LIFE_LVL5 - MIN_LIFE_LVL5 + 1) + MIN_LIFE_LVL5;
-		break;
-	case 6:
-		pokemons[position].lifes = rand() % (MAX_LIFE_LVL6 - MIN_LIFE_LVL6 + 1) + MIN_LIFE_LVL6;
-		break;
-	}
+	pokemons[position].lifes = healthPokemons;
 	map[pokemons[position].position.x][pokemons[position].position.y] = Square::POKEMON;
 }
 

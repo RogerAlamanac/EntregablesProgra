@@ -1,6 +1,7 @@
 #pragma once
 #include "Position.h"
 enum class PokemonType {
+    INVALID,
     WATER,
     FIRE,
     ROCK,
@@ -8,6 +9,12 @@ enum class PokemonType {
     POISIONOUS,
     PSYQUIC,
     PLANT
+};
+
+enum class Pokemons {
+    INVALID,
+    STANDARD,
+    MEWTWO
 };
 const int minLifeToCure = 20;
 const int PROBABILITYLVL1 = 90;
@@ -34,10 +41,10 @@ struct Player;
 
 struct Pokemon {
     int lifes;
-    int movementType;
     int strengthLevel;
     bool isTrapped = false;
-    PokemonType type;
+    PokemonType type = PokemonType::INVALID;
+    Pokemons pokemon = Pokemons::INVALID;
     Pokemon();
     void RandomisePokeType();
     void CureHealth();

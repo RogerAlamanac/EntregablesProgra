@@ -3,7 +3,15 @@
 #include "Player.h"
 #include "Pokemon.h"
 
-enum class Square {WALL, NOTHING, PLAYER, POKEMON};
+enum class Square {
+	INVALID,
+	WALL,
+	NOTHING,
+	POKEBALL,
+	PLAYER, 
+	POKEMON,
+	MEWTWO
+};
 
 struct Map{
 	File file;
@@ -16,6 +24,11 @@ struct Map{
 	const int pokemonsToUnlockCave = file.pokemonsToUnlockCave;
 	const int pokemonsToUnlockPokenti = file.pokemonsToUnlockForest + file.pokemonsToUnlockCave;
 	const int totalPokemons = pokemonsPuebloPaleta + pokemonsForest + pokemonsCave;
+	const int pikachuPower = file.pikachuPower;
+	const int healthPokemons = file.healthPokemons;
+	const int healthMewtwo = file.healthMewtwo;
+	const int minTimePokemons = file.minTimePokemons;
+	const int maxTimePokemons = file.maxTimePokemons;
 	bool unlockedForest = false;
 	bool unlockedCave = false;
 	bool unlockedPokenti = false;
