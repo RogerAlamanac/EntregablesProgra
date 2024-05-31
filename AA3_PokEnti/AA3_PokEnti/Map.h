@@ -2,6 +2,8 @@
 #include "File.h"
 #include "Player.h"
 #include "Pokemon.h"
+#include "Pokeballs.h"
+#include <ctime>
 
 enum class Square {
 	INVALID,
@@ -29,12 +31,18 @@ struct Map{
 	const int healthMewtwo = file.healthMewtwo;
 	const int minTimePokemons = file.minTimePokemons;
 	const int maxTimePokemons = file.maxTimePokemons;
+	const int maxPokeBalls = 18;
+	const int pokeballsPuebloPaleta = 5;
+	const int pokeballsForest = 6;
+	const int pokeballsCave = 7;
 	bool unlockedForest = false;
 	bool unlockedCave = false;
 	bool unlockedPokenti = false;
 	Player player;
 	Pokemon* pokemons = nullptr;
 	Square** map = nullptr;
+	Pokeballs* pokeballs;
+	clock_t timer;
 	Map();
 	void PrintMap();
 	void PlayerMovement();
@@ -44,6 +52,10 @@ struct Map{
 	int FindPokemonPosition(int x, int y) const;
 	void FightPokemon(int x, int y);
 	void NewPokemon();
+	void InsertPokeballs();
+	void NewPokeball();
+	int FindPokeballPosition(int x, int y);
+	void PokemonsMovement();
 	~Map();
 
 };

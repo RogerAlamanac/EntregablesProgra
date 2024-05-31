@@ -131,6 +131,7 @@
     <ClCompile Include="File.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Pokeballs.cpp" />
     <ClCompile Include="Pokemon.cpp" />
     <ClCompile Include="PrintPokemons.cpp" />
   </ItemGroup>
@@ -138,6 +139,7 @@
     <ClInclude Include="File.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Pokeballs.h" />
     <ClInclude Include="Pokemon.h" />
     <ClInclude Include="Position.h" />
     <ClInclude Include="PrintPokemons.h" />

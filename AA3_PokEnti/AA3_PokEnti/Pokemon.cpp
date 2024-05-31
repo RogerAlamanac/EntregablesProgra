@@ -15,8 +15,12 @@ void Pokemon::CureHealth(){
     }
 }
 
-void Pokemon::Attack(){ //Se implementará en la siguiente entrega
-    
+void Pokemon::Attack(Player& player){ //Se implementará en la siguiente entrega
+    std::cout << "Pikachu, attack!" << std::endl;
+    //lifes -= pikachuPower;
+    //std::cout << "-" << pikachuPower << " Healthpoints" << std::endl;
+    system("pause");
+    std::cout << "Current lifes: " << lifes << std::endl;
 }
 
 void Pokemon::RandomisePokeType() {
@@ -55,7 +59,7 @@ void Pokemon::CapturePokemon(Player& player) {
             std::cout << "You have no Pokeballs left!" << std::endl;
         }
         else if (pokeBallThrow == 'a' || pokeBallThrow == 'A') {
-            Attack();
+            Attack(player);
             break;
         }
         else if (pokeBallThrow == 'h' || pokeBallThrow == 'H') {

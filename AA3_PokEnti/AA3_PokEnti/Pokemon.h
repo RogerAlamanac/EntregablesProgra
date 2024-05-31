@@ -24,31 +24,21 @@ const int PROBABILITYLVL4 = 55;
 const int PROBABILITYLVL5 = 40;
 const int PROBABILITYLVL6 = 25;
 
-const int MIN_LIFE_LVL1 = 10;
-const int MAX_LIFE_LVL1 = 39;
-const int MIN_LIFE_LVL2 = 40;
-const int MAX_LIFE_LVL2 = 69;
-const int MIN_LIFE_LVL3 = 70;
-const int MAX_LIFE_LVL3 = 99;
-const int MIN_LIFE_LVL4 = 100;
-const int MAX_LIFE_LVL4 = 129;
-const int MIN_LIFE_LVL5 = 130;
-const int MAX_LIFE_LVL5 = 159;
-const int MIN_LIFE_LVL6 = 160;
-const int MAX_LIFE_LVL6= 180;
-
 struct Player;
 
 struct Pokemon {
     int lifes;
     int strengthLevel;
+    int timeToMove = 0;
     bool isTrapped = false;
+    int initialTime = 0;
+    bool hasTakenTime = false;
     PokemonType type = PokemonType::INVALID;
     Pokemons pokemon = Pokemons::INVALID;
     Pokemon();
     void RandomisePokeType();
     void CureHealth();
-    void Attack();
+    void Attack(Player& player);
     void PokemonCaptured(Player& player);
     void CheckCapture(Player& player);
     void PokemonEscaped(Player& player);

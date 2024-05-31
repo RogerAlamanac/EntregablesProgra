@@ -3,9 +3,11 @@
 #include "Windows.h"
 #include <conio.h>
 
+
 Map::Map() {
 	pokemons = new Pokemon[totalPokemons];
 	map = new Square *[NUM_ROWS];
+	pokeballs = new Pokeballs[maxPokeBalls];
 	for (int i = 0; i < NUM_ROWS; i++) {
 		map[i] = new Square[NUM_COLS];
 	}
@@ -17,6 +19,8 @@ Map::Map() {
 		}
 	}
 	InitializePokemons();
+	InsertPokeballs();
+	timer = clock();
 }
 
 const int NUM_LEVEL_1 = 10;
@@ -29,6 +33,7 @@ const int NUM_LEVEL_6 = 3;
 void Map::InitializePokemons() {
 	for (int i = 0; i < totalPokemons; i++) {
 		pokemons[i].pokemon = Pokemons::STANDARD;
+		pokemons[i].timeToMove = rand() % (maxTimePokemons - minTimePokemons + 1) + minTimePokemons;
 		if (i < NUM_LEVEL_1) {
 			pokemons[i].strengthLevel = 1;
 			pokemons[i].lifes = healthPokemons;
@@ -151,6 +156,7 @@ void Map::PrintMap() {
 				}
 			}
 			else if (map[row][col] == Square::POKEMON) std::cout << "P";
+			else if(map[row][col] == Square::POKEBALL) std::cout << "O";
 			else if (map[row][col] == Square::MEWTWO) std::cout << "M";
 			else std::cout << ' ';
 		}
@@ -162,6 +168,7 @@ int Map::FindPokemonPosition(int x, int y) const {
 	for (int i = 0; i < totalPokemons; i++) {
 		if (pokemons[i].position.x == x && pokemons[i].position.y == y) return i;
 	}
+	return -1;
 }
 
 void Map::FightPokemon(int x, int y){
@@ -192,7 +199,44 @@ void Map::NewPokemon() {
 		}
 	} while (map[pokemons[position].position.x][pokemons[position].position.y] != Square::NOTHING);
 	pokemons[position].lifes = healthPokemons;
+	pokemons[position].timeToMove = rand() % (maxTimePokemons - minTimePokemons + 1) + minTimePokemons;
 	map[pokemons[position].position.x][pokemons[position].position.y] = Square::POKEMON;
+}
+
+void Map::PokemonsMovement() {
+	timer = clock();
+	for (int i = 0; i < totalPokemons; i++) {
+		if (!pokemons[i].hasTakenTime) {
+			pokemons[i].initialTime = float(timer) / CLOCKS_PER_SEC;
+			pokemons[i].hasTakenTime = true;
+		}
+		if ((float(timer) / CLOCKS_PER_SEC) - pokemons[i].initialTime >= pokemons[i].timeToMove) {
+			int x = pokemons[i].position.x;
+			int y = pokemons[i].position.y;
+			do {
+				int random = rand() % 4;
+				switch (random) {
+				case 0:
+					x += 1;
+					break;
+				case 1:
+					x -= 1;
+					break;
+				case 2:
+					y += 1;
+					break;
+				default:
+					y -= 1;
+					break;
+				}
+			} while (map[x][y] != Square::NOTHING);
+			map[pokemons[i].position.x][pokemons[i].position.y] = Square::NOTHING;
+			pokemons[i].position.x = x;
+			pokemons[i].position.y = y;
+			map[pokemons[i].position.x][pokemons[i].position.y] = Square::POKEMON;
+			pokemons[i].hasTakenTime = false;
+		}
+	}
 }
 
 void Map::PlayerMovement() {
@@ -211,11 +255,23 @@ void Map::PlayerMovement() {
 			map[player.position.x][player.position.y] = Square::NOTHING;
 			player.position.x--;
 		}
+		else if (map[player.position.x - 1][player.position.y] == Square::POKEBALL) {
+			NewPokeball();
+			map[player.position.x][player.position.y] = Square::NOTHING;
+			player.numPokeballs++;
+			player.position.x--;
+		}
 		break;
 
 	case Movement::DOWN:
 		if (map[player.position.x + 1][player.position.y] == Square::NOTHING) {
 			map[player.position.x][player.position.y] = Square::NOTHING;
+			player.position.x++;
+		}
+		else if (map[player.position.x + 1][player.position.y] == Square::POKEBALL) {
+			NewPokeball();
+			map[player.position.x][player.position.y] = Square::NOTHING;
+			player.numPokeballs++;
 			player.position.x++;
 		}
 		break;
@@ -225,11 +281,23 @@ void Map::PlayerMovement() {
 			map[player.position.x][player.position.y] = Square::NOTHING;
 			player.position.y++;
 		}
+		else if (map[player.position.x][player.position.y + 1] == Square::POKEBALL) {
+			NewPokeball();
+			map[player.position.x][player.position.y] = Square::NOTHING;
+			player.numPokeballs++;
+			player.position.y++;
+		}
 		break;
 
 	case Movement::LEFT:
 		if (map[player.position.x][player.position.y - 1] == Square::NOTHING) {
 			map[player.position.x][player.position.y] = Square::NOTHING;
+			player.position.y--;
+		}
+		else if (map[player.position.x][player.position.y - 1] == Square::POKEBALL) {
+			NewPokeball();
+			map[player.position.x][player.position.y] = Square::NOTHING;
+			player.numPokeballs++;
 			player.position.y--;
 		}
 		break;
@@ -308,6 +376,64 @@ void Map::UpdateScene(){
 	else if (player.position.x < NUM_ROWS / 2 && player.position.y > NUM_COLS / 2) player.scene = Scene::LIGA_POKENTI;
 }
 
+void Map::InsertPokeballs() {
+	int x = 0;
+	int y = 0;
+	for (int i = 0; i < maxPokeBalls;) {
+		if (i < pokeballsPuebloPaleta) {
+			x = rand() % ((NUM_ROWS / 2 - 1) - 2 + 1) + 1;
+			y = rand() % ((NUM_COLS / 2 - 1) - 2 + 1) + 1;
+		}
+		else if (i < pokeballsPuebloPaleta + pokeballsCave) {
+			x = rand() % ((NUM_ROWS / 2 - 1) - 2 + 1) + 1;
+			y = rand() % ((NUM_COLS - 1) - (NUM_COLS / 2 + 1) + 1) + (NUM_COLS / 2 + 1);
+		}
+		else {
+			x = rand() % ((NUM_ROWS - 2) - (NUM_ROWS / 2 + 1) + 1) + (NUM_ROWS / 2 + 1);
+			y = rand() % ((NUM_COLS - 2) - (NUM_COLS / 2 + 1) + 1) + (NUM_COLS / 2 + 1);
+		}
+		if (map[x][y] == Square::NOTHING) {
+			pokeballs[i].ChangePosition(x, y);
+			map[pokeballs[i].GetPositionX()][pokeballs[i].GetPositionY()] = Square::POKEBALL;
+			i++;
+		}
+	}
+}
+
+void Map::NewPokeball(){
+	int position = 0;
+	if (player.lastMovement == Movement::UP) position = FindPokeballPosition(player.position.x - 1, player.position.y);
+	else if (player.lastMovement == Movement::DOWN) position = FindPokeballPosition(player.position.x + 1, player.position.y);
+	else if (player.lastMovement == Movement::RIGHT) position = FindPokeballPosition(player.position.x, player.position.y + 1);
+	else if (player.lastMovement == Movement::LEFT) position = FindPokeballPosition(player.position.x, player.position.y - 1);
+	int x = 0;
+	int y = 0;
+	do {
+		if (player.scene == Scene::PUEBLO_PALETA) {
+			x = rand() % (NUM_COLS / 2);
+			y = rand() % (NUM_ROWS / 2 - 1);
+		}
+		else if (player.scene == Scene::BOSQUE) {
+			x = rand() % (((NUM_COLS - 2) - (NUM_COLS / 2 + 1) + 1) + (NUM_COLS / 2 + 1));
+			y = rand() % (((NUM_ROWS / 2 - 1) - 2 + 1) + 2);
+		}
+		else if (player.scene == Scene::CUEVA_CELESTE) {
+			x = rand() % (((NUM_COLS - 2) - (NUM_COLS / 2 + 1) + 1) + (NUM_COLS / 2 + 1));
+			y = rand() % (((NUM_ROWS - 2) - (NUM_ROWS / 2 + 1) + 1) + (NUM_ROWS / 2 + 1));
+		}
+	} while (map[x][y] != Square::NOTHING);
+	pokeballs[position].ChangePosition(x, y);
+	map[x][y] = Square::POKEBALL;
+}
+
+int Map::FindPokeballPosition(int x, int y) {
+	for (int i = 0; i < maxPokeBalls; i++) {
+		if (pokemons[i].position.x == x && pokemons[i].position.y == y) return i;
+	}
+	return -1;
+	return -1;
+}
+
 Map::~Map() {
 	if (pokemons != nullptr) {
 		delete[] pokemons;
@@ -317,4 +443,9 @@ Map::~Map() {
 		delete[] map;
 		map = nullptr;
 	}
+	if (pokeballs != nullptr) {
+		delete[] pokeballs;
+		pokeballs = nullptr;
+	}
+	timer = clock() - timer;
 }
