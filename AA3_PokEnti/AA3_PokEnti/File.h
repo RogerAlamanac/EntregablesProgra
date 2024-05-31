@@ -7,7 +7,6 @@ struct File {
 	int pokemonsToUnlockForest = 0;
 	int pokemonsForest = 0;
 	int pokemonsToUnlockCave = 0;
-	int pokemonsCave = 10;
 	int pikachuPower = 0;
 	int healthPokemons = 0;
 	int healthMewtwo = 0;

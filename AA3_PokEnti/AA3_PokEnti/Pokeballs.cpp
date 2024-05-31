@@ -5,11 +5,11 @@ Pokeballs::Pokeballs() {
 	position.y = 0;
 }
 
-int Pokeballs::GetPositionX() {
+int Pokeballs::GetPositionX() const{
 	return position.x;
 }
 
-int Pokeballs::GetPositionY() {
+int Pokeballs::GetPositionY() const {
 	return position.y;
 }
 

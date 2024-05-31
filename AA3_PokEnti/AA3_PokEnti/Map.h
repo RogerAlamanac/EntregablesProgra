@@ -15,17 +15,17 @@ enum class Square {
 	MEWTWO
 };
 
-struct Map{
+class Map{
+private:
 	File file;
 	const int NUM_ROWS = file.NUM_ROWS;
 	const int NUM_COLS = file.NUM_COLS;
 	const int pokemonsPuebloPaleta = file.pokemonsPuebloPaleta;
 	const int pokemonsForest = file.pokemonsForest;
-	const int pokemonsCave = file.pokemonsCave;
 	const int pokemonsToUnlockForest = file.pokemonsToUnlockForest;
 	const int pokemonsToUnlockCave = file.pokemonsToUnlockCave;
 	const int pokemonsToUnlockPokenti = file.pokemonsToUnlockForest + file.pokemonsToUnlockCave;
-	const int totalPokemons = pokemonsPuebloPaleta + pokemonsForest + pokemonsCave;
+	const int totalPokemons = pokemonsPuebloPaleta + pokemonsForest;
 	const int pikachuPower = file.pikachuPower;
 	const int healthPokemons = file.healthPokemons;
 	const int healthMewtwo = file.healthMewtwo;
@@ -38,11 +38,12 @@ struct Map{
 	bool unlockedForest = false;
 	bool unlockedCave = false;
 	bool unlockedPokenti = false;
-	Player player;
 	Pokemon* pokemons = nullptr;
 	Square** map = nullptr;
 	Pokeballs* pokeballs;
 	clock_t timer;
+public:
+	Player player;
 	Map();
 	void PrintMap();
 	void PlayerMovement();

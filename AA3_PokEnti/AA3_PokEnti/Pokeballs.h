@@ -1,12 +1,12 @@
 #pragma once
 #include "Position.h"
-struct Pokeballs
+class Pokeballs
 {
 private:
     Position position;
 public:
     Pokeballs();
-    int GetPositionX();
-    int GetPositionY();
+    int GetPositionX() const;
+    int GetPositionY() const;
     void ChangePosition(int x, int y);
 };

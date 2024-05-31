@@ -32,7 +32,7 @@ int main() {
 			map.PlayerMovement();
 			Sleep(1000 / FPS);
 		}
-		if(map.player.capturedMewtwo){
+		if(map.player.GetCapturedMewtwo()){
 			PrintPikachu();
 			std::cout << "YOU WIN =)" << std::endl;
 		} else{

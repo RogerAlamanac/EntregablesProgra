@@ -9,16 +9,85 @@ Pokemon::Pokemon() {
     RandomisePokeType();
 }
 
+int Pokemon::GetLifes() const {
+    return lifes;
+}
+int Pokemon::GetStrenght() const {
+    return strengthLevel;
+}
+int Pokemon::GetTimeToMove() const {
+    return timeToMove;
+}
+bool Pokemon::GetIsTrapped() const {
+    return isTrapped;
+}
+int Pokemon::GetInitialTime() const {
+    return initialTime;
+}
+bool Pokemon::GetHasTakenTime() const {
+    return hasTakenTime;
+}
+Position Pokemon::GetPosition() const {
+    return position;
+}
+PokemonType Pokemon::GetPokemonType() const {
+    return type;
+}
+Pokemons Pokemon::GetIsMewtwo() const {
+    return pokemon;
+}
+
+
+void Pokemon::ChangeLifes(int l) {
+    lifes = l;
+}
+void Pokemon::ChangeStrenght(int s) {
+    strengthLevel = s;
+}
+void Pokemon::ChangeTimeToMove(int t) {
+    timeToMove = t;
+}
+void Pokemon::ChangeIsTrapped(bool t) {
+    isTrapped = t;
+}
+void Pokemon::ChangeInitialTime(int t) {
+    initialTime = t;
+}
+void Pokemon::ChangeHasTakenTime(bool h) {
+    hasTakenTime = h;
+}
+void Pokemon::ChangePosition(Position p) {
+    position = p;
+}
+void Pokemon::ChangePositionX(int x) {
+    position.x = x;
+}
+void Pokemon::ChangePositionY(int y) {
+    position.y = y;
+}
+void Pokemon::ChangeType(PokemonType t) {
+    type = t;
+}
+void Pokemon::ChangeIsMewtwo(Pokemons p) {
+    pokemon = p;
+}
+
 void Pokemon::CureHealth(){
     if(lifes <= minLifeToCure){
         lifes += minLifeToCure;
     }
 }
 
-void Pokemon::Attack(Player& player){ //Se implementará en la siguiente entrega
+void Pokemon::Attack(Player& player, int pikachuDamage){ //Se implementará en la siguiente entrega
     std::cout << "Pikachu, attack!" << std::endl;
-    //lifes -= pikachuPower;
-    //std::cout << "-" << pikachuPower << " Healthpoints" << std::endl;
+    int prevLifes = lifes;
+    lifes -= pikachuDamage;
+    if (lifes > 0) {
+        std::cout << "-" << pikachuDamage << " Healthpoints" << std::endl;
+    }
+    else {
+        std::cout << "-" << prevLifes << " Healthpoints" << std::endl;
+    }
     system("pause");
     std::cout << "Current lifes: " << lifes << std::endl;
 }
@@ -43,23 +112,23 @@ void Pokemon::RandomisePokeType() {
     }
 }
 
-void Pokemon::CapturePokemon(Player& player) {
+void Pokemon::CapturePokemon(Player& player, int pikachuDamage) {
     char pokeBallThrow;
     while (true) {
         std::cout << "Press P to throw the PokeBall" << std::endl;
         std::cout << "Press A to attack the Pokemon" << std::endl;
         std::cout << "Press H to escape" << std::endl;
         std::cin >> pokeBallThrow;
-        if (pokeBallThrow == 'p' || pokeBallThrow == 'P' && player.numPokeballs > 0) {
+        if (pokeBallThrow == 'p' || pokeBallThrow == 'P' && player.GetPokeballs() > 0) {
             CheckCapture(player);
-            player.numPokeballs--;
+            player.ChangeNumPokeballs(player.GetPokeballs() - 1);
             break;
         }
-        else if (pokeBallThrow == 'p' || pokeBallThrow == 'P' && player.numPokeballs <= 0) {
+        else if (pokeBallThrow == 'p' || pokeBallThrow == 'P' && player.GetPokeballs() <= 0) {
             std::cout << "You have no Pokeballs left!" << std::endl;
         }
         else if (pokeBallThrow == 'a' || pokeBallThrow == 'A') {
-            Attack(player);
+            Attack(player, pikachuDamage);
             break;
         }
         else if (pokeBallThrow == 'h' || pokeBallThrow == 'H') {
@@ -95,9 +164,9 @@ void Pokemon::PokemonEscaped(Player& player) {
     std::cout << "Press 1 to try again or any other key to escape" << std::endl;
     std::cin >> tryAgain;
     if (tryAgain == 1) {
-        if (player.numPokeballs > 0) {
+        if (player.GetPokeballs() > 0) {
             CheckCapture(player);
-            player.numPokeballs--;
+            player.ChangeNumPokeballs(player.GetPokeballs() - 1);
         }
         else {
             std::cout << "You have no Pokeballs left!" << std::endl;
@@ -119,5 +188,5 @@ void Pokemon::PokemonCaptured(Player& player){
    system("pause");
    isTrapped = true;
    lifes = 10;
-   player.numCapturedPokemons++;
+   player.ChangeNumCapturedPokemons(player.GetNumCapturedPokemons() + 1);
 }
