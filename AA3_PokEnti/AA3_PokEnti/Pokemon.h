@@ -1,5 +1,6 @@
 #pragma once
 #include "Position.h"
+#include <iostream>
 enum class PokemonType {
     INVALID,
     WATER,
@@ -11,11 +12,28 @@ enum class PokemonType {
     PLANT
 };
 
+enum class PokemonName {
+    AXEW,
+    BALTOY,
+    BARBOACH,
+    CROBAT,
+    CROAGUNK,
+    CORSOLA,
+    VICTINI,
+    PALOSSAND,
+    PANSEAR,
+    PARAS,
+    SANDILE,
+    MEWTWO,
+    INVALID
+};
+
 enum class Pokemons {
     INVALID,
     STANDARD,
     MEWTWO
 };
+
 const int minLifeToCure = 20;
 const int PROBABILITYLVL1 = 90;
 const int PROBABILITYLVL2 = 80;
@@ -36,6 +54,7 @@ private:
     bool hasTakenTime = false;
     Position position;
     PokemonType type = PokemonType::INVALID;
+    PokemonName name = PokemonName::INVALID;
     Pokemons pokemon = Pokemons::INVALID;
 public:
     Pokemon();
@@ -48,6 +67,7 @@ public:
     Position GetPosition() const;
     PokemonType GetPokemonType() const;
     Pokemons GetIsMewtwo() const;
+    std::string GetName() const;
 
     void ChangeLifes(int l);
     void ChangeStrenght(int s);
@@ -60,11 +80,14 @@ public:
     void ChangePositionY(int y);
     void ChangeType(PokemonType t);
     void ChangeIsMewtwo(Pokemons p);
+    void ChangeName(PokemonName n);
+
     void RandomisePokeType();
+    void RandName();
     void CureHealth();
-    void Attack(Player& player, int pikachuDamage);
+    bool Attack(Player& player, int pikachuDamage);
     void PokemonCaptured(Player& player);
-    void CheckCapture(Player& player);
+    bool CheckCapture(Player& player);
     void PokemonEscaped(Player& player);
     void CapturePokemon(Player& player, int pikachuDamage);
     void PlayerEscaped();

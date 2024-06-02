@@ -6,6 +6,7 @@
 Pokemon::Pokemon() {
     position.x = 0;
     position.y = 0;
+    RandName();
     RandomisePokeType();
 }
 
@@ -35,6 +36,36 @@ PokemonType Pokemon::GetPokemonType() const {
 }
 Pokemons Pokemon::GetIsMewtwo() const {
     return pokemon;
+}
+std::string Pokemon::GetName() const {
+    switch (name) {
+    case PokemonName::AXEW:
+        return "AXEW";
+    case PokemonName::BALTOY:
+        return "BALTOY";
+    case PokemonName::BARBOACH:
+        return "BARBOACH";
+    case PokemonName::CROBAT:
+        return "CROBAT";
+    case PokemonName::CROAGUNK:
+        return "CROAGUNK";
+    case PokemonName::CORSOLA:
+        return "CORSOLA";
+    case PokemonName::VICTINI:
+        return "VICTINI";
+    case PokemonName::PALOSSAND:
+        return "PALOSSAND";
+    case PokemonName::PANSEAR:
+        return "PANSEAR";
+    case PokemonName::PARAS:
+        return "PARAS";
+    case PokemonName::SANDILE:
+        return "SANDILE";
+    case PokemonName::MEWTWO:
+        return "MEWTWO";
+    default:
+        return "INVALID";
+    }
 }
 
 
@@ -71,27 +102,72 @@ void Pokemon::ChangeType(PokemonType t) {
 void Pokemon::ChangeIsMewtwo(Pokemons p) {
     pokemon = p;
 }
+void Pokemon::ChangeName(PokemonName n) {
+    name = n;
+}
 
+void Pokemon::RandName() {
+    int randName = rand() % 11;
+    switch (randName) {
+    case 0:
+        name = PokemonName::AXEW;
+        break;
+    case 1:
+        name = PokemonName::BALTOY;
+        break;
+    case 2:
+        name = PokemonName::BARBOACH;
+        break;
+    case 3:
+        name = PokemonName::CROBAT;
+        break;
+    case 4:
+        name = PokemonName::CROAGUNK;
+        break;
+    case 5:
+        name = PokemonName::CORSOLA;
+        break;
+    case 6:
+        name = PokemonName::VICTINI;
+        break;
+    case 7:
+        name = PokemonName::PALOSSAND;
+        break;
+    case 8:
+        name = PokemonName::PANSEAR;
+        break;
+    case 9:
+        name = PokemonName::PARAS;
+        break;
+    case 10:
+        name = PokemonName::SANDILE;
+        break;
+    default:
+        name = PokemonName::INVALID;
+        break;
+    }
+}
 void Pokemon::CureHealth(){
     if(lifes <= minLifeToCure){
         lifes += minLifeToCure;
     }
 }
-
-void Pokemon::Attack(Player& player, int pikachuDamage){ //Se implementará en la siguiente entrega
+bool Pokemon::Attack(Player& player, int pikachuDamage){ //Se implementará en la siguiente entrega
     std::cout << "Pikachu, attack!" << std::endl;
     int prevLifes = lifes;
     lifes -= pikachuDamage;
     if (lifes > 0) {
         std::cout << "-" << pikachuDamage << " Healthpoints" << std::endl;
+        std::cout << "Current lifes: " << lifes << std::endl;
+        return false;
     }
     else {
         std::cout << "-" << prevLifes << " Healthpoints" << std::endl;
+        std::cout << "Current lifes: 0" << std::endl << "You've killed the pokemon!" << std::endl;
+        system("pause");
+        return true;
     }
-    system("pause");
-    std::cout << "Current lifes: " << lifes << std::endl;
 }
-
 void Pokemon::RandomisePokeType() {
     int randomType = rand() % (7-1+1)+1;
     switch (randomType) {
@@ -111,25 +187,23 @@ void Pokemon::RandomisePokeType() {
         break;
     }
 }
-
 void Pokemon::CapturePokemon(Player& player, int pikachuDamage) {
     char pokeBallThrow;
     while (true) {
+        std::cout << GetName() << "\tHealth: " << lifes << std::endl;
         std::cout << "Press P to throw the PokeBall" << std::endl;
         std::cout << "Press A to attack the Pokemon" << std::endl;
         std::cout << "Press H to escape" << std::endl;
         std::cin >> pokeBallThrow;
         if (pokeBallThrow == 'p' || pokeBallThrow == 'P' && player.GetPokeballs() > 0) {
-            CheckCapture(player);
             player.ChangeNumPokeballs(player.GetPokeballs() - 1);
-            break;
+            if (CheckCapture(player)) break;
         }
         else if (pokeBallThrow == 'p' || pokeBallThrow == 'P' && player.GetPokeballs() <= 0) {
             std::cout << "You have no Pokeballs left!" << std::endl;
         }
         else if (pokeBallThrow == 'a' || pokeBallThrow == 'A') {
-            Attack(player, pikachuDamage);
-            break;
+            if(Attack(player, pikachuDamage)) break;
         }
         else if (pokeBallThrow == 'h' || pokeBallThrow == 'H') {
             PlayerEscaped();
@@ -138,8 +212,7 @@ void Pokemon::CapturePokemon(Player& player, int pikachuDamage) {
     }
    
 }
-
-void Pokemon::CheckCapture(Player& player){
+bool Pokemon::CheckCapture(Player& player){
   int probabilityOfCapture = rand() % 100;
   if (strengthLevel == 1 && probabilityOfCapture < PROBABILITYLVL1){
         PokemonCaptured(player);
@@ -155,9 +228,10 @@ void Pokemon::CheckCapture(Player& player){
         PokemonCaptured(player);
   } else{
         PokemonEscaped(player);
+        return false;
   }
+  return true;
 }
-
 void Pokemon::PokemonEscaped(Player& player) {
     int tryAgain;
     std::cout << "Pokemon escaped!" << std::endl;
@@ -177,12 +251,10 @@ void Pokemon::PokemonEscaped(Player& player) {
         system("pause");
     }
 }
-
 void Pokemon::PlayerEscaped() {
     std::cout << "You escaped!" << std::endl;
     system("pause");
 }
-
 void Pokemon::PokemonCaptured(Player& player){
    std::cout << "Pokemon captured" << std::endl;
    system("pause");

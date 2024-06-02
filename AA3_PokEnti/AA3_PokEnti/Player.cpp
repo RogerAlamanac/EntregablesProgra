@@ -2,24 +2,24 @@
 #include <iostream>
 
 Player::Player() {
-	position.x = 40;
-	position.y = 10;
+	position.x = 5;
+	position.y = 5;
 	capturedPokemons = new Pokemon[numCapturedPokemons];
 }
 
 void Player::PrintScene() {
 	switch (scene) {
 	case Scene::PUEBLO_PALETA:
-		std::cout << "PUEBLO PALETA" << std::endl;
+		std::cout << "\tPUEBLO PALETA" << std::endl;
 		break;
 	case Scene::BOSQUE:
-		std::cout << "BOSQUE" << std::endl;
+		std::cout << "\tBOSQUE" << std::endl;
 		break;
 	case Scene::CUEVA_CELESTE:
-		std::cout << "CUEVA CELESTE" << std::endl;
+		std::cout << "\tCUEVA CELESTE" << std::endl;
 		break;
 	case Scene::LIGA_POKENTI:
-		std::cout << "LIGA POKENTI" << std::endl;
+		std::cout << "\tLIGA POKENTI" << std::endl;
 		break;
 	}
 }

@@ -31,10 +31,9 @@ private:
 	const int healthMewtwo = file.healthMewtwo;
 	const int minTimePokemons = file.minTimePokemons;
 	const int maxTimePokemons = file.maxTimePokemons;
-	const int maxPokeBalls = 18;
-	const int pokeballsPuebloPaleta = 5;
+	const int maxPokeBalls = 14;
+	const int pokeballsPuebloPaleta = 8;
 	const int pokeballsForest = 6;
-	const int pokeballsCave = 7;
 	bool unlockedForest = false;
 	bool unlockedCave = false;
 	bool unlockedPokenti = false;

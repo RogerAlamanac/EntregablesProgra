@@ -140,6 +140,10 @@ _,-'       `.     |    |  /`.   \,-'  |    \  |`. |           | ___
         \_.-'       |__|    `-._ |      '-.| |   |    |   |    |   |
                                 `'           '-._|    |___|    |___|
 )";
-    std::cout << (selected == 0 ? "> PLAY\n" : "  PLAY\n");
-    std::cout << (selected == 1 ? "> EXIT\n" : "  EXIT\n");
+    if(selected == 0){
+        std::cout << "> PLAY\n" << "  EXIT\n";
+    }
+    else {
+        std::cout << "  PLAY\n" << "> EXIT\n";
+    }
 }
