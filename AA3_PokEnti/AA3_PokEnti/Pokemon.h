@@ -52,6 +52,7 @@ private:
     bool isTrapped = false;
     int initialTime = 0;
     bool hasTakenTime = false;
+    bool isBeingCaptured = false;
     Position position;
     PokemonType type = PokemonType::INVALID;
     PokemonName name = PokemonName::INVALID;

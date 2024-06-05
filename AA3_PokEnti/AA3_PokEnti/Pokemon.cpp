@@ -164,6 +164,9 @@ bool Pokemon::Attack(Player& player, int pikachuDamage){ //Se implementará en la
     else {
         std::cout << "-" << prevLifes << " Healthpoints" << std::endl;
         std::cout << "Current lifes: 0" << std::endl << "You've killed the pokemon!" << std::endl;
+        if (pokemon == Pokemons::MEWTWO) {
+            player.ChangeCapturedMewtwo(true);
+        }
         system("pause");
         return true;
     }
@@ -195,55 +198,95 @@ void Pokemon::CapturePokemon(Player& player, int pikachuDamage) {
         std::cout << "Press A to attack the Pokemon" << std::endl;
         std::cout << "Press H to escape" << std::endl;
         std::cin >> pokeBallThrow;
-        if (pokeBallThrow == 'p' || pokeBallThrow == 'P' && player.GetPokeballs() > 0) {
-            player.ChangeNumPokeballs(player.GetPokeballs() - 1);
-            if (CheckCapture(player)) break;
-        }
-        else if (pokeBallThrow == 'p' || pokeBallThrow == 'P' && player.GetPokeballs() <= 0) {
-            std::cout << "You have no Pokeballs left!" << std::endl;
+        if (pokeBallThrow == 'p' || pokeBallThrow == 'P') {
+            if (player.GetPokeballs() > 0) {
+                player.ChangeNumPokeballs(player.GetPokeballs() - 1);
+                if (CheckCapture(player)) break;
+            }
+            else {
+                std::cout << "You have no Pokeballs left!" << std::endl;
+                if (pokemon == Pokemons::MEWTWO) {
+                    std::cout << "OH NO! MEWTWO HAS ESCAPED FOREVER!" << std::endl;
+                }
+                system("pause");
+                break;
+            }
         }
         else if (pokeBallThrow == 'a' || pokeBallThrow == 'A') {
             if(Attack(player, pikachuDamage)) break;
         }
         else if (pokeBallThrow == 'h' || pokeBallThrow == 'H') {
             PlayerEscaped();
+            if (pokemon == Pokemons::MEWTWO){
+                std::cout << "OH NO! MEWTWO HAS ESCAPED FOREVER!" << std::endl;
+            } 
             break;
         }
     }
    
 }
 bool Pokemon::CheckCapture(Player& player){
-  int probabilityOfCapture = rand() % 100;
-  if (strengthLevel == 1 && probabilityOfCapture < PROBABILITYLVL1){
-        PokemonCaptured(player);
-  } else if(strengthLevel == 2 && probabilityOfCapture < PROBABILITYLVL2){
-        PokemonCaptured(player);
-  } else if(strengthLevel == 3 && probabilityOfCapture < PROBABILITYLVL3){
-        PokemonCaptured(player);
-  } else if(strengthLevel == 4 && probabilityOfCapture < PROBABILITYLVL4){
-        PokemonCaptured(player);
-  } else if(strengthLevel == 5 && probabilityOfCapture < PROBABILITYLVL5){
-        PokemonCaptured(player);
-  } else if(strengthLevel == 6 && probabilityOfCapture < PROBABILITYLVL6){
-        PokemonCaptured(player);
-  } else{
-        PokemonEscaped(player);
-        return false;
-  }
-  return true;
+    if (pokemon == Pokemons::MEWTWO) {
+        int probabilityOfCapture = rand() % 80;
+        if (lifes < 250) probabilityOfCapture -= 2;
+        else if (lifes < 200) probabilityOfCapture -= 5;
+        else if (lifes < 150) probabilityOfCapture -= 10;
+        else if (lifes < 100) probabilityOfCapture -= 16;
+        if (probabilityOfCapture < PROBABILITYLVL6) {
+            PokemonCaptured(player);
+            player.ChangeCapturedMewtwo(true);
+        }
+        else {
+            PokemonEscaped(player);
+            return false;
+        }
+        return true;
+    }
+    else {
+        int probabilityOfCapture = rand() % 100;
+        if (lifes < 80) probabilityOfCapture -= 5;
+        else if (lifes < 80) probabilityOfCapture -= 5;
+        else if (lifes < 60) probabilityOfCapture -= 8;
+        else if (lifes < 40) probabilityOfCapture -= 14;
+        else if (lifes < 20) probabilityOfCapture -= 18;
+        if (strengthLevel == 1 && probabilityOfCapture < PROBABILITYLVL1) {
+            PokemonCaptured(player);
+        }
+        else if (strengthLevel == 2 && probabilityOfCapture < PROBABILITYLVL2) {
+            PokemonCaptured(player);
+        }
+        else if (strengthLevel == 3 && probabilityOfCapture < PROBABILITYLVL3) {
+            PokemonCaptured(player);
+        }
+        else if (strengthLevel == 4 && probabilityOfCapture < PROBABILITYLVL4) {
+            PokemonCaptured(player);
+        }
+        else if (strengthLevel == 5 && probabilityOfCapture < PROBABILITYLVL5) {
+            PokemonCaptured(player);
+        }
+        else if (strengthLevel == 6 && probabilityOfCapture < PROBABILITYLVL6) {
+            PokemonCaptured(player);
+        }
+        else {
+            PokemonEscaped(player);
+            return false;
+        }
+        return true;
+    }
 }
 void Pokemon::PokemonEscaped(Player& player) {
-    int tryAgain;
+    char tryAgain;
     std::cout << "Pokemon escaped!" << std::endl;
     std::cout << "Press 1 to try again or any other key to escape" << std::endl;
     std::cin >> tryAgain;
-    if (tryAgain == 1) {
+    if (tryAgain == '1') {
         if (player.GetPokeballs() > 0) {
-            CheckCapture(player);
             player.ChangeNumPokeballs(player.GetPokeballs() - 1);
+            CheckCapture(player);
         }
         else {
             std::cout << "You have no Pokeballs left!" << std::endl;
+            system("pause");
         }
     }
     else {

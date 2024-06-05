@@ -26,7 +26,7 @@ int main() {
 	}
 	switch (selected) {
 	case 0:
-		while (true) {		// Si ha llegado a liga Pokenti y no ha capturado a Mewtwo se acaba el juego
+		while (map.player.GetScene() != Scene::LIGA_POKENTI) {
 			system("cls");
 			map.PrintMap();
 			map.PlayerMovement();
@@ -35,7 +35,8 @@ int main() {
 		if(map.player.GetCapturedMewtwo()){
 			PrintPikachu();
 			std::cout << "YOU WIN =)" << std::endl;
-		} else{
+		} 
+		else{
 			PrintMewtwo();
 			std::cout << "YOU LOSE =(" << std::endl;
 		}

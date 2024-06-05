@@ -24,7 +24,7 @@ Map::Map() {
 	timer = clock();
 }
 
-const int NUM_LEVEL_1 = 6;		// 6 18  24
+const int NUM_LEVEL_1 = 6;
 const int NUM_LEVEL_2 = 5;		
 const int NUM_LEVEL_3 = 4;
 const int NUM_LEVEL_4 = 4;
@@ -173,7 +173,19 @@ int Map::FindPokemonPosition(int x, int y) const {
 void Map::FightPokemon(int x, int y){
 	std::cout << std::endl << "You have a Pokemon nearby, do you want to capture it?" << std::endl;
 	pokemons[FindPokemonPosition(x, y)].CapturePokemon(player, pikachuPower);
-	NewPokemon();
+	if (pokemons[FindPokemonPosition(x, y)].GetIsMewtwo() != Pokemons::MEWTWO) {
+		NewPokemon();
+	}
+	else {
+		if (!unlockedPokenti) {
+			int col = NUM_COLS / 2;
+			for (int row = NUM_ROWS / 2 + 1; row < NUM_ROWS - 1; row++) {
+				map[row][col] = Square::NOTHING;
+			}
+			unlockedPokenti = true;
+		}
+		map[x][y] == Square::NOTHING;
+	}
 }
 
 void Map::NewPokemon() {
@@ -192,6 +204,12 @@ void Map::NewPokemon() {
 			pokemons[position].ChangePositionX(rand() % (((NUM_COLS - 2) - (NUM_COLS / 2 + 1) + 1) + (NUM_COLS / 2 + 1)));
 			pokemons[position].ChangePositionY(rand() % (((NUM_ROWS / 2 - 1) - 2 + 1) + 2));
 		}
+		if (pokemons[position].GetPosition().x > NUM_COLS - 1 || pokemons[position].GetPosition().x < 1) {
+			pokemons[position].ChangePositionX(NUM_COLS - 2);
+		}
+		if (pokemons[position].GetPosition().y > NUM_ROWS - 1 || pokemons[position].GetPosition().y < 1) {
+			pokemons[position].ChangePositionY(NUM_ROWS - 2);
+		}
 	} while (map[pokemons[position].GetPosition().x][pokemons[position].GetPosition().y] != Square::NOTHING);
 	pokemons[position].ChangeLifes(healthPokemons);
 	pokemons[position].RandName();
@@ -204,35 +222,38 @@ void Map::PokemonsMovement() {
 	float timer = std::chrono::duration<float>(now.time_since_epoch()).count();
 
 	for (int i = 0; i < totalPokemons; i++) {
-		if (!pokemons[i].GetHasTakenTime()) {
-			pokemons[i].ChangeInitialTime(timer);
-			pokemons[i].ChangeHasTakenTime(true);
-		}
+		if (pokemons[i].GetIsMewtwo() != Pokemons::MEWTWO) {
 
-		if (timer - pokemons[i].GetInitialTime() >= pokemons[i].GetTimeToMove()) {
-			int x = pokemons[i].GetPosition().x;
-			int y = pokemons[i].GetPosition().y;
+			if (!pokemons[i].GetHasTakenTime()) {
+				pokemons[i].ChangeInitialTime(timer);
+				pokemons[i].ChangeHasTakenTime(true);
+			}
 
-			// Asegurarse de que los nuevos valores x e y sean válidos
-			int newX, newY;
-			do {
-				newX = x;
-				newY = y;
-				int random = rand() % 4;
-				switch (random) {
-				case 0: newX += 1; break;
-				case 1: newX -= 1; break;
-				case 2: newY += 1; break;
-				case 3: newY -= 1; break;
-				}
-			} while (newX < 0 || newX >= NUM_ROWS || newY < 0 || newY >= NUM_COLS || map[newX][newY] != Square::NOTHING);
+			if (timer - pokemons[i].GetInitialTime() >= pokemons[i].GetTimeToMove()) {
+				int x = pokemons[i].GetPosition().x;
+				int y = pokemons[i].GetPosition().y;
 
-			// Actualizar la posición del Pokémon en el mapa
-			map[x][y] = Square::NOTHING;
-			pokemons[i].ChangePositionX(newX);
-			pokemons[i].ChangePositionY(newY);
-			map[newX][newY] = Square::POKEMON;
-			pokemons[i].ChangeHasTakenTime(false);
+				// Asegurarse de que los nuevos valores x e y sean válidos
+				int newX, newY;
+				do {
+					newX = x;
+					newY = y;
+					int random = rand() % 4;
+					switch (random) {
+					case 0: newX += 1; break;
+					case 1: newX -= 1; break;
+					case 2: newY += 1; break;
+					case 3: newY -= 1; break;
+					}
+				} while (newX < 0 || newX >= NUM_ROWS || newY < 0 || newY >= NUM_COLS || map[newX][newY] != Square::NOTHING);
+
+				// Actualizar la posición del Pokémon en el mapa
+				map[x][y] = Square::NOTHING;
+				pokemons[i].ChangePositionX(newX);
+				pokemons[i].ChangePositionY(newY);
+				map[newX][newY] = Square::POKEMON;
+				pokemons[i].ChangeHasTakenTime(false);
+			}
 		}
 	}
 }
@@ -304,40 +325,41 @@ void Map::PlayerMovement() {
 	}
 	switch (player.GetAction()) {
 	case Action::CAPTURE:
-		if (map[player.GetPosition().x - 1][player.GetPosition().y] == Square::POKEMON) {
+		if (map[player.GetPosition().x - 1][player.GetPosition().y] == Square::POKEMON || map[player.GetPosition().x - 1][player.GetPosition().y] == Square::MEWTWO) {
 			FightPokemon(player.GetPosition().x - 1, player.GetPosition().y);
 			map[player.GetPosition().x - 1][player.GetPosition().y] = Square::NOTHING;
 		}
-		else if (map[player.GetPosition().x - 1][player.GetPosition().y - 1] == Square::POKEMON) {
+		else if (map[player.GetPosition().x - 1][player.GetPosition().y - 1] == Square::POKEMON || map[player.GetPosition().x - 1][player.GetPosition().y - 1] == Square::MEWTWO) {
 			FightPokemon(player.GetPosition().x - 1, player.GetPosition().y - 1);
 			map[player.GetPosition().x - 1][player.GetPosition().y - 1] = Square::NOTHING;
 		}
-		else if (map[player.GetPosition().x - 1][player.GetPosition().y + 1] == Square::POKEMON) {
+		else if (map[player.GetPosition().x - 1][player.GetPosition().y + 1] == Square::POKEMON || map[player.GetPosition().x - 1][player.GetPosition().y + 1] == Square::MEWTWO) {
 			FightPokemon(player.GetPosition().x - 1, player.GetPosition().y + 1);
 			map[player.GetPosition().x - 1][player.GetPosition().y + 1] = Square::NOTHING;
 		}
-		else if (map[player.GetPosition().x + 1][player.GetPosition().y] == Square::POKEMON) {
+		else if (map[player.GetPosition().x + 1][player.GetPosition().y] == Square::POKEMON || map[player.GetPosition().x + 1][player.GetPosition().y] == Square::MEWTWO) {
 			FightPokemon(player.GetPosition().x + 1, player.GetPosition().y);
 			map[player.GetPosition().x + 1][player.GetPosition().y] = Square::NOTHING;
 		}
-		else if (map[player.GetPosition().x + 1][player.GetPosition().y - 1] == Square::POKEMON) {
+		else if (map[player.GetPosition().x + 1][player.GetPosition().y - 1] == Square::POKEMON || map[player.GetPosition().x + 1][player.GetPosition().y - 1] == Square::MEWTWO) {
 			FightPokemon(player.GetPosition().x + 1, player.GetPosition().y - 1);
 			map[player.GetPosition().x + 1][player.GetPosition().y - 1] = Square::NOTHING;
 		}
-		else if (map[player.GetPosition().x + 1][player.GetPosition().y + 1] == Square::POKEMON) {
+		else if (map[player.GetPosition().x + 1][player.GetPosition().y + 1] == Square::POKEMON || map[player.GetPosition().x + 1][player.GetPosition().y + 1] == Square::MEWTWO) {
 			FightPokemon(player.GetPosition().x + 1, player.GetPosition().y + 1);
 			map[player.GetPosition().x + 1][player.GetPosition().y + 1] = Square::NOTHING;
 		}
-		else if (map[player.GetPosition().x][player.GetPosition().y + 1] == Square::POKEMON) {
+		else if (map[player.GetPosition().x][player.GetPosition().y + 1] == Square::POKEMON || map[player.GetPosition().x][player.GetPosition().y + 1] == Square::MEWTWO) {
 			FightPokemon(player.GetPosition().x, player.GetPosition().y + 1);
 			map[player.GetPosition().x][player.GetPosition().y + 1] = Square::NOTHING;
 		}
-		else if (map[player.GetPosition().x][player.GetPosition().y - 1] == Square::POKEMON) {
+		else if (map[player.GetPosition().x][player.GetPosition().y - 1] == Square::POKEMON || map[player.GetPosition().x][player.GetPosition().y - 1] == Square::MEWTWO) {
 			FightPokemon(player.GetPosition().x, player.GetPosition().y - 1);
 			map[player.GetPosition().x][player.GetPosition().y - 1] = Square::NOTHING;
 		}
 		break;
 	default:
+		PokemonsMovement();
 		break;
 	}
 	map[player.GetPosition().x][player.GetPosition().y] = Square::PLAYER;
@@ -358,20 +380,13 @@ void Map::UpdateMap() {
 		}
 		unlockedCave = true;
 	}
-	if ((player.GetNumCapturedPokemons() >= pokemonsToUnlockPokenti) || (player.GetCapturedMewtwo()) && !unlockedPokenti) {
-		int col = NUM_COLS / 2;
-		for (int row = NUM_ROWS / 2 + 1; row < NUM_ROWS - 1; row++) {
-			map[row][col] = Square::NOTHING;
-		}
-		unlockedPokenti = true;
-	}
 }
 
 void Map::UpdateScene(){
 	if (player.GetPosition().x < NUM_ROWS / 2 && player.GetPosition().y < NUM_COLS / 2) player.ChangeScene(Scene::PUEBLO_PALETA);
 	else if (player.GetPosition().x < NUM_ROWS / 2 && player.GetPosition().y > NUM_COLS / 2) player.ChangeScene(Scene::BOSQUE);
 	else if (player.GetPosition().x > NUM_ROWS / 2 && player.GetPosition().y > NUM_COLS / 2) player.ChangeScene(Scene::CUEVA_CELESTE);
-	else if (player.GetPosition().x < NUM_ROWS / 2 && player.GetPosition().y > NUM_COLS / 2) player.ChangeScene(Scene::LIGA_POKENTI);
+	else if (player.GetPosition().x > NUM_ROWS / 2 && player.GetPosition().y < NUM_COLS / 2) player.ChangeScene(Scene::LIGA_POKENTI);
 }
 
 void Map::InsertPokeballs() {

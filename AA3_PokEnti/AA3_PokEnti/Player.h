@@ -31,7 +31,7 @@ private:
 	Movement movement = Movement::DOWN;
 	Movement lastMovement = Movement::DOWN;
 	Pokemon* capturedPokemons = nullptr;
-	int numCapturedPokemons = 50;
+	int numCapturedPokemons = 0;
 	int numPokeballs = 10;
 	bool capturedMewtwo = false;
 public:
